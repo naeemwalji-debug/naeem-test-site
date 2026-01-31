@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio Header</title>
+
+  <!-- Google Font: Zalando Sans Expanded -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Zalando+Sans+Expanded:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --cornerInset: 30px;   /* distance from edges */
+      --plusSize: 30px;      /* your + size */
+      --navClearance: 18px;  /* extra breathing room from the rotating + */
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { overflow-y: scroll; }
+    body { background: #000; overflow-x: hidden; }
+    
+    /* About Section */
+    #about {
+      position: relative;
+      width: 100%;
+      min-height: 100vh;
+      background: #fff;
+      z-index: 10;
+      box-shadow: 0 -20px 60px rgba(0,0,0,0.3);
+      display: flex;
+      align-items: center;
+      overflow: visible;
+    }
+    .about-container {
+      position: relative;
+      width: 100%;
+      max-width: 1920px;
+      margin: 0 auto;
+      padding-left: 385px;
+      padding-right: 60px;
+      box-sizing: border-box;
+      overflow: visible;
+    }
+    .about-title {
+      position: absolute;
+      left: 214px;
+      top: -105px; /* Baseline sits just below body cap height */
+      color: #797979;
+      font-family: "Selfie Neue Round", "Brush Script MT", cursive;
+      font-weight: 700;
+      font-size: 160px;
+      line-height: 0.9;
+      word-wrap: break-word;
+      z-index: 1;
+      white-space: nowrap;
+      overflow: visible;
+    }
+    .about-body {
+      position: relative;
+      max-width: 1164px;
+      color: #000;
+      font-family: "Zalando Sans Expanded", sans-serif;
+      font-weight: 700;
+      font-size: 36px;
+      line-height: 37px;
+      text-transform: uppercase;
+      word-wrap: break-word;
+      z-index: 2;
+    }
+    .about-body p { margin: 0; }
+    .about-body p + p { margin-top: 37px; }
+    
+    /* Spacer */
+    #headerSpacer {
+      height: 100vh;
+      width: 100%;
+    }
+
+    #header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background: #000;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    #trailCanvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .cornerMarks {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+      mix-blend-mode: difference;
+    }
+    .cornerMarks line {
+      stroke: #fff;
+      stroke-width: 1;
+      shape-rendering: crispEdges;
+      vector-effect: non-scaling-stroke;
+    }
+
+    .site-nav{
+      position: fixed;
+      left: 60px;
+      top: 60px;
+      z-index: 9999;
+      mix-blend-mode: difference;
+
+      display: flex;
+      flex-direction: column;
+
+      font-family: "Zalando Sans Expanded", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      font-weight: 700;
+
+      font-size: 14.67px;
+      line-height: 16px;
+      letter-spacing: 2px;
+
+      text-transform: uppercase;
+    }
+    
+    .site-nav a {
+      position: relative;
+      display: block;
+    }
+    
+    .nav-text {
+      position: relative;
+      z-index: 1;
+    }
+    
+    .nav-indicator {
+      position: absolute;
+      left: -1px;
+      top: -1px;
+      bottom: -1px;
+      background: #fff;
+      pointer-events: none;
+      z-index: 0;
+      width: 0;
+    }
+
+    .site-nav a{
+      color: rgba(255,255,255,0.95);
+      text-decoration: none;
+      display: block;
+      padding: 0;
+      user-select: none;
+    }
+
+    .site-nav a:hover{
+      color: #fff;
+    }
+
+    /* === Names === */
+    .name {
+      position: absolute;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      z-index: 0;
+
+      font-family: "Zalando Sans Expanded", sans-serif;
+      font-optical-sizing: auto;
+      font-weight: 700;
+      font-style: normal;
+
+      font-size: clamp(22px, 3vw, 40px);
+      letter-spacing: 0.40em;
+      color: #ffffff;
+      text-transform: uppercase;
+      opacity: 0.95;
+      white-space: nowrap;
+    }
+
+    #descriptor{
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 0; /* under the trail canvas (trail is z-index: 1) */
+
+      font-family: "Zalando Sans Expanded", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      font-weight: 400; /* Regular */
+      font-size: 20px;
+      letter-spacing: 2px; /* ≈ 20 tracking */
+      text-transform: uppercase;
+
+      color: rgba(255,255,255,0.9);
+      pointer-events: none;
+    }
+
+    #downArrow{
+      position: fixed;
+      left: 50%;
+      bottom: 30px;
+      transform: translateX(-50%);
+      width: 40px;
+      height: 20px;
+      pointer-events: none;
+      z-index: 9999;
+      mix-blend-mode: difference;
+    }
+
+    #downArrow line{
+      stroke: #fff;
+      stroke-width: 1;
+      shape-rendering: crispEdges;
+      vector-effect: non-scaling-stroke;
+    }
+    
+    .copyright {
+      position: fixed;
+      right: 60px;
+      bottom: 60px;
+      z-index: 9999;
+      mix-blend-mode: difference;
+      
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      
+      font-family: "Zalando Sans Expanded", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      font-weight: 700;
+      font-size: 11px; /* 14.67 * 0.75 = 11 */
+      line-height: 12px; /* 16 * 0.75 = 12 */
+      letter-spacing: 1.5px; /* 2 * 0.75 = 1.5 */
+      color: #fff;
+    }
+    
+    .copyright-logo {
+      margin-top: 1.5px; /* 2 * 0.75 = 1.5 */
+    }
+  </style>
+</head>
+<body>
+  <div id="header">
+    <canvas id="trailCanvas"></canvas>
+
+    <svg 
+      id="logoOverlay"
+      width="280" 
+      height="150.73"
+      viewBox="0 0 231.15 124.56"
+      xmlns="http://www.w3.org/2000/svg"
+      style="
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 2;
+        pointer-events: none;
+        overflow: visible;
+      "
+    >
+      <path 
+        fill="#000" 
+        stroke="#000" 
+        stroke-width="4" 
+        stroke-linejoin="round" 
+        stroke-linecap="round"
+        vector-effect="non-scaling-stroke"
+        paint-order="stroke fill"
+        d="M38.66,0C17.7,0,0,16.72,0,36.5c0,16.47,12.7,29.86,28.32,29.86,14.08,0,25.54-10.49,25.54-23.38,0-3.72-.78-7.15-2.13-9.41-1.93-3.36-5.18-5.31-8.9-5.31-1.63,0-3.23.39-4.63,1.14-4.1,2.17-5.64,6.72-3.65,10.82.13.25.49,1.06.49,1.99,0,3.19-3.08,5.79-6.87,5.79-5.24,0-9.5-5.02-9.5-11.2,0-9.92,9.16-18.3,19.99-18.3,12.43,0,20.46,8.33,20.46,21.23,0,5.8-1.9,13.1-5.49,21.1l-22.07,48.15c-1.35,2.98-1.61,5.95-.73,8.61.81,2.46,2.58,4.47,4.87,5.52,1.21.55,2.5.83,3.84.83,4.1,0,7.75-2.6,9.76-6.95l24.39-53.11c5.73-12.57,11.59-18.67,17.91-18.67,2.63,0,3.48.88,3.48,3.63,0,2.56-1.07,6.4-2.85,10.27l-13.92,30.46c-1.93,4.12-3,9.12-3,14.07,0,12.7,8.81,20.91,22.45,20.91,8.25,0,15.92-3.01,22.85-8.95,3.79,5.66,10.44,8.95,18.36,8.95,15.25,0,27.52-10.55,37.5-32.26l13.07-28.41c5.73-12.57,11.59-18.67,17.91-18.67,2.47.26,3.24,1.45,3.48,3.63,0,2.56-1.07,6.4-2.85,10.26l-.02.03v.03s-.06.1-.06.1l-.02.04v.04c-2.17,5.53.8,10.2,4.84,11.95,1.31.57,2.67.85,4.03.85,3.97,0,7.7-2.47,9.52-6.29,3.07-6.29,4.76-13.05,4.76-19.01,0-12.7-8.15-20.91-20.76-20.91-6.17,0-13.01,2.26-19.24,6.37-7.12,4.69-12.95,11.47-16.87,19.62v.02s-.02.02-.02.02l-14.91,32.8c-6.42,14.13-13.2,21.59-19.6,21.59-.73,0-3.18-.11-4.12-1.58-1.06-1.64-.57-5.01,1.34-9.24l21.92-47.38c1.64-3.66,1.41-7.37-.64-10.21-1.73-2.39-4.56-3.82-7.57-3.82-.33,0-.65.02-.98.05-3.62.37-6.62,2.67-8.25,6.31l-20.67,45.05c-4.31,9.4-12.4,20.37-21,20.37-2.46-.08-5.05-1.01-5.02-3.79,0-1.34.37-2.8,1.12-4.45l14.68-31.84c3.06-6.28,4.74-13.02,4.74-18.97,0-12.7-8.15-20.91-20.76-20.91-6.07,0-11.54,1.97-16.58,5.99C74.99,13.19,59.09,0,38.66,0h0Z"
+      />
+    </svg>
+
+    <!-- Names (positioned by JS) -->
+    <div id="nameLeft" class="name">NAEEM</div>
+    <div id="nameRight" class="name">WALJI</div>
+    <div id="descriptor">FREELANCE CREATIVE / ART DIRECTOR</div>
+  </div>
+
+  <!-- Fixed UI elements - OUTSIDE header so not clipped -->
+  <svg id="cornerMarks" class="cornerMarks">
+    <g id="plusTL"><line/><line/></g>
+    <g id="plusTR"><line/><line/></g>
+    <g id="plusBL"><line/><line/></g>
+    <g id="plusBR"><line/><line/></g>
+  </svg>
+
+  <svg id="downArrow" viewBox="0 0 40 20">
+    <line id="arrowLeft"/>
+    <line id="arrowRight"/>
+  </svg>
+
+  <nav class="site-nav" aria-label="Primary">
+    <a href="#header" id="navHome"><span class="nav-indicator"></span><span class="nav-text">HOME</span></a>
+    <a href="#about" id="navAbout"><span class="nav-indicator"></span><span class="nav-text">ABOUT ME</span></a>
+    <a href="#work" id="navWork"><span class="nav-indicator"></span><span class="nav-text">WORK</span></a>
+    <a href="#contact" id="navContact"><span class="nav-indicator"></span><span class="nav-text">CONTACT</span></a>
+  </nav>
+
+  <div class="copyright">
+    <span>©</span>
+    <span>2026</span>
+    <svg class="copyright-logo" viewBox="0 0 231.15 124.56" xmlns="http://www.w3.org/2000/svg">
+      <path 
+        fill="#fff"
+        d="M38.66,0C17.7,0,0,16.72,0,36.5c0,16.47,12.7,29.86,28.32,29.86,14.08,0,25.54-10.49,25.54-23.38,0-3.72-.78-7.15-2.13-9.41-1.93-3.36-5.18-5.31-8.9-5.31-1.63,0-3.23.39-4.63,1.14-4.1,2.17-5.64,6.72-3.65,10.82.13.25.49,1.06.49,1.99,0,3.19-3.08,5.79-6.87,5.79-5.24,0-9.5-5.02-9.5-11.2,0-9.92,9.16-18.3,19.99-18.3,12.43,0,20.46,8.33,20.46,21.23,0,5.8-1.9,13.1-5.49,21.1l-22.07,48.15c-1.35,2.98-1.61,5.95-.73,8.61.81,2.46,2.58,4.47,4.87,5.52,1.21.55,2.5.83,3.84.83,4.1,0,7.75-2.6,9.76-6.95l24.39-53.11c5.73-12.57,11.59-18.67,17.91-18.67,2.63,0,3.48.88,3.48,3.63,0,2.56-1.07,6.4-2.85,10.27l-13.92,30.46c-1.93,4.12-3,9.12-3,14.07,0,12.7,8.81,20.91,22.45,20.91,8.25,0,15.92-3.01,22.85-8.95,3.79,5.66,10.44,8.95,18.36,8.95,15.25,0,27.52-10.55,37.5-32.26l13.07-28.41c5.73-12.57,11.59-18.67,17.91-18.67,2.47.26,3.24,1.45,3.48,3.63,0,2.56-1.07,6.4-2.85,10.26l-.02.03v.03s-.06.1-.06.1l-.02.04v.04c-2.17,5.53.8,10.2,4.84,11.95,1.31.57,2.67.85,4.03.85,3.97,0,7.7-2.47,9.52-6.29,3.07-6.29,4.76-13.05,4.76-19.01,0-12.7-8.15-20.91-20.76-20.91-6.17,0-13.01,2.26-19.24,6.37-7.12,4.69-12.95,11.47-16.87,19.62v.02s-.02.02-.02.02l-14.91,32.8c-6.42,14.13-13.2,21.59-19.6,21.59-.73,0-3.18-.11-4.12-1.58-1.06-1.64-.57-5.01,1.34-9.24l21.92-47.38c1.64-3.66,1.41-7.37-.64-10.21-1.73-2.39-4.56-3.82-7.57-3.82-.33,0-.65.02-.98.05-3.62.37-6.62,2.67-8.25,6.31l-20.67,45.05c-4.31,9.4-12.4,20.37-21,20.37-2.46-.08-5.05-1.01-5.02-3.79,0-1.34.37-2.8,1.12-4.45l14.68-31.84c3.06-6.28,4.74-13.02,4.74-18.97,0-12.7-8.15-20.91-20.76-20.91-6.07,0-11.54,1.97-16.58,5.99C74.99,13.19,59.09,0,38.66,0h0Z"
+      />
+    </svg>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('trailCanvas');
+    const ctx = canvas.getContext('2d', { alpha: true });
+
+    const nameLeftEl = document.getElementById("nameLeft");
+    const nameRightEl = document.getElementById("nameRight");
+
+    let width, height, dpr;
+    let mouseX = 0, mouseY = 0;
+    let smoothMouseX = 0, smoothMouseY = 0;
+
+    let logoCenter = { x: 0, y: 0 };
+
+    const LOGO_DRAW_W = 280;
+    const VIEW_W = 231.15;
+    const VIEW_H = 124.56;
+
+    const LOGO_D = "M38.66,0C17.7,0,0,16.72,0,36.5c0,16.47,12.7,29.86,28.32,29.86,14.08,0,25.54-10.49,25.54-23.38,0-3.72-.78-7.15-2.13-9.41-1.93-3.36-5.18-5.31-8.9-5.31-1.63,0-3.23.39-4.63,1.14-4.1,2.17-5.64,6.72-3.65,10.82.13.25.49,1.06.49,1.99,0,3.19-3.08,5.79-6.87,5.79-5.24,0-9.5-5.02-9.5-11.2,0-9.92,9.16-18.3,19.99-18.3,12.43,0,20.46,8.33,20.46,21.23,0,5.8-1.9,13.1-5.49,21.1l-22.07,48.15c-1.35,2.98-1.61,5.95-.73,8.61.81,2.46,2.58,4.47,4.87,5.52,1.21.55,2.5.83,3.84.83,4.1,0,7.75-2.6,9.76-6.95l24.39-53.11c5.73-12.57,11.59-18.67,17.91-18.67,2.63,0,3.48.88,3.48,3.63,0,2.56-1.07,6.4-2.85,10.27l-13.92,30.46c-1.93,4.12-3,9.12-3,14.07,0,12.7,8.81,20.91,22.45,20.91,8.25,0,15.92-3.01,22.85-8.95,3.79,5.66,10.44,8.95,18.36,8.95,15.25,0,27.52-10.55,37.5-32.26l13.07-28.41c5.73-12.57,11.59-18.67,17.91-18.67,2.47.26,3.24,1.45,3.48,3.63,0,2.56-1.07,6.4-2.85,10.26l-.02.03v.03s-.06.1-.06.1l-.02.04v.04c-2.17,5.53.8,10.2,4.84,11.95,1.31.57,2.67.85,4.03.85,3.97,0,7.7-2.47,9.52-6.29,3.07-6.29,4.76-13.05,4.76-19.01,0-12.7-8.15-20.91-20.76-20.91-6.17,0-13.01,2.26-19.24,6.37-7.12,4.69-12.95,11.47-16.87,19.62v.02s-.02.02-.02.02l-14.91,32.8c-6.42,14.13-13.2,21.59-19.6,21.59-.73,0-3.18-.11-4.12-1.58-1.06-1.64-.57-5.01,1.34-9.24l21.92-47.38c1.64-3.66,1.41-7.37-.64-10.21-1.73-2.39-4.56-3.82-7.57-3.82-.33,0-.65.02-.98.05-3.62.37-6.62,2.67-8.25,6.31l-20.67,45.05c-4.31,9.4-12.4,20.37-21,20.37-2.46-.08-5.05-1.01-5.02-3.79,0-1.34.37-2.8,1.12-4.45l14.68-31.84c3.06-6.28,4.74-13.02,4.74-18.97,0-12.7-8.15-20.91-20.76-20.91-6.07,0-11.54,1.97-16.58,5.99C74.99,13.19,59.09,0,38.66,0h0Z";
+    const LOGO_PATH = new Path2D(LOGO_D);
+
+    function drawLogoPath(targetCtx, centerX, centerY, drawW, color) {
+      const drawH = drawW * (VIEW_H / VIEW_W);
+      targetCtx.save();
+      targetCtx.translate(centerX - drawW / 2, centerY - drawH / 2);
+      targetCtx.scale(drawW / VIEW_W, drawH / VIEW_H);
+      targetCtx.fillStyle = color;
+      targetCtx.fill(LOGO_PATH);
+      targetCtx.restore();
+    }
+
+    let trailLayerCanvas = null;
+    let trailCtx = null;
+
+    let grainLayerCanvas = null;
+    let grainCtx = null;
+
+    let noisePatternFine = null;
+
+    let logoReady = false;
+
+    function clamp01(v) { return Math.max(0, Math.min(1, v)); }
+    function smoothstep(edge0, edge1, x) {
+      const t = clamp01((x - edge0) / (edge1 - edge0));
+      return t * t * (3 - 2 * t);
+    }
+
+    function updateNamePositions() {
+      const logoEl = document.getElementById("logoOverlay");
+      if (!logoEl) return;
+
+      const rect = logoEl.getBoundingClientRect();
+
+      // Center each name in the empty space between:
+      // LEFT EDGE <-> LOGO LEFT EDGE
+      // LOGO RIGHT EDGE <-> RIGHT EDGE
+      const inset = 30; // positive number = tighter to logo
+
+      const leftCenterX  = (rect.left + inset) * 0.5;
+      const rightCenterX = rect.right - inset + (width - rect.right) * 0.5;
+
+      // Keep them vertically centered like your comp
+      const centerY = height * 0.5;
+
+      nameLeftEl.style.left = `${leftCenterX}px`;
+      nameRightEl.style.left = `${rightCenterX}px`;
+      nameLeftEl.style.top = `${centerY}px`;
+      nameRightEl.style.top = `${centerY}px`;
+
+      const descriptor = document.getElementById("descriptor");
+
+      const logoRect = document
+        .getElementById("logoOverlay")
+        .getBoundingClientRect();
+
+      // vertical midpoint between logo bottom and screen bottom
+      const descriptorY =
+        logoRect.bottom +
+        (document.documentElement.clientHeight - logoRect.bottom) * 0.5;
+
+      descriptor.style.top = `${descriptorY}px`;
+    }
+
+    function resizeCanvas() {
+      dpr = window.devicePixelRatio || 1;
+      width = document.documentElement.clientWidth;
+      height = document.documentElement.clientHeight;
+
+      canvas.width = Math.floor(width * dpr);
+      canvas.height = Math.floor(height * dpr);
+      canvas.style.width = width + 'px';
+      canvas.style.height = height + 'px';
+
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
+
+      trailLayerCanvas = document.createElement('canvas');
+      trailLayerCanvas.width = canvas.width;
+      trailLayerCanvas.height = canvas.height;
+      trailCtx = trailLayerCanvas.getContext('2d', { alpha: true });
+      trailCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      trailCtx.imageSmoothingEnabled = true;
+      trailCtx.imageSmoothingQuality = 'high';
+
+      grainLayerCanvas = document.createElement('canvas');
+      grainLayerCanvas.width = canvas.width;
+      grainLayerCanvas.height = canvas.height;
+      grainCtx = grainLayerCanvas.getContext('2d', { alpha: true });
+      grainCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      grainCtx.imageSmoothingEnabled = true;
+      grainCtx.imageSmoothingQuality = 'high';
+
+      logoCenter.x = width / 2;
+      logoCenter.y = height / 2;
+
+      // Keep mouse initialized to center
+      if (!mouseX && !mouseY) {
+        mouseX = logoCenter.x;
+        mouseY = logoCenter.y;
+        smoothMouseX = logoCenter.x;
+        smoothMouseY = logoCenter.y;
+      }
+
+      updateNamePositions();
+    }
+
+    function initLogo() { logoReady = true; }
+
+    function generateNoiseTexture(size) {
+      const c = document.createElement("canvas");
+      c.width = size;
+      c.height = size;
+      const cctx = c.getContext("2d");
+      const img = cctx.createImageData(size, size);
+      const d = img.data;
+
+      for (let i = 0; i < d.length; i += 4) {
+        const n = (Math.random() * 255) | 0;
+        d[i] = n; d[i + 1] = n; d[i + 2] = n; d[i + 3] = 255;
+      }
+      cctx.putImageData(img, 0, 0);
+      return c;
+    }
+
+    function calculateMaxDistance(x, y, angle) {
+      const cos = Math.cos(angle);
+      const sin = Math.sin(angle);
+      let maxDist = Infinity;
+
+      if (cos > 0) maxDist = Math.min(maxDist, (width - x) / cos);
+      else if (cos < 0) maxDist = Math.min(maxDist, -x / cos);
+
+      if (sin > 0) maxDist = Math.min(maxDist, (height - y) / sin);
+      else if (sin < 0) maxDist = Math.min(maxDist, -y / sin);
+
+      return maxDist;
+    }
+
+    function drawTrailLayer(targetCtx, dirX, dirY, trailLength, params) {
+      const {
+        numStamps, alphaBase, alphaExp,
+        blurMin, blurMax,
+        scaleMin, shear,
+        strength, blurStrength,
+        blurStart = 0.0,
+        blurCurve = 1.0,
+        headFadeStart = 0.0,
+        headFadeEnd = 0.0
+      } = params;
+
+      for (let i = numStamps; i >= 0; i--) {
+        const linearT = i / numStamps;
+        const t = Math.pow(linearT, 1.3);
+        const offset = t * trailLength;
+
+        const x = logoCenter.x + dirX * offset;
+        const y = logoCenter.y + dirY * offset;
+
+        const alphaFalloff = Math.pow(1 - t, alphaExp);
+        const edgeFade = t > 0.75 ? (1 - (t - 0.75) / 0.25) : 1;
+
+        const headMask = (headFadeEnd > headFadeStart)
+          ? smoothstep(headFadeStart, headFadeEnd, t)
+          : 1;
+
+        const alpha = alphaFalloff * edgeFade * alphaBase * strength * headMask;
+
+        let bt = (t - blurStart) / (1 - blurStart);
+        bt = clamp01(bt);
+        bt = Math.pow(bt, blurCurve);
+
+        const blur = (blurMin + Math.pow(bt, 2) * (blurMax - blurMin)) * blurStrength;
+
+        targetCtx.save();
+        targetCtx.globalAlpha = alpha;
+        targetCtx.filter = blur > 0.05 ? `blur(${blur}px)` : "none";
+
+        const scale = scaleMin + (1 - scaleMin) * (1 - t * 0.15);
+        const logoWidth = LOGO_DRAW_W * scale;
+
+        if (shear > 0) {
+          const shearAmount = t * shear;
+          targetCtx.setTransform(
+            dpr, shearAmount * dpr * dirY,
+            shearAmount * dpr * dirX, dpr,
+            0, 0
+          );
+        }
+
+        drawLogoPath(targetCtx, x, y, logoWidth, "#fff");
+
+        targetCtx.restore();
+        targetCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      }
+    }
+
+    window.renderRunning = true;
+    
+    window.render = function render() {
+      if (!window.renderRunning) return;
+      
+      const smoothing = 0.15;
+      smoothMouseX += (mouseX - smoothMouseX) * smoothing;
+      smoothMouseY += (mouseY - smoothMouseY) * smoothing;
+
+      ctx.clearRect(0, 0, width, height);
+
+      if (!logoReady || !trailLayerCanvas) {
+        requestAnimationFrame(render);
+        return;
+      }
+
+      const dx = smoothMouseX - logoCenter.x;
+      const dy = smoothMouseY - logoCenter.y;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+
+      const deadZone = 18;
+      const fullZone = 180;
+      const strength = Math.max(0, Math.min(1, (distance - deadZone) / (fullZone - deadZone)));
+
+      if (strength > 0) {
+        trailCtx.clearRect(0, 0, width, height);
+
+        const dirX = -dx / distance;
+        const dirY = -dy / distance;
+
+        const angle = Math.atan2(dirY, dirX);
+        const maxDistanceToEdge = calculateMaxDistance(logoCenter.x, logoCenter.y, angle);
+        const maxTrailLength = Math.min(distance * 1.8, maxDistanceToEdge * 0.75);
+        const baseTrailLength = Math.min(distance * 1.5, maxTrailLength);
+
+        const trailLength = baseTrailLength * strength;
+        const blurStrength = Math.pow(strength, 1.8);
+
+        drawTrailLayer(trailCtx, dirX, dirY, trailLength * 0.4, {
+          numStamps: 30,
+          alphaBase: 0.9,
+          alphaExp: 2.5,
+          blurMin: 0,
+          blurMax: 5,
+          scaleMin: 0.95,
+          shear: 0,
+          strength,
+          blurStrength,
+          blurStart: 0.0,
+          blurCurve: 1.0
+        });
+
+        if (strength > 0.12) {
+          drawTrailLayer(trailCtx, dirX, dirY, trailLength * 0.7, {
+            numStamps: 40,
+            alphaBase: 0.5,
+            alphaExp: 1.8,
+            blurMin: 2,
+            blurMax: 14,
+            scaleMin: 0.9,
+            shear: 0.02,
+            strength,
+            blurStrength,
+            blurStart: 0.22,
+            blurCurve: 1.6,
+            headFadeStart: 0.14,
+            headFadeEnd: 0.26
+          });
+        }
+
+        if (strength > 0.35) {
+          drawTrailLayer(trailCtx, dirX, dirY, trailLength, {
+            numStamps: 50,
+            alphaBase: 0.25,
+            alphaExp: 1.3,
+            blurMin: 8,
+            blurMax: 28,
+            scaleMin: 0.85,
+            shear: 0.04,
+            strength,
+            blurStrength,
+            blurStart: 0.38,
+            blurCurve: 1.3,
+            headFadeStart: 0.28,
+            headFadeEnd: 0.46
+          });
+        }
+
+        trailCtx.save();
+        trailCtx.globalCompositeOperation = 'destination-out';
+        trailCtx.globalAlpha = 1.0;
+        drawLogoPath(trailCtx, logoCenter.x, logoCenter.y, LOGO_DRAW_W, "#000");
+        trailCtx.restore();
+
+        ctx.drawImage(trailLayerCanvas, 0, 0, width, height);
+
+        const grainReveal = smoothstep(0.45, 0.95, strength);
+        if (grainCtx && grainReveal > 0.001) {
+          grainCtx.clearRect(0, 0, width, height);
+
+          grainCtx.save();
+          grainCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+          grainCtx.filter = "contrast(850%) brightness(155%)";
+          grainCtx.globalAlpha = 1.0;
+          grainCtx.fillStyle = noisePatternFine;
+          grainCtx.translate(Math.random() * 0.25, Math.random() * 0.25);
+          grainCtx.fillRect(0, 0, width + 260, height + 260);
+          grainCtx.restore();
+
+          grainCtx.save();
+          grainCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+          grainCtx.globalCompositeOperation = "destination-in";
+          grainCtx.drawImage(trailLayerCanvas, 0, 0, width, height);
+          grainCtx.restore();
+
+          const dist = distance || 1;
+          const gdirX = -dx / dist;
+          const gdirY = -dy / dist;
+
+          const rampLen = 520;
+          const x0 = logoCenter.x;
+          const y0 = logoCenter.y;
+          const x1 = logoCenter.x + gdirX * rampLen;
+          const y1 = logoCenter.y + gdirY * rampLen;
+
+          const along = grainCtx.createLinearGradient(x0, y0, x1, y1);
+          along.addColorStop(0.00, "rgba(0,0,0,0)");
+          along.addColorStop(0.35, "rgba(0,0,0,0)");
+          along.addColorStop(0.58, "rgba(0,0,0,0.25)");
+          along.addColorStop(0.76, "rgba(0,0,0,0.65)");
+          along.addColorStop(0.90, "rgba(0,0,0,0.90)");
+          along.addColorStop(1.00, "rgba(0,0,0,1)");
+
+          grainCtx.save();
+          grainCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+          grainCtx.globalCompositeOperation = "destination-in";
+          grainCtx.fillStyle = along;
+          grainCtx.fillRect(0, 0, width, height);
+          grainCtx.restore();
+
+          ctx.save();
+          ctx.globalCompositeOperation = "multiply";
+          ctx.globalAlpha = 0.84 * grainReveal;
+          ctx.drawImage(grainLayerCanvas, 0, 0, width, height);
+          ctx.restore();
+        }
+      }
+
+      ctx.save();
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.globalAlpha = 1;
+      ctx.filter = 'blur(0.6px)';
+      drawLogoPath(ctx, logoCenter.x, logoCenter.y, LOGO_DRAW_W, "#000");
+      ctx.filter = 'none';
+      drawLogoPath(ctx, logoCenter.x, logoCenter.y, LOGO_DRAW_W, "#000");
+      ctx.restore();
+
+      requestAnimationFrame(render);
+    }
+
+    const header = document.getElementById('header');
+    header.addEventListener('pointermove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
+
+    window.addEventListener('resize', () => {
+      resizeCanvas();
+    });
+
+    // Init
+    resizeCanvas();
+    initLogo();
+
+    const texGrain = generateNoiseTexture(256);
+    noisePatternFine = texGrain.getContext("2d").createPattern(texGrain, "repeat");
+
+    requestAnimationFrame(render);
+
+    // ===== Corner plus marks (UNCHANGED) =====
+    const cornerSvg = document.getElementById("cornerMarks");
+    const plus = {
+      TL: document.getElementById("plusTL"),
+      TR: document.getElementById("plusTR"),
+      BL: document.getElementById("plusBL"),
+      BR: document.getElementById("plusBR"),
+    };
+
+    const INSET = 30;
+    const HALF = 15; // total size = 30px
+
+    let cornerMouse = { x: 0, y: 0 };
+    let hasMouseMoved = false;
+
+    window.addEventListener("mousemove", (e) => {
+      cornerMouse.x = e.clientX;
+      cornerMouse.y = e.clientY;
+      hasMouseMoved = true;
+    });
+
+    function setPlusGeometry(g, cx, cy) {
+      const lines = g.querySelectorAll("line");
+      const h = lines[0];
+      const v = lines[1];
+
+      h.setAttribute("x1", cx - HALF);
+      h.setAttribute("y1", cy);
+      h.setAttribute("x2", cx + HALF);
+      h.setAttribute("y2", cy);
+
+      v.setAttribute("x1", cx);
+      v.setAttribute("y1", cy - HALF);
+      v.setAttribute("x2", cx);
+      v.setAttribute("y2", cy + HALF);
+    }
+
+    function rotateAroundCenter(g, deg, cx, cy) {
+      g.setAttribute("transform", `rotate(${deg} ${cx} ${cy})`);
+    }
+
+    function updateCornerMarks() {
+      const w = document.documentElement.clientWidth;
+      const h = document.documentElement.clientHeight;
+
+      cornerSvg.setAttribute("viewBox", `0 0 ${w} ${h}`);
+
+      const cxL = INSET + HALF;
+      const cxR = w - INSET - HALF;
+      const cyT = INSET + HALF;
+      const cyB = h - INSET - HALF;
+
+      setPlusGeometry(plus.TL, cxL, cyT);
+      setPlusGeometry(plus.TR, cxR, cyT);
+      setPlusGeometry(plus.BL, cxL, cyB);
+      setPlusGeometry(plus.BR, cxR, cyB);
+
+      if (!hasMouseMoved) {
+        rotateAroundCenter(plus.TL, 0, cxL, cyT);
+        rotateAroundCenter(plus.TR, 0, cxR, cyT);
+        rotateAroundCenter(plus.BL, 0, cxL, cyB);
+        rotateAroundCenter(plus.BR, 0, cxR, cyB);
+        return;
+      }
+
+      const angDeg = (cx, cy) => (Math.atan2(cornerMouse.y - cy, cornerMouse.x - cx) * 180) / Math.PI;
+      const rotTop = (cx, cy) => angDeg(cx, cy) - 90;
+      const rotBot = (cx, cy) => angDeg(cx, cy) + 90;
+
+      rotateAroundCenter(plus.TL, rotTop(cxL, cyT), cxL, cyT);
+      rotateAroundCenter(plus.TR, rotTop(cxR, cyT), cxR, cyT);
+      rotateAroundCenter(plus.BL, rotBot(cxL, cyB), cxL, cyB);
+      rotateAroundCenter(plus.BR, rotBot(cxR, cyB), cxR, cyB);
+    }
+
+    window.addEventListener("resize", updateCornerMarks);
+    updateCornerMarks();
+
+    window.cornerRunning = true;
+    
+    (function cornerRAF() {
+      if (!window.cornerRunning) return;
+      updateCornerMarks();
+      requestAnimationFrame(cornerRAF);
+    })();
+
+    // Stop animations when header not visible
+    const visibilityObserver = new IntersectionObserver((entries) => {
+      const visible = entries[0].isIntersecting;
+      if (visible && !window.renderRunning) {
+        window.renderRunning = true;
+        window.cornerRunning = true;
+        requestAnimationFrame(window.render);
+        (function cornerRAF() {
+          if (!window.cornerRunning) return;
+          updateCornerMarks();
+          requestAnimationFrame(cornerRAF);
+        })();
+      } else if (!visible) {
+        window.renderRunning = false;
+        window.cornerRunning = false;
+      }
+    }, { threshold: 0.01 });
+    visibilityObserver.observe(document.getElementById('header'));
+
+    // ===== Down Arrow =====
+    const arrow = document.getElementById("downArrow");
+    const arrowLeft = document.getElementById("arrowLeft");
+    const arrowRight = document.getElementById("arrowRight");
+
+    function updateArrow() {
+      const w = 40;
+      const h = 20;
+
+      const cx = w / 2;
+      const cy = h; // bottom point (tip of V)
+
+      // Left arm
+      arrowLeft.setAttribute("x1", cx);
+      arrowLeft.setAttribute("y1", cy);
+      arrowLeft.setAttribute("x2", cx - 10);
+      arrowLeft.setAttribute("y2", cy - 10);
+
+      // Right arm
+      arrowRight.setAttribute("x1", cx);
+      arrowRight.setAttribute("y1", cy);
+      arrowRight.setAttribute("x2", cx + 10);
+      arrowRight.setAttribute("y2", cy - 10);
+    }
+
+    updateArrow();
+    
+    // Nav and arrow click handlers with custom smooth scroll
+    // SCROLL SPEED CONFIG: duration in milliseconds (lower = faster)
+    const SCROLL_DURATION = 1200; // 1200ms = 1.2 seconds
+    
+    function smoothScrollTo(targetElement, duration) {
+      const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset;
+      const startPosition = window.pageYOffset;
+      const distance = targetPosition - startPosition;
+      
+      // Don't animate if already at target
+      if (Math.abs(distance) < 1) return;
+      
+      let startTime = null;
+      
+      // Easing function - easeInOutCubic for smooth acceleration/deceleration
+      function easeInOutCubic(t) {
+        return t < 0.5 
+          ? 4 * t * t * t 
+          : 1 - Math.pow(-2 * t + 2, 3) / 2;
+      }
+      
+      function animation(currentTime) {
+        if (startTime === null) startTime = currentTime;
+        const timeElapsed = currentTime - startTime;
+        const progress = Math.min(timeElapsed / duration, 1);
+        const easedProgress = easeInOutCubic(progress);
+        
+        window.scrollTo(0, startPosition + distance * easedProgress);
+        
+        if (timeElapsed < duration) {
+          requestAnimationFrame(animation);
+        }
+      }
+      
+      requestAnimationFrame(animation);
+    }
+    
+    document.querySelectorAll('.site-nav a').forEach(a => {
+      a.addEventListener('click', (e) => {
+        e.preventDefault();
+        const href = a.getAttribute('href');
+        let target;
+        
+        // Handle both #header and #home for the home link
+        if (href === '#header' || href === '#home') {
+          target = document.getElementById('header') || document.body;
+          // Scroll to top of page
+          smoothScrollTo(document.body, SCROLL_DURATION);
+        } else {
+          target = document.querySelector(href);
+          if (target) {
+            smoothScrollTo(target, SCROLL_DURATION);
+          }
+        }
+      });
+    });
+    
+    arrow.style.pointerEvents = "auto";
+    arrow.style.cursor = "pointer";
+    arrow.addEventListener("click", () => {
+      smoothScrollTo(document.getElementById("about"), SCROLL_DURATION);
+    });
+
+    // Nav indicator animation
+    const navHome = document.getElementById("navHome");
+    const navAbout = document.getElementById("navAbout");
+    const homeIndicator = navHome.querySelector(".nav-indicator");
+    const aboutIndicator = navAbout.querySelector(".nav-indicator");
+    const homeText = navHome.querySelector(".nav-text");
+    const aboutText = navAbout.querySelector(".nav-text");
+    
+    let homeFullWidth, aboutFullWidth;
+    
+    function measureAndSetIndicators() {
+      // Get each text's actual width + 2px (1px each side)
+      homeFullWidth = homeText.getBoundingClientRect().width + 2;
+      aboutFullWidth = aboutText.getBoundingClientRect().width + 2;
+      
+      // Set initial state based on current scroll position
+      updateNavIndicators();
+    }
+    
+    function updateNavIndicators() {
+      if (!homeFullWidth || !aboutFullWidth) return;
+      
+      const aboutSection = document.getElementById("about");
+      if (!aboutSection) return;
+      
+      const aboutRect = aboutSection.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      
+      // Calculate how much of the About section is visible (0 to 1)
+      // 0 = About not visible, 1 = About fully covers viewport
+      let aboutProgress = 0;
+      
+      if (aboutRect.top <= windowHeight && aboutRect.top >= 0) {
+        // About is entering from bottom
+        aboutProgress = (windowHeight - aboutRect.top) / windowHeight;
+      } else if (aboutRect.top < 0) {
+        // About fully covers or has passed
+        aboutProgress = 1;
+      }
+      
+      aboutProgress = Math.max(0, Math.min(1, aboutProgress));
+      
+      // Home indicator shrinks as About comes up (from right to left)
+      homeIndicator.style.width = (homeFullWidth * (1 - aboutProgress)) + "px";
+      
+      // About indicator grows as About comes up (from left to right)
+      aboutIndicator.style.width = (aboutFullWidth * aboutProgress) + "px";
+    }
+    
+    // Wait for fonts to load before measuring
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => {
+        measureAndSetIndicators();
+      });
+    } else {
+      // Fallback for browsers without font loading API
+      window.addEventListener('load', measureAndSetIndicators);
+    }
+    
+    // Also re-measure on resize in case font rendering changes
+    window.addEventListener("resize", measureAndSetIndicators);
+    
+    // Update on scroll
+    window.addEventListener("scroll", updateNavIndicators, { passive: true });
+
+    // Pause animations during scroll
+    let scrollTimeout;
+    let isScrolling = false;
+    
+    window.addEventListener('scroll', () => {
+      if (!isScrolling) {
+        isScrolling = true;
+        window.renderRunning = false;
+        window.cornerRunning = false;
+      }
+      
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        isScrolling = false;
+        const headerRect = document.getElementById('header').getBoundingClientRect();
+        if (headerRect.bottom > 0) {
+          window.renderRunning = true;
+          window.cornerRunning = true;
+          requestAnimationFrame(window.render);
+          (function restartCorner() {
+            if (!window.cornerRunning) return;
+            updateCornerMarks();
+            requestAnimationFrame(restartCorner);
+          })();
+        }
+      }, 100);
+    }, { passive: true });
+    // Size copyright logo to match "2026" width
+    function sizeCopyrightLogo() {
+      const copyrightEl = document.querySelector('.copyright');
+      const spans = copyrightEl.querySelectorAll('span');
+      const yearSpan = spans[1]; // "2026"
+      const logo = copyrightEl.querySelector('.copyright-logo');
+      
+      const yearWidth = yearSpan.getBoundingClientRect().width;
+      logo.style.width = yearWidth + 'px';
+      logo.style.height = 'auto';
+    }
+    
+    // Wait for fonts to load
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(sizeCopyrightLogo);
+    } else {
+      window.addEventListener('load', sizeCopyrightLogo);
+    }
+    
+    window.addEventListener('resize', sizeCopyrightLogo);
+  </script>
+  
+  <div id="headerSpacer"></div>
+
+  <section id="about">
+    <div class="about-container">
+      <h1 class="about-title">About Me</h1>
+      <div class="about-body">
+        <p>I'm an ACD / Art Director based in Toronto with over a decade of full-time experience at agencies like FCB, Cossette, and The Hive. Over the last couple of years, I've been freelancing with shops including Anomaly, Sid Lee, 72andSunny Toronto, and others, and I'm currently working with Mekanism New York.</p>
+        <p>I'm open to freelance opportunities and also considering full-time for the right fit.</p>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // About section fade-in based on scroll (runs after DOM ready)
+    const aboutTitle = document.querySelector('.about-title');
+    const aboutBody = document.querySelector('.about-body');
+    const aboutSection = document.getElementById("about");
+    
+    // Slide distance in pixels
+    const slideDistance = 40;
+    
+    function updateAboutFade() {
+      if (!aboutTitle || !aboutBody || !aboutSection) return;
+      
+      const windowHeight = window.innerHeight;
+      const aboutRect = aboutSection.getBoundingClientRect();
+      const titleRect = aboutTitle.getBoundingClientRect();
+      const bodyRect = aboutBody.getBoundingClientRect();
+      
+      // Check if About section is fully visible (top at or above viewport top)
+      const aboutFullyOpen = aboutRect.top <= 0;
+      
+      if (aboutFullyOpen) {
+        // Fully visible - remove masks completely and reset positions
+        aboutTitle.style.webkitMaskImage = 'none';
+        aboutTitle.style.maskImage = 'none';
+        aboutTitle.style.transform = 'translateX(0)';
+        
+        aboutBody.style.webkitMaskImage = 'none';
+        aboutBody.style.maskImage = 'none';
+        aboutBody.style.transform = 'translateX(0)';
+        return;
+      }
+      
+      // TITLE fade and slide
+      if (titleRect.top >= windowHeight) {
+        // Title not visible yet - completely hidden, at start position
+        aboutTitle.style.webkitMaskImage = 'linear-gradient(to right, transparent 0%, transparent 100%)';
+        aboutTitle.style.maskImage = 'linear-gradient(to right, transparent 0%, transparent 100%)';
+        aboutTitle.style.transform = `translateX(-${slideDistance}px)`;
+      } else {
+        // Title is visible
+        const titlePixelsInView = windowHeight - titleRect.top;
+        const totalDistance = titlePixelsInView + aboutRect.top;
+        
+        let titleProgress = totalDistance > 0 ? titlePixelsInView / totalDistance : 1;
+        titleProgress = Math.max(0, Math.min(1, titleProgress));
+        
+        // Gradient spans 200% (full element width for the fade)
+        // At progress 0: gradient is -200% to 0% (fully transparent)
+        // At progress 1: gradient is 0% to 200% (fully solid)
+        const gradientStart = (titleProgress * 200) - 200;
+        const gradientEnd = gradientStart + 200;
+        
+        const titleMask = `linear-gradient(to right, #000 0%, #000 ${Math.max(0, gradientStart)}%, transparent ${Math.min(100, gradientEnd)}%, transparent 100%)`;
+        aboutTitle.style.webkitMaskImage = titleMask;
+        aboutTitle.style.maskImage = titleMask;
+        
+        // Slide: starts at -40px, ends at 0px
+        const titleSlide = -slideDistance + (titleProgress * slideDistance);
+        aboutTitle.style.transform = `translateX(${titleSlide}px)`;
+      }
+      
+      // BODY fade and slide
+      if (bodyRect.top >= windowHeight) {
+        // Body not visible yet - completely hidden, at start position
+        aboutBody.style.webkitMaskImage = 'linear-gradient(to left, transparent 0%, transparent 100%)';
+        aboutBody.style.maskImage = 'linear-gradient(to left, transparent 0%, transparent 100%)';
+        aboutBody.style.transform = `translateX(${slideDistance}px)`;
+      } else {
+        const bodyPixelsInView = windowHeight - bodyRect.top;
+        const totalDistance = bodyPixelsInView + aboutRect.top;
+        
+        let bodyProgress = totalDistance > 0 ? bodyPixelsInView / totalDistance : 1;
+        bodyProgress = Math.max(0, Math.min(1, bodyProgress));
+        
+        // Gradient spans 200% (full element width for the fade)
+        const gradientStart = (bodyProgress * 200) - 200;
+        const gradientEnd = gradientStart + 200;
+        
+        const bodyMask = `linear-gradient(to left, #000 0%, #000 ${Math.max(0, gradientStart)}%, transparent ${Math.min(100, gradientEnd)}%, transparent 100%)`;
+        aboutBody.style.webkitMaskImage = bodyMask;
+        aboutBody.style.maskImage = bodyMask;
+        
+        // Slide: starts at +40px, ends at 0px
+        const bodySlide = slideDistance - (bodyProgress * slideDistance);
+        aboutBody.style.transform = `translateX(${bodySlide}px)`;
+      }
+    }
+    
+    // Update on scroll
+    window.addEventListener("scroll", updateAboutFade, { passive: true });
+    // Initial state
+    updateAboutFade();
+  </script>
+</body>
+</html>
