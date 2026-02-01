@@ -21,31 +21,33 @@
     html { overflow-y: scroll; }
     body { background: #000; overflow-x: hidden; }
     
+    /* Pages container */
+    #pagesWrapper {
+      position: relative;
+      background: #fff;
+    }
+
     /* About Section */
     #about {
       position: relative;
       width: 100%;
-      min-height: 100vh;
+      height: 100vh;
       background: #fff;
       z-index: 10;
       box-shadow: 0 -20px 60px rgba(0,0,0,0.3);
       display: flex;
       align-items: center;
+      justify-content: center;
       overflow: visible;
     }
     .about-container {
       position: relative;
-      width: 100%;
-      max-width: 1920px;
-      margin: 0 auto;
-      padding-left: 385px;
-      padding-right: 60px;
-      box-sizing: border-box;
       overflow: visible;
+      transform-origin: center center;
     }
     .about-title {
       position: absolute;
-      left: 214px;
+      left: -171px; /* 385 - 214 = 171px offset to the left of body */
       top: -105px; /* Baseline sits just below body cap height */
       color: #797979;
       font-family: "Selfie Neue Round", "Brush Script MT", cursive;
@@ -56,10 +58,12 @@
       z-index: 1;
       white-space: nowrap;
       overflow: visible;
+      padding: 20px 40px;
+      margin: -20px -40px;
     }
     .about-body {
       position: relative;
-      max-width: 1164px;
+      width: 1164px;
       color: #000;
       font-family: "Zalando Sans Expanded", sans-serif;
       font-weight: 700;
@@ -71,6 +75,53 @@
     }
     .about-body p { margin: 0; }
     .about-body p + p { margin-top: 37px; }
+
+    /* Work Section */
+    #work {
+      position: relative;
+      width: 100%;
+      min-height: 100vh;
+      background: #000;
+      z-index: 20;
+      box-shadow: 0 -20px 60px rgba(0,0,0,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      box-sizing: border-box;
+    }
+    .work-container {
+      position: relative;
+      overflow: visible;
+      transform-origin: center center;
+    }
+    .work-title {
+      position: absolute;
+      left: -155px;
+      top: -105px;
+      color: #797979;
+      font-family: "Selfie Neue Round", "Brush Script MT", cursive;
+      font-weight: 700;
+      font-size: 160px;
+      line-height: 0.9;
+      word-wrap: break-word;
+      z-index: 1;
+      white-space: nowrap;
+      overflow: visible;
+      padding: 20px 40px;
+      margin: -20px -40px;
+    }
+    .work-grid {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      width: 1600px;
+      z-index: 2;
+    }
+    .work-item {
+      aspect-ratio: 16 / 9;
+    }
     
     /* Spacer */
     #headerSpacer {
@@ -86,15 +137,6 @@
       height: 100vh;
       background: #000;
       overflow: hidden;
-      z-index: 1;
-    }
-
-    #trailCanvas {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
       z-index: 1;
     }
 
@@ -251,35 +293,10 @@
 </head>
 <body>
   <div id="header">
-    <canvas id="trailCanvas"></canvas>
-
-    <svg 
-      id="logoOverlay"
-      width="280" 
-      height="150.73"
-      viewBox="0 0 231.15 124.56"
-      xmlns="http://www.w3.org/2000/svg"
-      style="
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
-        z-index: 2;
-        pointer-events: none;
-        overflow: visible;
-      "
-    >
-      <path 
-        fill="#000" 
-        stroke="#000" 
-        stroke-width="4" 
-        stroke-linejoin="round" 
-        stroke-linecap="round"
-        vector-effect="non-scaling-stroke"
-        paint-order="stroke fill"
-        d="M38.66,0C17.7,0,0,16.72,0,36.5c0,16.47,12.7,29.86,28.32,29.86,14.08,0,25.54-10.49,25.54-23.38,0-3.72-.78-7.15-2.13-9.41-1.93-3.36-5.18-5.31-8.9-5.31-1.63,0-3.23.39-4.63,1.14-4.1,2.17-5.64,6.72-3.65,10.82.13.25.49,1.06.49,1.99,0,3.19-3.08,5.79-6.87,5.79-5.24,0-9.5-5.02-9.5-11.2,0-9.92,9.16-18.3,19.99-18.3,12.43,0,20.46,8.33,20.46,21.23,0,5.8-1.9,13.1-5.49,21.1l-22.07,48.15c-1.35,2.98-1.61,5.95-.73,8.61.81,2.46,2.58,4.47,4.87,5.52,1.21.55,2.5.83,3.84.83,4.1,0,7.75-2.6,9.76-6.95l24.39-53.11c5.73-12.57,11.59-18.67,17.91-18.67,2.63,0,3.48.88,3.48,3.63,0,2.56-1.07,6.4-2.85,10.27l-13.92,30.46c-1.93,4.12-3,9.12-3,14.07,0,12.7,8.81,20.91,22.45,20.91,8.25,0,15.92-3.01,22.85-8.95,3.79,5.66,10.44,8.95,18.36,8.95,15.25,0,27.52-10.55,37.5-32.26l13.07-28.41c5.73-12.57,11.59-18.67,17.91-18.67,2.47.26,3.24,1.45,3.48,3.63,0,2.56-1.07,6.4-2.85,10.26l-.02.03v.03s-.06.1-.06.1l-.02.04v.04c-2.17,5.53.8,10.2,4.84,11.95,1.31.57,2.67.85,4.03.85,3.97,0,7.7-2.47,9.52-6.29,3.07-6.29,4.76-13.05,4.76-19.01,0-12.7-8.15-20.91-20.76-20.91-6.17,0-13.01,2.26-19.24,6.37-7.12,4.69-12.95,11.47-16.87,19.62v.02s-.02.02-.02.02l-14.91,32.8c-6.42,14.13-13.2,21.59-19.6,21.59-.73,0-3.18-.11-4.12-1.58-1.06-1.64-.57-5.01,1.34-9.24l21.92-47.38c1.64-3.66,1.41-7.37-.64-10.21-1.73-2.39-4.56-3.82-7.57-3.82-.33,0-.65.02-.98.05-3.62.37-6.62,2.67-8.25,6.31l-20.67,45.05c-4.31,9.4-12.4,20.37-21,20.37-2.46-.08-5.05-1.01-5.02-3.79,0-1.34.37-2.8,1.12-4.45l14.68-31.84c3.06-6.28,4.74-13.02,4.74-18.97,0-12.7-8.15-20.91-20.76-20.91-6.07,0-11.54,1.97-16.58,5.99C74.99,13.19,59.09,0,38.66,0h0Z"
-      />
-    </svg>
+    <div 
+      id="unicorn-embed"
+      style="position: absolute; inset: 0; width: 100%; height: 100%;"
+    ></div>
 
     <!-- Names (positioned by JS) -->
     <div id="nameLeft" class="name">NAEEM</div>
@@ -318,402 +335,81 @@
     </svg>
   </div>
 
+  <script src="https://cdn.unicorn.studio/v1.3.2/unicornStudio.umd.js"></script>
   <script>
-    const canvas = document.getElementById('trailCanvas');
-    const ctx = canvas.getContext('2d', { alpha: true });
+    // Embedded Unicorn Studio project data
+    const unicornProjectData = {"history":[{"breakpoints":[],"visible":true,"aspectRatio":1,"userDownsample":1,"layerType":"effect","type":"gradient","usesPingPong":false,"speed":0.25,"trackMouse":0,"trackAxes":"xy","mouseMomentum":0,"texture":false,"animating":false,"isMask":0,"compiledFragmentShaders":["#version 300 es\nprecision highp float;in vec2 vTextureCoord;uniform vec2 uMousePos;vec3 getColor(int index) {\nswitch(index) {\ncase 0: return vec3(0, 0, 0);\ncase 1: return vec3(0, 0, 0);\ncase 2: return vec3(0, 0, 0);\ncase 3: return vec3(0, 0, 0);\ncase 4: return vec3(0, 0, 0);\ncase 5: return vec3(0, 0, 0);\ncase 6: return vec3(0, 0, 0);\ncase 7: return vec3(0, 0, 0);\ncase 8: return vec3(0, 0, 0);\ncase 9: return vec3(0, 0, 0);\ncase 10: return vec3(0, 0, 0);\ncase 11: return vec3(0, 0, 0);\ncase 12: return vec3(0, 0, 0);\ncase 13: return vec3(0, 0, 0);\ncase 14: return vec3(0, 0, 0);\ncase 15: return vec3(0, 0, 0);\ndefault: return vec3(0.0);\n}\n}const float PI = 3.14159265;vec2 rotate(vec2 coord, float angle) {\nfloat s = sin(angle);\nfloat c = cos(angle);\nreturn vec2(\ncoord.x * c - coord.y * s,\ncoord.x * s + coord.y * c\n);\n}out vec4 fragColor;vec3 getColor(vec2 uv) {return vec3(0, 0, 0);\n}void main() {vec2 uv = vTextureCoord;\nvec2 pos = vec2(0.5, 0.5) + mix(vec2(0), (uMousePos-0.5), 0.0000);\nuv -= pos;\nuv /= max(0.5000*2., 1e-5);\nuv = rotate(uv, (0.0000 - 0.5) * 2. * PI);\nvec4 color = vec4(getColor(uv), 1.0000);\nfragColor = color;\n}"],"compiledVertexShaders":["#version 300 es\nprecision mediump float;in vec3 aVertexPosition;\nin vec2 aTextureCoord;uniform mat4 uMVMatrix;\nuniform mat4 uPMatrix;out vec2 vTextureCoord;\nout vec3 vVertexPosition;void main() {\ngl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);\nvTextureCoord = aTextureCoord;\n}"],"data":{"downSample":0.5,"depth":false,"uniforms":{},"isBackground":true},"id":"gradient"},{"breakpoints":[],"aspectRatio":1.8537074148296593,"userDownsample":1,"states":{"appear":[],"scroll":[],"hover":[],"mousemove":[]},"effects":["112ba10e-0a52-4289-b802-672f01546695","f9e23a8d-96f5-427c-a8a6-1cda3729c30c","afb85a1a-3465-4ed6-8e46-695b7880fe5e","a660b5b9-548f-4cdd-8ddf-9e68346515e9","00e8cda2-44e2-4c57-9791-12fd088d8574","6f159bde-28d8-4825-8125-bf1f38e19e62","4819a27b-c620-4b97-8d08-6cf998a05488"],"anchorPoint":8,"mask":0,"maskDepthLayer":1,"layerType":"image","width":265.7815631262524,"widthMode":1,"height":143.37837837837833,"heightMode":2,"left":0.5,"top":0.5,"src":"https://assets.unicorn.studio/images/kVGq4eCHSdVQFv6P8TyCsgfRK2j1/NW%20no%20outline%20fat%20white.png","imageNaturalSize":{"type":"Vec2","_x":925,"_y":499},"compiledFragmentShaders":["#version 300 es\nprecision highp float;in vec2 vTextureCoord;\nin vec3 vVertexPosition;uniform sampler2D uSourceImage;uniform vec2 uArtboardResolution;\nuniform vec2 uMousePos;const float TAU = 6.28318530718;\nconst float PI = 3.1415926;out vec4 fragColor;vec2 rotate2D(vec2 p, float angle) {\nfloat s = sin(angle);\nfloat c = cos(angle);\nreturn vec2(p.x * c - p.y * s, p.x * s + p.y * c);\n}vec2 apply3DRotation(vec2 uv, vec2 elementCenter, vec2 elementSize, float rotX, float rotY, float fov, vec2 mouseRotOffset) {\nfloat angleX = rotX * TAU + mouseRotOffset.y;\nfloat angleY = rotY * TAU + mouseRotOffset.x;\nif (abs(angleX) < 0.001 && abs(angleY) < 0.001) {\nreturn uv;\n}\nvec2 pos = uv - 0.5;\nfloat aspect = elementSize.x / elementSize.y;\npos.x *= aspect;\nfloat focalLength = mix(0.5, 4.0, fov);\nfloat cosX = cos(angleX);\nfloat sinX = sin(angleX);\nfloat cosY = cos(angleY);\nfloat sinY = sin(angleY);\nvec3 rayDir = normalize(vec3(pos.x, pos.y, focalLength));\nvec3 r1;\nr1.x = rayDir.x * cosY - rayDir.z * sinY;\nr1.y = rayDir.y;\nr1.z = rayDir.x * sinY + rayDir.z * cosY;\nvec3 r2;\nr2.x = r1.x;\nr2.y = r1.y * cosX + r1.z * sinX;\nr2.z = -r1.y * sinX + r1.z * cosX;\nvec3 camPos = vec3(0.0, 0.0, -focalLength);\nvec3 c1;\nc1.x = camPos.x * cosY - camPos.z * sinY;\nc1.y = camPos.y;\nc1.z = camPos.x * sinY + camPos.z * cosY;\nvec3 c2;\nc2.x = c1.x;\nc2.y = c1.y * cosX + c1.z * sinX;\nc2.z = -c1.y * sinX + c1.z * cosX;\nif (abs(r2.z) < 0.01) {\nreturn vec2(-1.0);\n}\nfloat t = -c2.z / r2.z;\nif (t < 0.0 || t > 50.0) {\nreturn vec2(-1.0);\n}\nvec2 intersection = vec2(c2.x + t * r2.x, c2.y + t * r2.y);\nif (abs(intersection.x) > 2.0 || abs(intersection.y) > 2.0) {\nreturn vec2(-1.0);\n}\nintersection.x /= aspect;\nreturn intersection + 0.5;\n}vec2 getAnchorOffsets() {\nreturn vec2(0.5, 0.5);\n}vec4 sampleImage(vec2 canvasUV, vec2 mouseOffset, vec2 mouseRotOffset) {\nvec2 canvasPos = vec2(canvasUV.x * uArtboardResolution.x, (1.0 - canvasUV.y) * uArtboardResolution.y);\nvec2 imageUV;float absWidth = 265.7816;\nfloat absHeight = 143.3784 * uArtboardResolution.y;if (1 == 2) {\nabsWidth = absHeight * 1.8537;\n} else if (2 == 2) {\nabsHeight = absWidth / 1.8537;\n}vec2 elementSizePx = vec2(absWidth, absHeight);\nvec2 elementPosPx = vec2(0.5000, 0.5000) * uArtboardResolution - getAnchorOffsets() * elementSizePx;vec2 centerPos = elementPosPx + (elementSizePx * 0.5);\nvec2 relPos = canvasPos - centerPos + mouseOffset;\nvec2 unrotatedRelPos = rotate2D(relPos, 0.0000 * -TAU);\nvec2 elementPos = unrotatedRelPos + (elementSizePx * 0.5);\nimageUV = elementPos / elementSizePx;\nimageUV = apply3DRotation(imageUV, vec2(0.5), vec2(925, 499), 0.0000, 0.0000, 0.5000, mouseRotOffset);\nvec2 flippedUV = vec2(imageUV.x, 1.0 - imageUV.y);\nvec4 color = textureLod(uSourceImage, flippedUV, 0.0);\nif (imageUV.x >= 0.0 && imageUV.x <= 1.0 && imageUV.y >= 0.0 && imageUV.y <= 1.0) {\nreturn color;\n} else {\nreturn vec4(0.0);\n}\n}vec4 applyImageAdjustments(vec4 color) {color.rgb = clamp(color.rgb, 0.0, 1.0);\ncolor.rgb *= color.a;\nreturn color;\n}vec4 getSourceOutput(vec2 uv, vec2 mouseOffsetPx, vec2 mouseRotOffset) {\nvec4 color = sampleImage(uv, mouseOffsetPx, mouseRotOffset);\nreturn applyImageAdjustments(color);\n}void main() {\nvec2 uv = vTextureCoord;\nvec2 mouseOffsetUV = (uMousePos - 0.5) * 0.0000;\nvec2 mouseOffsetPx = mouseOffsetUV;\nvec2 mouseRotOffset = (uMousePos - 0.5) * 0.0000 * PI * 0.5;\nuv -= mouseOffsetUV;\nfragColor = getSourceOutput(uv, mouseOffsetPx, mouseRotOffset);\n}"],"compiledVertexShaders":["#version 300 es\nprecision highp float;in vec3 aVertexPosition;\nin vec2 aTextureCoord;uniform mat4 uMVMatrix;\nuniform mat4 uPMatrix;\nuniform vec2 uMousePos;out vec2 vTextureCoord;\nout vec3 vVertexPosition;void main() {\nfloat angleX = uMousePos.y * 0.5 - 0.25;\nfloat angleY = (1.-uMousePos.x) * 0.5 - 0.25;mat4 rotateX = mat4(1.0, 0.0, 0.0, 0.0,\n0.0, cos(angleX), -sin(angleX), 0.0,\n0.0, sin(angleX), cos(angleX), 0.0,\n0.0, 0.0, 0.0, 1.0);\nmat4 rotateY = mat4(cos(angleY), 0.0, sin(angleY), 0.0,\n0.0, 1.0, 0.0, 0.0,\n-sin(angleY), 0.0, cos(angleY), 0.0,\n0.0, 0.0, 0.0, 1.0);mat4 rotationMatrix = rotateX * rotateY;\ngl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);\nvVertexPosition = (rotationMatrix * vec4(aVertexPosition, 1.0)).xyz;\nvTextureCoord = (vec4(aTextureCoord, 0.0, 1.0)).xy;\n}"],"data":{"uniforms":{"artboardResolution":{"name":"uArtboardResolution","type":"2f","value":{"type":"Vec2","_x":1728,"_y":1117}},"aspectRatio":{"name":"uAspectRatio","type":"1f","value":1.8537074148296593}},"compositeShader":{"fragmentShader":"#version 300 es\nprecision highp float;\nin vec2 vTextureCoord;\nin vec3 vVertexPosition;uniform sampler2D uBgTexture;\nuniform sampler2D uTexture;const float STEPS = 24.0;\nconst float PI = 3.1415926;out vec4 fragColor;vec4 getNormalOutput(vec4 color, vec4 background) {\nreturn mix(background, color + background * (1.0 - color.a), 1.0000);\n}vec4 getOutputByMode(vec4 color, vec4 background) {\nreturn getNormalOutput(color, background);\n}void main() {\nvec2 uv = vTextureCoord;\nvec2 pos = vec2(0);uv -= pos;vec4 background = vec4(0);background = texture(uBgTexture, vTextureCoord);\nvec4 color = texture(uTexture, uv);vec4 col = getOutputByMode(color, background);fragColor = col;\n}","vertexShader":"#version 300 es\nprecision highp float;in vec3 aVertexPosition;\nin vec2 aTextureCoord;uniform mat4 uMVMatrix;\nuniform mat4 uPMatrix;out vec2 vTextureCoord;\nout vec3 vVertexPosition;void main() {\ngl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);\nvTextureCoord = aTextureCoord;\nvVertexPosition = aVertexPosition;\n}"}},"id":"5a4583b4-ece8-4192-ba93-2a770e1f23db"},{"breakpoints":[],"visible":true,"aspectRatio":1,"userDownsample":1,"layerType":"effect","type":"radial_blur","usesPingPong":false,"trackMouse":1,"trackAxes":"xy","mouseMomentum":0,"texture":false,"parentLayer":"5a4583b4-ece8-4192-ba93-2a770e1f23db","animating":false,"isMask":0,"compiledFragmentShaders":["#version 300 es\nprecision highp float;in vec2 vTextureCoord;uniform sampler2D uTexture;\nuniform sampler2D uBgTexture;\nuniform vec2 uMousePos;\nuniform vec2 uResolution;float randFibo(vec2 co) {\nreturn fract(sin(dot(co, vec2(12.9898, 78.233))) * 43758.5453);\n}float getExponentialWeight(int i) {\nfloat fi = float(i);\nreturn exp(-fi * fi / (2.0 * 3.0 * 3.0));\n}vec4 RadialBlur(sampler2D tex, vec2 uv) {\nfloat aspectRatio = uResolution.x/uResolution.y;\nvec2 pos = vec2(0.5, 0.49930555555555556) + mix(vec2(0), (uMousePos-0.5), 0.1000);\nfloat amount = 0.0200;vec4 color = vec4(0.0);\nfloat total_weight = 0.0;\nvec4 center = texture(tex, uv);\nfloat center_weight = getExponentialWeight(0);\ncolor += center * center_weight;\ntotal_weight += center_weight;\nvec2 toUv = uv - pos;\nvec2 toUvAR = vec2(toUv.x * aspectRatio, toUv.y);\nfloat radius = length(toUvAR);\nfloat baseAngle = atan(toUvAR.y, toUvAR.x);float angleStep = amount;for (int i = 1; i <= 8; i++) {\nfloat weight = getExponentialWeight(i);\nfloat step = float(i) * angleStep;float a1 = baseAngle + step;\nvec2 rot1AR = radius * vec2(cos(a1), sin(a1));\nvec2 rot1 = vec2(rot1AR.x / aspectRatio, rot1AR.y) + pos;float a2 = baseAngle - step;\nvec2 rot2AR = radius * vec2(cos(a2), sin(a2));\nvec2 rot2 = vec2(rot2AR.x / aspectRatio, rot2AR.y) + pos;vec4 sample1 = texture(tex, rot1);\nvec4 sample2 = texture(tex, rot2);color += (sample1 + sample2) * weight;\ntotal_weight += 2.0 * weight;\n}color = color / total_weight;\nif(2 == 3) {\nfloat dither = (randFibo(gl_FragCoord.xy) - 0.5) / 255.0;\ncolor.rgb += dither;\n}\nreturn color;\n}vec4 radialBlurPass(vec2 uv) {return RadialBlur(uTexture, uv);\n}vec4 getPassColor(vec2 uv) {\nreturn radialBlurPass(uv);\n}\nout vec4 fragColor;void main() {\nvec2 uv = vTextureCoord;\nvec4 color = getPassColor(uv);\nfragColor = color;}","#version 300 es\nprecision highp float;in vec2 vTextureCoord;uniform sampler2D uTexture;\nuniform sampler2D uBgTexture;\nuniform vec2 uMousePos;\nuniform vec2 uResolution;float randFibo(vec2 co) {\nreturn fract(sin(dot(co, vec2(12.9898, 78.233))) * 43758.5453);\n}float getExponentialWeight(int i) {\nfloat fi = float(i);\nreturn exp(-fi * fi / (2.0 * 3.0 * 3.0));\n}vec4 RadialBlur(sampler2D tex, vec2 uv) {\nfloat aspectRatio = uResolution.x/uResolution.y;\nvec2 pos = vec2(0.5, 0.49930555555555556) + mix(vec2(0), (uMousePos-0.5), 0.1000);\nfloat amount = 0.0200;vec4 color = vec4(0.0);\nfloat total_weight = 0.0;\nvec4 center = texture(tex, uv);\nfloat center_weight = getExponentialWeight(0);\ncolor += center * center_weight;\ntotal_weight += center_weight;\nvec2 toUv = uv - pos;\nvec2 toUvAR = vec2(toUv.x * aspectRatio, toUv.y);\nfloat radius = length(toUvAR);\nfloat baseAngle = atan(toUvAR.y, toUvAR.x);float angleStep = amount;for (int i = 1; i <= 8; i++) {\nfloat weight = getExponentialWeight(i);\nfloat step = float(i) * angleStep;float a1 = baseAngle + step;\nvec2 rot1AR = radius * vec2(cos(a1), sin(a1));\nvec2 rot1 = vec2(rot1AR.x / aspectRatio, rot1AR.y) + pos;float a2 = baseAngle - step;\nvec2 rot2AR = radius * vec2(cos(a2), sin(a2));\nvec2 rot2 = vec2(rot2AR.x / aspectRatio, rot2AR.y) + pos;vec4 sample1 = texture(tex, rot1);\nvec4 sample2 = texture(tex, rot2);color += (sample1 + sample2) * weight;\ntotal_weight += 2.0 * weight;\n}color = color / total_weight;\nif(2 == 3) {\nfloat dither = (randFibo(gl_FragCoord.xy) - 0.5) / 255.0;\ncolor.rgb += dither;\n}\nreturn color;\n}vec4 radialBlurPass(vec2 uv) {return RadialBlur(uTexture, uv);\n}vec4 getPassColor(vec2 uv) {\nreturn radialBlurPass(uv);\n}\nout vec4 fragColor;void main() {\nvec2 uv = vTextureCoord;\nvec4 color = getPassColor(uv);\nfragColor = color;}","#version 300 es\nprecision highp float;in vec2 vTextureCoord;uniform sampler2D uTexture;\nuniform sampler2D uBgTexture;\nuniform vec2 uMousePos;\nuniform vec2 uResolution;\nfloat ease (int easingFunc, float t) {\nreturn 1.0 - sqrt(1.0 - t * t);\n}out vec4 fragColor;vec4 finalPass(vec2 uv) {\nif (0.6200 == 0.00) {\nreturn texture(uBgTexture, uv);\n}\nvec4 blurredColor = texture(uTexture, uv);\nvec4 originalColor = texture(uBgTexture, uv);\nvec2 pos = vec2(0.5, 0.49930555555555556) + mix(vec2(0), (uMousePos-0.5), 0.1000);\nfloat aspectRatio = uResolution.x/uResolution.y;\nfloat dist = ease(13, max(0.,1.-distance(uv * vec2(aspectRatio, 1), pos * vec2(aspectRatio, 1)) * 4. * (1. - 0.6700)));\nif (0 == 1) {\ndist = max(0., (0.5 - dist));\n}return mix(originalColor, blurredColor, (0.6200 * dist > 0.001) ? 1.0 : 0.0);\n}vec4 getPassColor(vec2 uv) {\nreturn finalPass(uv);\n}\nvoid main() {\nvec2 uv = vTextureCoord;\nvec4 color = getPassColor(uv);\nfragColor = color;}"],"compiledVertexShaders":["#version 300 es\nprecision mediump float;in vec3 aVertexPosition;\nin vec2 aTextureCoord;uniform mat4 uMVMatrix;\nuniform mat4 uPMatrix;\nuniform mat4 uTextureMatrix;out vec2 vTextureCoord;\nout vec3 vVertexPosition;void main() {\ngl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);\nvTextureCoord = (uTextureMatrix * vec4(aTextureCoord, 0.0, 1.0)).xy;\n}"],"data":{"downSample":0.5,"depth":false,"uniforms":{},"isBackground":false,"passes":[{"prop":"pass","value":1,"downSample":0.25},{"prop":"pass","value":2,"downSample":0.5},{"prop":"pass","value":3,"includeBg":true}]},"id":"radial_blur"},{"breakpoints":[],"visible":true,"aspectRatio":1,"userDownsample":1,"layerType":"effect","type":"vignette","usesPingPong":false,"trackMouse":0,"trackAxes":"xy","mouseMomentum":0,"texture":false,"animating":false,"isMask":0,"compiledFragmentShaders":["#version 300 es\nprecision highp float;\nin vec3 vVertexPosition;\nin vec2 vTextureCoord;\nuniform sampler2D uTexture;\nuniform vec2 uResolution;out vec4 fragColor;\nmat2 rot(float a) {\nreturn mat2(cos(a),-sin(a),sin(a),cos(a));\n}\nvoid main() {\nvec2 uv = vTextureCoord;\nvec4 bg = texture(uTexture, uv);\nfloat luma = dot(bg.rgb, vec3(0.299, 0.587, 0.114));\nfloat displacement = (luma - 0.5) * 0.0000 * 0.5;\nvec2 aspectRatio = vec2(uResolution.x/uResolution.y, 1.0);\nvec2 skew = vec2(0.5000, 1.0 - 0.5000);\nfloat halfRadius = 0.5000 * 0.5;\nfloat innerEdge = halfRadius - 1.0000 * halfRadius * 0.5;\nfloat outerEdge = halfRadius + 1.0000 * halfRadius * 0.5;\nvec2 pos = vec2(0.5, 0.5);\nconst float TWO_PI = 6.28318530718;\nvec2 scaledUV = uv * aspectRatio * rot(0.0000 * TWO_PI) * skew;\nvec2 scaledPos = pos * aspectRatio * rot(0.0000 * TWO_PI) * skew;\nfloat radius = distance(scaledUV, scaledPos);\nfloat falloff = smoothstep(innerEdge + displacement, outerEdge + displacement, radius);\nvec3 finalColor;finalColor = mix(bg.rgb, mix(bg.rgb, vec3(0, 0, 0), 1.0000), falloff);float alpha = max(bg.a, falloff * 1.0000);\nvec4 color = mix(bg * (1.-falloff), vec4(finalColor * alpha, alpha), 1.0000);\nfragColor = color;}"],"compiledVertexShaders":["#version 300 es\nprecision mediump float;in vec3 aVertexPosition;\nin vec2 aTextureCoord;uniform mat4 uMVMatrix;\nuniform mat4 uPMatrix;\nuniform mat4 uTextureMatrix;out vec2 vTextureCoord;\nout vec3 vVertexPosition;void main() {\ngl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);\nvTextureCoord = (uTextureMatrix * vec4(aTextureCoord, 0.0, 1.0)).xy;\n}"],"data":{"depth":false,"uniforms":{},"isBackground":false},"id":"vignette"},{"breakpoints":[],"visible":true,"aspectRatio":1,"userDownsample":1,"layerType":"effect","type":"godrays","usesPingPong":false,"trackMouse":1,"trackAxes":"xy","mouseMomentum":0,"texture":false,"parentLayer":"5a4583b4-ece8-4192-ba93-2a770e1f23db","animating":false,"isMask":0,"compiledFragmentShaders":["#version 300 es\nprecision highp float;\nprecision highp int;in vec3 vVertexPosition;\nin vec2 vTextureCoord;uniform sampler2D uTexture;const float PI2 = 6.28318530718;vec4 getBrightAreas(vec2 uv) {\nvec4 color = texture(uTexture, uv);\nfloat lum = dot(color.rgb, vec3(0.299, 0.587, 0.114));\ncolor = color * smoothstep(1.0000 - 0.1, 1.0000, lum);\nreturn color;\n}vec4 getColor(vec2 uv) {\nreturn getBrightAreas(uv);\n}out vec4 fragColor;void main() {\nvec2 uv = vTextureCoord;\nvec4 color = getColor(uv);\nif(0 == 1) {\nfragColor = color;} else {\nfragColor = color;\n}\n}","#version 300 es\nprecision highp float;\nprecision highp int;in vec3 vVertexPosition;\nin vec2 vTextureCoord;uniform sampler2D uTexture;\nuniform sampler2D uBgTexture;uniform vec2 uMousePos;\nuniform vec2 uResolution;const float PI2 = 6.28318530718;float interleavedGradientNoise(vec2 st) {\nreturn fract(52.9829189 * fract(dot(st, vec2(0.06711056, 0.00583715))));\n}vec4 godRays(vec2 st) {\nvec3 color = vec3(0);\nfloat decay = mix(0.89, 0.965, 0.2800);\nvec2 pos = vec2(0.5, 0.5) - mix(vec2(0), (vec2(1. - uMousePos.x, 1. - uMousePos.y) - 0.5), 1.0000);\nfloat weight = 1.0;\nfloat MAX_ITERATIONS = 32.0;\nvec2 stepDir = (pos - st) / MAX_ITERATIONS * (0.25 + min(1., 0.2800)) * 0.75;\nfloat noise = interleavedGradientNoise(st * uResolution);\nvec2 sampleUv = st + stepDir * noise;\nvec2 perpDir = vec2(-stepDir.y, stepDir.x);\nfloat intensity = 2.8 * 0.4500;for (float i = 0.0; i < MAX_ITERATIONS; i++) {\nfloat theta = i/MAX_ITERATIONS;\nsampleUv += stepDir + (perpDir * theta * sin((noise * 0.25) * (1.0 + theta) * 50.0)) * 0.0000 * 0.25;\ncolor += texture(uTexture, sampleUv).rgb * weight * intensity;\nweight *= decay;\nif(weight < 0.05) break;\n}\nreturn vec4(color / MAX_ITERATIONS, 1.0);\n}vec4 getGodRays(vec2 uv) {\nvec4 bg = texture(uBgTexture, uv);\nif(0.4500 <= 0.01) {\nreturn bg;\n}\nvec4 rays = godRays(uv);\nrays.rgb *= vec3(1, 1, 1);vec4 color;\ncolor.rgb = bg.rgb + rays.rgb;\ncolor.a = bg.a + rays.r;\nreturn color;\n}vec4 getColor(vec2 uv) {\nreturn getGodRays(uv);\n}out vec4 fragColor;void main() {\nvec2 uv = vTextureCoord;\nvec4 color = getColor(uv);\nif(1 == 1) {\nfragColor = color;} else {\nfragColor = color;\n}\n}"],"compiledVertexShaders":["#version 300 es\nprecision mediump float;in vec3 aVertexPosition;\nin vec2 aTextureCoord;uniform mat4 uMVMatrix;\nuniform mat4 uPMatrix;\nuniform mat4 uTextureMatrix;out vec2 vTextureCoord;\nout vec3 vVertexPosition;void main() {\ngl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);\nvTextureCoord = (uTextureMatrix * vec4(aTextureCoord, 0.0, 1.0)).xy;\n}"],"data":{"depth":false,"uniforms":{},"isBackground":false,"passes":[{"prop":"pass","value":1,"includeBg":true}]},"id":"god_rays1"}],"options":{"name":"Untitled project","fps":60,"dpi":1.5,"scale":1,"includeLogo":false,"isProduction":false},"version":"2.0.4","id":"IBucRrDfjuXD6saiKULP"};
+
+    // Initialize Unicorn Studio when script loads
+    function initUnicorn() {
+      if (typeof UnicornStudio !== 'undefined') {
+        UnicornStudio.addScene({
+          elementId: 'unicorn-embed',
+          fps: 60,
+          scale: 1,
+          dpi: 1.5,
+          projectId: 'IBucRrDfjuXD6saiKULP',
+          interactivity: {
+            mouse: {
+              disableMobile: false
+            }
+          },
+          production: false,
+          lazyLoad: false
+        }).then(scene => {
+          console.log('Unicorn Studio scene loaded', scene);
+        }).catch(err => {
+          console.error('Unicorn Studio error:', err);
+        });
+      } else {
+        console.warn('UnicornStudio not loaded - CDN may be blocked');
+      }
+    }
+    
+    // Try to init after a brief delay to ensure script is loaded
+    setTimeout(initUnicorn, 100);
+    window.addEventListener('load', initUnicorn);
 
     const nameLeftEl = document.getElementById("nameLeft");
     const nameRightEl = document.getElementById("nameRight");
 
-    let width, height, dpr;
-    let mouseX = 0, mouseY = 0;
-    let smoothMouseX = 0, smoothMouseY = 0;
-
-    let logoCenter = { x: 0, y: 0 };
-
-    const LOGO_DRAW_W = 280;
-    const VIEW_W = 231.15;
-    const VIEW_H = 124.56;
-
-    const LOGO_D = "M38.66,0C17.7,0,0,16.72,0,36.5c0,16.47,12.7,29.86,28.32,29.86,14.08,0,25.54-10.49,25.54-23.38,0-3.72-.78-7.15-2.13-9.41-1.93-3.36-5.18-5.31-8.9-5.31-1.63,0-3.23.39-4.63,1.14-4.1,2.17-5.64,6.72-3.65,10.82.13.25.49,1.06.49,1.99,0,3.19-3.08,5.79-6.87,5.79-5.24,0-9.5-5.02-9.5-11.2,0-9.92,9.16-18.3,19.99-18.3,12.43,0,20.46,8.33,20.46,21.23,0,5.8-1.9,13.1-5.49,21.1l-22.07,48.15c-1.35,2.98-1.61,5.95-.73,8.61.81,2.46,2.58,4.47,4.87,5.52,1.21.55,2.5.83,3.84.83,4.1,0,7.75-2.6,9.76-6.95l24.39-53.11c5.73-12.57,11.59-18.67,17.91-18.67,2.63,0,3.48.88,3.48,3.63,0,2.56-1.07,6.4-2.85,10.27l-13.92,30.46c-1.93,4.12-3,9.12-3,14.07,0,12.7,8.81,20.91,22.45,20.91,8.25,0,15.92-3.01,22.85-8.95,3.79,5.66,10.44,8.95,18.36,8.95,15.25,0,27.52-10.55,37.5-32.26l13.07-28.41c5.73-12.57,11.59-18.67,17.91-18.67,2.47.26,3.24,1.45,3.48,3.63,0,2.56-1.07,6.4-2.85,10.26l-.02.03v.03s-.06.1-.06.1l-.02.04v.04c-2.17,5.53.8,10.2,4.84,11.95,1.31.57,2.67.85,4.03.85,3.97,0,7.7-2.47,9.52-6.29,3.07-6.29,4.76-13.05,4.76-19.01,0-12.7-8.15-20.91-20.76-20.91-6.17,0-13.01,2.26-19.24,6.37-7.12,4.69-12.95,11.47-16.87,19.62v.02s-.02.02-.02.02l-14.91,32.8c-6.42,14.13-13.2,21.59-19.6,21.59-.73,0-3.18-.11-4.12-1.58-1.06-1.64-.57-5.01,1.34-9.24l21.92-47.38c1.64-3.66,1.41-7.37-.64-10.21-1.73-2.39-4.56-3.82-7.57-3.82-.33,0-.65.02-.98.05-3.62.37-6.62,2.67-8.25,6.31l-20.67,45.05c-4.31,9.4-12.4,20.37-21,20.37-2.46-.08-5.05-1.01-5.02-3.79,0-1.34.37-2.8,1.12-4.45l14.68-31.84c3.06-6.28,4.74-13.02,4.74-18.97,0-12.7-8.15-20.91-20.76-20.91-6.07,0-11.54,1.97-16.58,5.99C74.99,13.19,59.09,0,38.66,0h0Z";
-    const LOGO_PATH = new Path2D(LOGO_D);
-
-    function drawLogoPath(targetCtx, centerX, centerY, drawW, color) {
-      const drawH = drawW * (VIEW_H / VIEW_W);
-      targetCtx.save();
-      targetCtx.translate(centerX - drawW / 2, centerY - drawH / 2);
-      targetCtx.scale(drawW / VIEW_W, drawH / VIEW_H);
-      targetCtx.fillStyle = color;
-      targetCtx.fill(LOGO_PATH);
-      targetCtx.restore();
-    }
-
-    let trailLayerCanvas = null;
-    let trailCtx = null;
-
-    let grainLayerCanvas = null;
-    let grainCtx = null;
-
-    let noisePatternFine = null;
-
-    let logoReady = false;
-
-    function clamp01(v) { return Math.max(0, Math.min(1, v)); }
-    function smoothstep(edge0, edge1, x) {
-      const t = clamp01((x - edge0) / (edge1 - edge0));
-      return t * t * (3 - 2 * t);
-    }
+    let width, height;
 
     function updateNamePositions() {
-      const logoEl = document.getElementById("logoOverlay");
-      if (!logoEl) return;
-
-      const rect = logoEl.getBoundingClientRect();
-
-      // Center each name in the empty space between:
-      // LEFT EDGE <-> LOGO LEFT EDGE
-      // LOGO RIGHT EDGE <-> RIGHT EDGE
-      const inset = 30; // positive number = tighter to logo
-
-      const leftCenterX  = (rect.left + inset) * 0.5;
-      const rightCenterX = rect.right - inset + (width - rect.right) * 0.5;
-
-      // Keep them vertically centered like your comp
-      const centerY = height * 0.5;
+      width = document.documentElement.clientWidth;
+      height = document.documentElement.clientHeight;
+      
+      // Position names on either side of center - names are centered with transform
+      // so we position them in the middle of each half
+      const logoWidth = 280; // approximate logo width
+      const inset = 30; // tighter to logo
+      
+      // Left name: center of space between left edge and logo left edge
+      const logoLeftEdge = (width / 2) - (logoWidth / 2);
+      const leftCenterX = (logoLeftEdge + inset) / 2;
+      
+      // Right name: center of space between logo right edge and right edge
+      const logoRightEdge = (width / 2) + (logoWidth / 2);
+      const rightCenterX = logoRightEdge - inset + (width - logoRightEdge + inset) / 2;
+      
+      const centerY = height / 2;
 
       nameLeftEl.style.left = `${leftCenterX}px`;
-      nameRightEl.style.left = `${rightCenterX}px`;
       nameLeftEl.style.top = `${centerY}px`;
+      nameRightEl.style.left = `${rightCenterX}px`;
       nameRightEl.style.top = `${centerY}px`;
 
+      // Update descriptor position - below the logo
       const descriptor = document.getElementById("descriptor");
-
-      const logoRect = document
-        .getElementById("logoOverlay")
-        .getBoundingClientRect();
-
-      // vertical midpoint between logo bottom and screen bottom
-      const descriptorY =
-        logoRect.bottom +
-        (document.documentElement.clientHeight - logoRect.bottom) * 0.5;
-
+      const logoBottomY = (height / 2) + 75; // approximate logo bottom
+      const descriptorY = logoBottomY + (height - logoBottomY) / 2;
       descriptor.style.top = `${descriptorY}px`;
     }
 
-    function resizeCanvas() {
-      dpr = window.devicePixelRatio || 1;
-      width = document.documentElement.clientWidth;
-      height = document.documentElement.clientHeight;
+    window.addEventListener('resize', updateNamePositions);
+    updateNamePositions();
 
-      canvas.width = Math.floor(width * dpr);
-      canvas.height = Math.floor(height * dpr);
-      canvas.style.width = width + 'px';
-      canvas.style.height = height + 'px';
-
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      ctx.imageSmoothingEnabled = true;
-      ctx.imageSmoothingQuality = 'high';
-
-      trailLayerCanvas = document.createElement('canvas');
-      trailLayerCanvas.width = canvas.width;
-      trailLayerCanvas.height = canvas.height;
-      trailCtx = trailLayerCanvas.getContext('2d', { alpha: true });
-      trailCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      trailCtx.imageSmoothingEnabled = true;
-      trailCtx.imageSmoothingQuality = 'high';
-
-      grainLayerCanvas = document.createElement('canvas');
-      grainLayerCanvas.width = canvas.width;
-      grainLayerCanvas.height = canvas.height;
-      grainCtx = grainLayerCanvas.getContext('2d', { alpha: true });
-      grainCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      grainCtx.imageSmoothingEnabled = true;
-      grainCtx.imageSmoothingQuality = 'high';
-
-      logoCenter.x = width / 2;
-      logoCenter.y = height / 2;
-
-      // Keep mouse initialized to center
-      if (!mouseX && !mouseY) {
-        mouseX = logoCenter.x;
-        mouseY = logoCenter.y;
-        smoothMouseX = logoCenter.x;
-        smoothMouseY = logoCenter.y;
-      }
-
-      updateNamePositions();
-    }
-
-    function initLogo() { logoReady = true; }
-
-    function generateNoiseTexture(size) {
-      const c = document.createElement("canvas");
-      c.width = size;
-      c.height = size;
-      const cctx = c.getContext("2d");
-      const img = cctx.createImageData(size, size);
-      const d = img.data;
-
-      for (let i = 0; i < d.length; i += 4) {
-        const n = (Math.random() * 255) | 0;
-        d[i] = n; d[i + 1] = n; d[i + 2] = n; d[i + 3] = 255;
-      }
-      cctx.putImageData(img, 0, 0);
-      return c;
-    }
-
-    function calculateMaxDistance(x, y, angle) {
-      const cos = Math.cos(angle);
-      const sin = Math.sin(angle);
-      let maxDist = Infinity;
-
-      if (cos > 0) maxDist = Math.min(maxDist, (width - x) / cos);
-      else if (cos < 0) maxDist = Math.min(maxDist, -x / cos);
-
-      if (sin > 0) maxDist = Math.min(maxDist, (height - y) / sin);
-      else if (sin < 0) maxDist = Math.min(maxDist, -y / sin);
-
-      return maxDist;
-    }
-
-    function drawTrailLayer(targetCtx, dirX, dirY, trailLength, params) {
-      const {
-        numStamps, alphaBase, alphaExp,
-        blurMin, blurMax,
-        scaleMin, shear,
-        strength, blurStrength,
-        blurStart = 0.0,
-        blurCurve = 1.0,
-        headFadeStart = 0.0,
-        headFadeEnd = 0.0
-      } = params;
-
-      for (let i = numStamps; i >= 0; i--) {
-        const linearT = i / numStamps;
-        const t = Math.pow(linearT, 1.3);
-        const offset = t * trailLength;
-
-        const x = logoCenter.x + dirX * offset;
-        const y = logoCenter.y + dirY * offset;
-
-        const alphaFalloff = Math.pow(1 - t, alphaExp);
-        const edgeFade = t > 0.75 ? (1 - (t - 0.75) / 0.25) : 1;
-
-        const headMask = (headFadeEnd > headFadeStart)
-          ? smoothstep(headFadeStart, headFadeEnd, t)
-          : 1;
-
-        const alpha = alphaFalloff * edgeFade * alphaBase * strength * headMask;
-
-        let bt = (t - blurStart) / (1 - blurStart);
-        bt = clamp01(bt);
-        bt = Math.pow(bt, blurCurve);
-
-        const blur = (blurMin + Math.pow(bt, 2) * (blurMax - blurMin)) * blurStrength;
-
-        targetCtx.save();
-        targetCtx.globalAlpha = alpha;
-        targetCtx.filter = blur > 0.05 ? `blur(${blur}px)` : "none";
-
-        const scale = scaleMin + (1 - scaleMin) * (1 - t * 0.15);
-        const logoWidth = LOGO_DRAW_W * scale;
-
-        if (shear > 0) {
-          const shearAmount = t * shear;
-          targetCtx.setTransform(
-            dpr, shearAmount * dpr * dirY,
-            shearAmount * dpr * dirX, dpr,
-            0, 0
-          );
-        }
-
-        drawLogoPath(targetCtx, x, y, logoWidth, "#fff");
-
-        targetCtx.restore();
-        targetCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      }
-    }
-
-    window.renderRunning = true;
-    
-    window.render = function render() {
-      if (!window.renderRunning) return;
-      
-      const smoothing = 0.15;
-      smoothMouseX += (mouseX - smoothMouseX) * smoothing;
-      smoothMouseY += (mouseY - smoothMouseY) * smoothing;
-
-      ctx.clearRect(0, 0, width, height);
-
-      if (!logoReady || !trailLayerCanvas) {
-        requestAnimationFrame(render);
-        return;
-      }
-
-      const dx = smoothMouseX - logoCenter.x;
-      const dy = smoothMouseY - logoCenter.y;
-      const distance = Math.sqrt(dx * dx + dy * dy);
-
-      const deadZone = 18;
-      const fullZone = 180;
-      const strength = Math.max(0, Math.min(1, (distance - deadZone) / (fullZone - deadZone)));
-
-      if (strength > 0) {
-        trailCtx.clearRect(0, 0, width, height);
-
-        const dirX = -dx / distance;
-        const dirY = -dy / distance;
-
-        const angle = Math.atan2(dirY, dirX);
-        const maxDistanceToEdge = calculateMaxDistance(logoCenter.x, logoCenter.y, angle);
-        const maxTrailLength = Math.min(distance * 1.8, maxDistanceToEdge * 0.75);
-        const baseTrailLength = Math.min(distance * 1.5, maxTrailLength);
-
-        const trailLength = baseTrailLength * strength;
-        const blurStrength = Math.pow(strength, 1.8);
-
-        drawTrailLayer(trailCtx, dirX, dirY, trailLength * 0.4, {
-          numStamps: 30,
-          alphaBase: 0.9,
-          alphaExp: 2.5,
-          blurMin: 0,
-          blurMax: 5,
-          scaleMin: 0.95,
-          shear: 0,
-          strength,
-          blurStrength,
-          blurStart: 0.0,
-          blurCurve: 1.0
-        });
-
-        if (strength > 0.12) {
-          drawTrailLayer(trailCtx, dirX, dirY, trailLength * 0.7, {
-            numStamps: 40,
-            alphaBase: 0.5,
-            alphaExp: 1.8,
-            blurMin: 2,
-            blurMax: 14,
-            scaleMin: 0.9,
-            shear: 0.02,
-            strength,
-            blurStrength,
-            blurStart: 0.22,
-            blurCurve: 1.6,
-            headFadeStart: 0.14,
-            headFadeEnd: 0.26
-          });
-        }
-
-        if (strength > 0.35) {
-          drawTrailLayer(trailCtx, dirX, dirY, trailLength, {
-            numStamps: 50,
-            alphaBase: 0.25,
-            alphaExp: 1.3,
-            blurMin: 8,
-            blurMax: 28,
-            scaleMin: 0.85,
-            shear: 0.04,
-            strength,
-            blurStrength,
-            blurStart: 0.38,
-            blurCurve: 1.3,
-            headFadeStart: 0.28,
-            headFadeEnd: 0.46
-          });
-        }
-
-        trailCtx.save();
-        trailCtx.globalCompositeOperation = 'destination-out';
-        trailCtx.globalAlpha = 1.0;
-        drawLogoPath(trailCtx, logoCenter.x, logoCenter.y, LOGO_DRAW_W, "#000");
-        trailCtx.restore();
-
-        ctx.drawImage(trailLayerCanvas, 0, 0, width, height);
-
-        const grainReveal = smoothstep(0.45, 0.95, strength);
-        if (grainCtx && grainReveal > 0.001) {
-          grainCtx.clearRect(0, 0, width, height);
-
-          grainCtx.save();
-          grainCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
-          grainCtx.filter = "contrast(850%) brightness(155%)";
-          grainCtx.globalAlpha = 1.0;
-          grainCtx.fillStyle = noisePatternFine;
-          grainCtx.translate(Math.random() * 0.25, Math.random() * 0.25);
-          grainCtx.fillRect(0, 0, width + 260, height + 260);
-          grainCtx.restore();
-
-          grainCtx.save();
-          grainCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
-          grainCtx.globalCompositeOperation = "destination-in";
-          grainCtx.drawImage(trailLayerCanvas, 0, 0, width, height);
-          grainCtx.restore();
-
-          const dist = distance || 1;
-          const gdirX = -dx / dist;
-          const gdirY = -dy / dist;
-
-          const rampLen = 520;
-          const x0 = logoCenter.x;
-          const y0 = logoCenter.y;
-          const x1 = logoCenter.x + gdirX * rampLen;
-          const y1 = logoCenter.y + gdirY * rampLen;
-
-          const along = grainCtx.createLinearGradient(x0, y0, x1, y1);
-          along.addColorStop(0.00, "rgba(0,0,0,0)");
-          along.addColorStop(0.35, "rgba(0,0,0,0)");
-          along.addColorStop(0.58, "rgba(0,0,0,0.25)");
-          along.addColorStop(0.76, "rgba(0,0,0,0.65)");
-          along.addColorStop(0.90, "rgba(0,0,0,0.90)");
-          along.addColorStop(1.00, "rgba(0,0,0,1)");
-
-          grainCtx.save();
-          grainCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
-          grainCtx.globalCompositeOperation = "destination-in";
-          grainCtx.fillStyle = along;
-          grainCtx.fillRect(0, 0, width, height);
-          grainCtx.restore();
-
-          ctx.save();
-          ctx.globalCompositeOperation = "multiply";
-          ctx.globalAlpha = 0.84 * grainReveal;
-          ctx.drawImage(grainLayerCanvas, 0, 0, width, height);
-          ctx.restore();
-        }
-      }
-
-      ctx.save();
-      ctx.globalCompositeOperation = 'source-over';
-      ctx.globalAlpha = 1;
-      ctx.filter = 'blur(0.6px)';
-      drawLogoPath(ctx, logoCenter.x, logoCenter.y, LOGO_DRAW_W, "#000");
-      ctx.filter = 'none';
-      drawLogoPath(ctx, logoCenter.x, logoCenter.y, LOGO_DRAW_W, "#000");
-      ctx.restore();
-
-      requestAnimationFrame(render);
-    }
-
-    const header = document.getElementById('header');
-    header.addEventListener('pointermove', (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-    });
-
-    window.addEventListener('resize', () => {
-      resizeCanvas();
-    });
-
-    // Init
-    resizeCanvas();
-    initLogo();
-
-    const texGrain = generateNoiseTexture(256);
-    noisePatternFine = texGrain.getContext("2d").createPattern(texGrain, "repeat");
-
-    requestAnimationFrame(render);
-
-    // ===== Corner plus marks (UNCHANGED) =====
+    // ===== Corner plus marks =====
     const cornerSvg = document.getElementById("cornerMarks");
     const plus = {
       TL: document.getElementById("plusTL"),
@@ -799,20 +495,17 @@
       requestAnimationFrame(cornerRAF);
     })();
 
-    // Stop animations when header not visible
+    // Stop corner animations when header not visible
     const visibilityObserver = new IntersectionObserver((entries) => {
       const visible = entries[0].isIntersecting;
-      if (visible && !window.renderRunning) {
-        window.renderRunning = true;
+      if (visible && !window.cornerRunning) {
         window.cornerRunning = true;
-        requestAnimationFrame(window.render);
         (function cornerRAF() {
           if (!window.cornerRunning) return;
           updateCornerMarks();
           requestAnimationFrame(cornerRAF);
         })();
       } else if (!visible) {
-        window.renderRunning = false;
         window.cornerRunning = false;
       }
     }, { threshold: 0.01 });
@@ -911,50 +604,67 @@
     // Nav indicator animation
     const navHome = document.getElementById("navHome");
     const navAbout = document.getElementById("navAbout");
+    const navWork = document.getElementById("navWork");
     const homeIndicator = navHome.querySelector(".nav-indicator");
     const aboutIndicator = navAbout.querySelector(".nav-indicator");
+    const workIndicator = navWork.querySelector(".nav-indicator");
     const homeText = navHome.querySelector(".nav-text");
     const aboutText = navAbout.querySelector(".nav-text");
+    const workText = navWork.querySelector(".nav-text");
     
-    let homeFullWidth, aboutFullWidth;
+    let homeFullWidth, aboutFullWidth, workFullWidth;
     
     function measureAndSetIndicators() {
       // Get each text's actual width + 2px (1px each side)
       homeFullWidth = homeText.getBoundingClientRect().width + 2;
       aboutFullWidth = aboutText.getBoundingClientRect().width + 2;
+      workFullWidth = workText.getBoundingClientRect().width + 2;
       
       // Set initial state based on current scroll position
       updateNavIndicators();
     }
     
     function updateNavIndicators() {
-      if (!homeFullWidth || !aboutFullWidth) return;
+      if (!homeFullWidth || !aboutFullWidth || !workFullWidth) return;
       
-      const aboutSection = document.getElementById("about");
-      if (!aboutSection) return;
+      const aboutSectionEl = document.getElementById("about");
+      const workSectionEl = document.getElementById("work");
+      if (!aboutSectionEl || !workSectionEl) return;
       
-      const aboutRect = aboutSection.getBoundingClientRect();
+      const aboutRect = aboutSectionEl.getBoundingClientRect();
+      const workRect = workSectionEl.getBoundingClientRect();
       const windowHeight = window.innerHeight;
       
-      // Calculate how much of the About section is visible (0 to 1)
-      // 0 = About not visible, 1 = About fully covers viewport
+      // Calculate About progress (0 to 1)
       let aboutProgress = 0;
-      
       if (aboutRect.top <= windowHeight && aboutRect.top >= 0) {
-        // About is entering from bottom
         aboutProgress = (windowHeight - aboutRect.top) / windowHeight;
       } else if (aboutRect.top < 0) {
-        // About fully covers or has passed
         aboutProgress = 1;
       }
-      
       aboutProgress = Math.max(0, Math.min(1, aboutProgress));
       
-      // Home indicator shrinks as About comes up (from right to left)
+      // Calculate Work progress (0 to 1)
+      let workProgress = 0;
+      if (workRect.top <= windowHeight && workRect.top >= 0) {
+        workProgress = (windowHeight - workRect.top) / windowHeight;
+      } else if (workRect.top < 0) {
+        workProgress = 1;
+      }
+      workProgress = Math.max(0, Math.min(1, workProgress));
+      
+      // Home indicator: full when on home, shrinks as About comes up
       homeIndicator.style.width = (homeFullWidth * (1 - aboutProgress)) + "px";
       
-      // About indicator grows as About comes up (from left to right)
-      aboutIndicator.style.width = (aboutFullWidth * aboutProgress) + "px";
+      // About indicator: grows as About comes up, shrinks as Work comes up
+      if (workProgress > 0) {
+        aboutIndicator.style.width = (aboutFullWidth * (1 - workProgress)) + "px";
+      } else {
+        aboutIndicator.style.width = (aboutFullWidth * aboutProgress) + "px";
+      }
+      
+      // Work indicator: grows as Work comes up
+      workIndicator.style.width = (workFullWidth * workProgress) + "px";
     }
     
     // Wait for fonts to load before measuring
@@ -973,14 +683,13 @@
     // Update on scroll
     window.addEventListener("scroll", updateNavIndicators, { passive: true });
 
-    // Pause animations during scroll
+    // Pause corner animations during scroll
     let scrollTimeout;
     let isScrolling = false;
     
     window.addEventListener('scroll', () => {
       if (!isScrolling) {
         isScrolling = true;
-        window.renderRunning = false;
         window.cornerRunning = false;
       }
       
@@ -989,9 +698,7 @@
         isScrolling = false;
         const headerRect = document.getElementById('header').getBoundingClientRect();
         if (headerRect.bottom > 0) {
-          window.renderRunning = true;
           window.cornerRunning = true;
-          requestAnimationFrame(window.render);
           (function restartCorner() {
             if (!window.cornerRunning) return;
             updateCornerMarks();
@@ -1024,108 +731,298 @@
   
   <div id="headerSpacer"></div>
 
-  <section id="about">
-    <div class="about-container">
-      <h1 class="about-title">About Me</h1>
-      <div class="about-body">
-        <p>I'm an ACD / Art Director based in Toronto with over a decade of full-time experience at agencies like FCB, Cossette, and The Hive. Over the last couple of years, I've been freelancing with shops including Anomaly, Sid Lee, 72andSunny Toronto, and others, and I'm currently working with Mekanism New York.</p>
-        <p>I'm open to freelance opportunities and also considering full-time for the right fit.</p>
+  <div id="pagesWrapper">
+    <section id="about">
+      <div class="about-container">
+        <h1 class="about-title">About Me</h1>
+        <div class="about-body">
+          <p>I'm an ACD / Art Director based in Toronto with over a decade of full-time experience at agencies like FCB, Cossette, and The Hive. Over the last couple of years, I've been freelancing with shops including Anomaly, Sid Lee, 72andSunny Toronto, and others, and I'm currently working with Mekanism New York.</p>
+          <p>I'm open to freelance opportunities and also considering full-time for the right fit.</p>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
+    <div id="aboutPlaceholder" style="display:none; height:100vh;"></div>
+
+    <section id="work">
+      <div class="work-container">
+        <h1 class="work-title">Work</h1>
+        <div class="work-grid">
+          <div class="work-item" style="background: #d9d9d9;"></div>
+          <div class="work-item" style="background: #c9c9c9;"></div>
+          <div class="work-item" style="background: #b9b9b9;"></div>
+          <div class="work-item" style="background: #a9a9a9;"></div>
+          <div class="work-item" style="background: #999999;"></div>
+          <div class="work-item" style="background: #898989;"></div>
+          <div class="work-item" style="background: #797979;"></div>
+          <div class="work-item" style="background: #696969;"></div>
+          <div class="work-item" style="background: #595959;"></div>
+          <div class="work-item" style="background: #494949;"></div>
+          <div class="work-item" style="background: #393939;"></div>
+          <div class="work-item" style="background: #292929;"></div>
+        </div>
+      </div>
+    </section>
+  </div>
 
   <script>
-    // About section fade-in based on scroll (runs after DOM ready)
+    // About and Work section fade-in based on scroll (runs after DOM ready)
     const aboutTitle = document.querySelector('.about-title');
     const aboutBody = document.querySelector('.about-body');
     const aboutSection = document.getElementById("about");
+    const aboutContainer = document.querySelector('.about-container');
+    
+    const workTitle = document.querySelector('.work-title');
+    const workGrid = document.querySelector('.work-grid');
+    const workSection = document.getElementById("work");
+    const workContainer = document.querySelector('.work-container');
     
     // Slide distance in pixels
     const slideDistance = 40;
+    
+    // Scale the about container based on viewport width
+    function scaleAboutContent() {
+      if (!aboutContainer) return;
+      
+      const viewportWidth = window.innerWidth;
+      const designWidth = 1920;
+      // Content width including the title offset (171px) + body width (1164px) + some padding
+      const contentWidth = 1400;
+      
+      // Calculate scale - fit content with some margin (90% of viewport)
+      let scale = Math.min(1, (viewportWidth * 0.9) / contentWidth);
+      scale = Math.max(0.4, scale); // Minimum scale of 0.4
+      
+      aboutContainer.style.transform = `scale(${scale})`;
+    }
+    
+    // Scale the work container based on viewport width - same as About
+    function scaleWorkContent() {
+      if (!workContainer) return;
+      
+      const viewportWidth = window.innerWidth;
+      const gridWidth = 1600;
+      const titleOffset = 155; // How far title extends left of grid
+      const menuMargin = 60; // Left margin where menu starts
+      const rightMargin = 60;
+      
+      // Total width needed = title offset + grid width + right margin
+      const totalContentWidth = titleOffset + gridWidth + rightMargin;
+      
+      // Available width = viewport - menu margin
+      const availableWidth = viewportWidth - menuMargin;
+      
+      // Scale to fit
+      let scale = Math.min(1, availableWidth / totalContentWidth);
+      scale = Math.max(0.3, scale);
+      
+      workContainer.style.transform = `scale(${scale})`;
+    }
+    
+    // Run on load and resize
+    scaleAboutContent();
+    scaleWorkContent();
+    window.addEventListener('resize', () => {
+      scaleAboutContent();
+      scaleWorkContent();
+    });
     
     function updateAboutFade() {
       if (!aboutTitle || !aboutBody || !aboutSection) return;
       
       const windowHeight = window.innerHeight;
-      const aboutRect = aboutSection.getBoundingClientRect();
+      const placeholder = document.getElementById('aboutPlaceholder');
+      
+      // Get the scroll position where About should become fixed
+      const headerSpacer = document.getElementById('headerSpacer');
+      const headerSpacerBottom = headerSpacer.getBoundingClientRect().bottom;
+      
+      // About becomes fixed when headerSpacer bottom reaches top of viewport
+      const shouldBeFixed = headerSpacerBottom <= 0;
+      
+      if (shouldBeFixed) {
+        aboutSection.style.position = 'fixed';
+        aboutSection.style.inset = '0';
+        aboutSection.style.width = '';
+        aboutSection.style.height = '';
+        placeholder.style.display = 'block';
+        
+        // Fully visible - use full opaque gradient (not 'none' to avoid flicker)
+        aboutTitle.style.webkitMaskImage = 'linear-gradient(to right, #000 0%, #000 100%)';
+        aboutTitle.style.maskImage = 'linear-gradient(to right, #000 0%, #000 100%)';
+        aboutTitle.style.transform = 'translateX(0)';
+        
+        aboutBody.style.webkitMaskImage = 'linear-gradient(to left, #000 0%, #000 100%)';
+        aboutBody.style.maskImage = 'linear-gradient(to left, #000 0%, #000 100%)';
+        aboutBody.style.transform = 'translateX(0)';
+        return;
+      } else {
+        aboutSection.style.position = 'relative';
+        aboutSection.style.inset = '';
+        aboutSection.style.width = '';
+        aboutSection.style.height = '';
+        placeholder.style.display = 'none';
+      }
+      
+      // Get element positions
       const titleRect = aboutTitle.getBoundingClientRect();
       const bodyRect = aboutBody.getBoundingClientRect();
       
-      // Check if About section is fully visible (top at or above viewport top)
-      const aboutFullyOpen = aboutRect.top <= 0;
-      
-      if (aboutFullyOpen) {
-        // Fully visible - remove masks completely and reset positions
-        aboutTitle.style.webkitMaskImage = 'none';
-        aboutTitle.style.maskImage = 'none';
-        aboutTitle.style.transform = 'translateX(0)';
-        
-        aboutBody.style.webkitMaskImage = 'none';
-        aboutBody.style.maskImage = 'none';
-        aboutBody.style.transform = 'translateX(0)';
-        return;
-      }
-      
       // TITLE fade and slide
+      // Element enters viewport when its top = windowHeight
+      // Animation completes when headerSpacerBottom = 0
+      // 
+      // When title first enters: titleRect.top = windowHeight, headerSpacerBottom = some value X
+      // When page at top: headerSpacerBottom = 0
+      // 
+      // The key insight: as we scroll, both titleRect.top and headerSpacerBottom decrease
+      // We want progress to go from 0 to 1 as we scroll from "title entering" to "page at top"
+      
       if (titleRect.top >= windowHeight) {
-        // Title not visible yet - completely hidden, at start position
+        // Title not yet in viewport
         aboutTitle.style.webkitMaskImage = 'linear-gradient(to right, transparent 0%, transparent 100%)';
         aboutTitle.style.maskImage = 'linear-gradient(to right, transparent 0%, transparent 100%)';
         aboutTitle.style.transform = `translateX(-${slideDistance}px)`;
       } else {
-        // Title is visible
-        const titlePixelsInView = windowHeight - titleRect.top;
-        const totalDistance = titlePixelsInView + aboutRect.top;
+        // Title is in viewport
+        // We need to track progress from when title FIRST entered viewport to when page hits top
+        // 
+        // When title first enters: titleRect.top = windowHeight, and headerSpacerBottom = X
+        // When page hits top: headerSpacerBottom = 0
+        //
+        // The title enters the viewport when headerSpacerBottom is still positive
+        // At that moment, headerSpacerBottom tells us how much scroll is left until page hits top
+        //
+        // Progress should be based on: how much of the remaining scroll have we done?
+        // Remaining scroll at entry = headerSpacerBottom when title first entered
+        // Current remaining scroll = headerSpacerBottom now
         
-        let titleProgress = totalDistance > 0 ? titlePixelsInView / totalDistance : 1;
-        titleProgress = Math.max(0, Math.min(1, titleProgress));
+        // Since the content is centered, title enters when about section enters
+        // About section enters when headerSpacerBottom < windowHeight
+        // So: entry point is headerSpacerBottom = windowHeight
+        // End point is headerSpacerBottom = 0
         
-        // Gradient spans 200% (full element width for the fade)
-        // At progress 0: gradient is -200% to 0% (fully transparent)
-        // At progress 1: gradient is 0% to 200% (fully solid)
-        const gradientStart = (titleProgress * 200) - 200;
-        const gradientEnd = gradientStart + 200;
+        // But title enters later than page edge - need to account for title's position within page
+        // Title is roughly centered, so it enters when headerSpacerBottom ≈ windowHeight/2
         
-        const titleMask = `linear-gradient(to right, #000 0%, #000 ${Math.max(0, gradientStart)}%, transparent ${Math.min(100, gradientEnd)}%, transparent 100%)`;
+        // Simple approach: progress based on how far headerSpacerBottom has gone from windowHeight to 0
+        // Clamped to start when title is actually in viewport
+        
+        let progress = 1 - (headerSpacerBottom / windowHeight);
+        progress = Math.max(0, Math.min(1, progress));
+        
+        // Gradient reveal: constant width gradient that travels completely across
+        // Gradient starts fully off-screen left, ends fully off-screen right
+        const fadeWidth = 60;
+        // Start further back so less content shows initially
+        const revealPoint = -fadeWidth - 80 + (progress * (100 + fadeWidth + 80));
+        
+        const titleMask = `linear-gradient(to right, #000 0%, #000 ${revealPoint}%, transparent ${revealPoint + fadeWidth}%, transparent 100%)`;
         aboutTitle.style.webkitMaskImage = titleMask;
         aboutTitle.style.maskImage = titleMask;
         
-        // Slide: starts at -40px, ends at 0px
-        const titleSlide = -slideDistance + (titleProgress * slideDistance);
+        // Ensure transform is exactly 0 when progress is 1 to avoid jitter
+        const titleSlide = progress >= 1 ? 0 : -slideDistance + (progress * slideDistance);
         aboutTitle.style.transform = `translateX(${titleSlide}px)`;
       }
       
       // BODY fade and slide
       if (bodyRect.top >= windowHeight) {
-        // Body not visible yet - completely hidden, at start position
+        // Body not yet in viewport
         aboutBody.style.webkitMaskImage = 'linear-gradient(to left, transparent 0%, transparent 100%)';
         aboutBody.style.maskImage = 'linear-gradient(to left, transparent 0%, transparent 100%)';
         aboutBody.style.transform = `translateX(${slideDistance}px)`;
       } else {
-        const bodyPixelsInView = windowHeight - bodyRect.top;
-        const totalDistance = bodyPixelsInView + aboutRect.top;
+        // Body is in viewport - use same progress as title but can offset slightly if desired
+        let progress = 1 - (headerSpacerBottom / windowHeight);
+        progress = Math.max(0, Math.min(1, progress));
         
-        let bodyProgress = totalDistance > 0 ? bodyPixelsInView / totalDistance : 1;
-        bodyProgress = Math.max(0, Math.min(1, bodyProgress));
+        // Gradient reveal from right to left
+        // Gradient reveal: constant width gradient that travels completely across
+        const fadeWidth = 60;
+        // Start further back so less content shows initially
+        const revealPoint = -fadeWidth - 80 + (progress * (100 + fadeWidth + 80));
         
-        // Gradient spans 200% (full element width for the fade)
-        const gradientStart = (bodyProgress * 200) - 200;
-        const gradientEnd = gradientStart + 200;
-        
-        const bodyMask = `linear-gradient(to left, #000 0%, #000 ${Math.max(0, gradientStart)}%, transparent ${Math.min(100, gradientEnd)}%, transparent 100%)`;
+        const bodyMask = `linear-gradient(to left, #000 0%, #000 ${revealPoint}%, transparent ${revealPoint + fadeWidth}%, transparent 100%)`;
         aboutBody.style.webkitMaskImage = bodyMask;
         aboutBody.style.maskImage = bodyMask;
         
-        // Slide: starts at +40px, ends at 0px
-        const bodySlide = slideDistance - (bodyProgress * slideDistance);
+        // Ensure transform is exactly 0 when progress is 1 to avoid jitter
+        const bodySlide = progress >= 1 ? 0 : slideDistance - (progress * slideDistance);
         aboutBody.style.transform = `translateX(${bodySlide}px)`;
       }
     }
     
     // Update on scroll
     window.addEventListener("scroll", updateAboutFade, { passive: true });
-    // Initial state
     updateAboutFade();
+    
+    // Work section fade-in
+    function updateWorkFade() {
+      if (!workTitle || !workGrid || !workSection) return;
+      
+      const windowHeight = window.innerHeight;
+      const workRect = workSection.getBoundingClientRect();
+      const titleRect = workTitle.getBoundingClientRect();
+      const gridRect = workGrid.getBoundingClientRect();
+      
+      // Check if Work section is fully visible (top at or above viewport top)
+      const workFullyOpen = workRect.top <= 0;
+      
+      if (workFullyOpen) {
+        // Fully visible - use full opaque gradient (not 'none' to avoid flicker)
+        workTitle.style.webkitMaskImage = 'linear-gradient(to right, #000 0%, #000 100%)';
+        workTitle.style.maskImage = 'linear-gradient(to right, #000 0%, #000 100%)';
+        workTitle.style.transform = 'translateX(0)';
+        
+        workGrid.style.opacity = '1';
+        workGrid.style.transform = 'translateY(0)';
+        return;
+      }
+      
+      // Calculate progress based on Work section position
+      // When workRect.top = windowHeight, progress = 0 (Work just entering)
+      // When workRect.top = 0, progress = 1 (Work fully open)
+      let progress = 1 - (workRect.top / windowHeight);
+      progress = Math.max(0, Math.min(1, progress));
+      
+      // TITLE fade and slide
+      if (titleRect.top >= windowHeight) {
+        workTitle.style.webkitMaskImage = 'linear-gradient(to right, transparent 0%, transparent 100%)';
+        workTitle.style.maskImage = 'linear-gradient(to right, transparent 0%, transparent 100%)';
+        workTitle.style.transform = `translateX(-${slideDistance}px)`;
+      } else {
+        // Gradient reveal: constant width gradient that travels completely across
+        const fadeWidth = 60;
+        // Start further back so less content shows initially
+        const revealPoint = -fadeWidth - 80 + (progress * (100 + fadeWidth + 80));
+        
+        const titleMask = `linear-gradient(to right, #000 0%, #000 ${revealPoint}%, transparent ${revealPoint + fadeWidth}%, transparent 100%)`;
+        workTitle.style.webkitMaskImage = titleMask;
+        workTitle.style.maskImage = titleMask;
+        
+        const titleSlide = -slideDistance + (progress * slideDistance);
+        workTitle.style.transform = `translateX(${titleSlide}px)`;
+      }
+      
+      // GRID fade and slide
+      if (gridRect.top >= windowHeight) {
+        workGrid.style.opacity = '0';
+        workGrid.style.transform = 'translateY(20px)';
+      } else {
+        const gridPixelsInView = windowHeight - gridRect.top;
+        const totalDistance = gridPixelsInView + workRect.top;
+        
+        let gridProgress = totalDistance > 0 ? gridPixelsInView / totalDistance : 1;
+        gridProgress = Math.max(0, Math.min(1, gridProgress));
+        
+        workGrid.style.opacity = gridProgress;
+        const gridSlide = 20 - (gridProgress * 20);
+        workGrid.style.transform = `translateY(${gridSlide}px)`;
+      }
+    }
+    
+    window.addEventListener("scroll", updateWorkFade, { passive: true });
+    updateWorkFade();
   </script>
 </body>
 </html>
