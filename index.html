@@ -193,27 +193,26 @@
         letter-spacing: 0 !important;
       }
       
-      /* Name overlaps NW by 5px, centered as a unit */
+      /* Name overlaps NW by 5px */
       #nameLeft {
-        top: calc(50% - 5px) !important; /* 5px overlap with NW graphic above */
+        top: calc(50% + 25px) !important;
       }
       
       #nameRight {
-        top: calc(50% - 5px + 1.0em) !important; /* tightened line spacing */
+        top: calc(50% + 25px + 1.0em) !important;
       }
       
-      /* NW graphic positioned above name, centered as unit */
+      /* NW graphic - move up so it overlaps with name */
       #unicorn-mobile {
-        top: calc(50% - 120px) !important;
+        top: calc(50% - 30px) !important;
         transform: translate(-50%, -50%) !important;
       }
       
-      /* Descriptor - two lines, FREELANCE on first line */
+      /* Descriptor - centered between WALJI and arrow */
       #descriptor {
         font-size: 14.67px !important;
         letter-spacing: 2px !important;
         text-align: center;
-        white-space: pre-line !important;
         line-height: 1.6 !important;
       }
     }
@@ -554,17 +553,17 @@
 
       // Update descriptor position - centered between content and arrow
       const descriptor = document.getElementById("descriptor");
-      const arrowTopY = height - 50; // arrow is at bottom: 30px, so top of arrow area
+      const arrowTopY = height - 50; // arrow is at bottom: 30px
       const isMobile = window.innerWidth <= 768;
       
       if (isMobile) {
-        // On mobile, WALJI bottom is approximately at 50% + 55px + 2em (two lines)
-        const waljiBottom = (height / 2) + 55 + 100; // approximate WALJI bottom
+        // On mobile, WALJI bottom is at ~50% + 25px + 2 lines of text (~100px)
+        const waljiBottom = (height / 2) + 25 + 100;
         const descriptorY = waljiBottom + (arrowTopY - waljiBottom) / 2;
         descriptor.style.top = `${descriptorY}px`;
       } else {
         // On desktop, center between names (at 50%) and arrow
-        const namesY = height / 2;
+        const namesY = height / 2 + 20; // names are slightly below center
         const descriptorY = namesY + (arrowTopY - namesY) / 2;
         descriptor.style.top = `${descriptorY}px`;
       }
