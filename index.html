@@ -22,7 +22,7 @@
 
   <style>
     :root{
-      --cornerInset: 30px;   /* distance from edges */
+      --cornerInset: 25px;   /* distance from edges */
       --plusSize: 30px;      /* your + size */
       --navClearance: 18px;  /* extra breathing room from the rotating + */
     }
@@ -49,7 +49,7 @@
       align-items: center;
       justify-content: center;
       overflow: visible;
-      padding: 0 60px; /* Add padding for margins */
+      padding: 0 55px; /* Add padding for margins */
       box-sizing: border-box;
     }
     .about-container {
@@ -61,7 +61,7 @@
     .about-title {
       position: absolute;
       left: -40px; /* Compensate for the 40px padding to align visually */
-      bottom: calc(100% - 0.25em); /* Position relative to content, overlapping slightly */
+      bottom: calc(100% - 25px); /* Base overlap for small screens */
       color: #797979;
       font-family: "selfie-neue-round", "Brush Script MT", cursive;
       font-weight: 700;
@@ -107,16 +107,19 @@
     .work-container {
       position: relative;
       overflow: visible;
-      transform-origin: center center;
+      width: 100%;
+      max-width: 1200px;
+      padding: 0 55px;
+      box-sizing: border-box;
     }
     .work-title {
       position: absolute;
-      left: -155px;
-      top: -105px;
+      left: 15px;
+      bottom: calc(100% - 25px); /* Base overlap for small screens */
       color: #797979;
       font-family: "selfie-neue-round", "Brush Script MT", cursive;
       font-weight: 700;
-      font-size: 160px;
+      font-size: clamp(80px, 12vw, 160px);
       line-height: 0.9;
       word-wrap: break-word;
       z-index: 1;
@@ -128,13 +131,30 @@
     .work-grid {
       position: relative;
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: 0;
-      width: 1600px;
+      width: 100%;
       z-index: 2;
     }
     .work-item {
       aspect-ratio: 16 / 9;
+    }
+    
+    /* Responsive Work grid */
+    @media (max-width: 768px) {
+      .work-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    
+    /* Increase title overlap on larger screens */
+    @media (min-width: 1024px) {
+      .about-title {
+        bottom: calc(100% - 52px);
+      }
+      .work-title {
+        bottom: calc(100% - 52px);
+      }
     }
     
     /* Spacer */
@@ -173,8 +193,8 @@
 
     .site-nav{
       position: fixed;
-      left: 60px;
-      top: 60px;
+      left: 55px;
+      top: 55px;
       z-index: 9999;
       mix-blend-mode: difference;
 
@@ -202,10 +222,10 @@
       pointer-events: none;
     }
     .margin-guide-left {
-      left: 60px;
+      left: 55px;
     }
     .margin-guide-right {
-      right: 60px;
+      right: 55px;
     }
     
     .site-nav a {
@@ -328,8 +348,8 @@
     
     .copyright {
       position: fixed;
-      right: 60px;
-      bottom: 60px;
+      right: 55px;
+      bottom: 55px;
       z-index: 9999;
       mix-blend-mode: difference;
       
@@ -491,7 +511,7 @@
       BR: document.getElementById("plusBR"),
     };
 
-    const INSET = 30;
+    const INSET = 25;
     const HALF = 15; // total size = 30px
 
     let cornerMouse = { x: 0, y: 0 };
@@ -829,9 +849,6 @@
           <div class="work-item" style="background: #797979;"></div>
           <div class="work-item" style="background: #696969;"></div>
           <div class="work-item" style="background: #595959;"></div>
-          <div class="work-item" style="background: #494949;"></div>
-          <div class="work-item" style="background: #393939;"></div>
-          <div class="work-item" style="background: #292929;"></div>
         </div>
       </div>
     </section>
@@ -857,31 +874,13 @@
       if (!aboutContainer) return;
       
       const viewportWidth = window.innerWidth;
-      const margin = 60; // Same as menu left position
+      const margin = 55; // Same as menu left position
       // About section now uses CSS reflow instead of scaling
     }
     
-    // Scale the work container based on viewport width - same as About
+    // Scale the work container based on viewport width - now handled by CSS
     function scaleWorkContent() {
-      if (!workContainer) return;
-      
-      const viewportWidth = window.innerWidth;
-      const gridWidth = 1600;
-      const titleOffset = 155; // How far title extends left of grid
-      const menuMargin = 60; // Left margin where menu starts
-      const rightMargin = 60;
-      
-      // Total width needed = title offset + grid width + right margin
-      const totalContentWidth = titleOffset + gridWidth + rightMargin;
-      
-      // Available width = viewport - menu margin
-      const availableWidth = viewportWidth - menuMargin;
-      
-      // Scale to fit
-      let scale = Math.min(1, availableWidth / totalContentWidth);
-      scale = Math.max(0.3, scale);
-      
-      workContainer.style.transform = `scale(${scale})`;
+      // Responsiveness now handled by CSS media queries
     }
     
     // Run on load and resize
@@ -1050,7 +1049,6 @@
         workTitle.style.transform = 'translateX(0)';
         
         workGrid.style.opacity = '1';
-        workGrid.style.transform = 'translateY(0)';
         return;
       }
       
@@ -1079,10 +1077,9 @@
         workTitle.style.transform = `translateX(${titleSlide}px)`;
       }
       
-      // GRID fade and slide
+      // GRID fade only (no vertical movement)
       if (gridRect.top >= windowHeight) {
         workGrid.style.opacity = '0';
-        workGrid.style.transform = 'translateY(20px)';
       } else {
         const gridPixelsInView = windowHeight - gridRect.top;
         const totalDistance = gridPixelsInView + workRect.top;
@@ -1091,8 +1088,6 @@
         gridProgress = Math.max(0, Math.min(1, gridProgress));
         
         workGrid.style.opacity = gridProgress;
-        const gridSlide = 20 - (gridProgress * 20);
-        workGrid.style.transform = `translateY(${gridSlide}px)`;
       }
     }
     
