@@ -169,6 +169,39 @@
       }
     }
     
+    /* Mobile: show immediately without waiting for interaction */
+    @media (max-width: 768px) {
+      #unicorn-wrapper {
+        opacity: 1 !important;
+      }
+      
+      /* Stack names vertically centered */
+      .name {
+        position: absolute;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        text-align: center;
+      }
+      
+      #nameLeft {
+        top: 50% !important;
+      }
+      
+      #nameRight {
+        top: calc(50% + 1.5em) !important;
+      }
+      
+      /* Position NW graphic above the names - handled by unicorn mobile centering */
+      #unicorn-mobile {
+        top: calc(50% - 60px) !important;
+      }
+      
+      #descriptor {
+        top: calc(50% + 3.5em) !important;
+        bottom: auto !important;
+      }
+    }
+    
     /* Increase title overlap on larger screens */
     @media (min-width: 1024px) {
       .about-title {
