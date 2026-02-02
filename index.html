@@ -5,6 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Portfolio Header</title>
 
+  <!-- Preload Unicorn Studio for faster loading -->
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="preload" href="https://cdn.jsdelivr.net/gh/hiunicornstudio/unicornstudio.js@v2.0.4/dist/unicornStudio.umd.js" as="script">
+  
+  <!-- Load Unicorn Studio script early in head -->
+  <script src="https://cdn.jsdelivr.net/gh/hiunicornstudio/unicornstudio.js@v2.0.4/dist/unicornStudio.umd.js"></script>
+
   <!-- Google Font: Zalando Sans Expanded -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -39,20 +46,23 @@
       align-items: center;
       justify-content: center;
       overflow: visible;
+      padding: 0 60px; /* Add padding for margins */
+      box-sizing: border-box;
     }
     .about-container {
       position: relative;
       overflow: visible;
-      transform-origin: center center;
+      max-width: 1164px;
+      width: 100%;
     }
     .about-title {
       position: absolute;
-      left: -171px; /* 385 - 214 = 171px offset to the left of body */
-      top: -105px; /* Baseline sits just below body cap height */
+      left: -40px; /* Compensate for the 40px padding to align visually */
+      bottom: calc(100% - 0.25em); /* Position relative to content, overlapping slightly */
       color: #797979;
       font-family: "Selfie Neue Round", "Brush Script MT", cursive;
       font-weight: 700;
-      font-size: 160px;
+      font-size: clamp(80px, 12vw, 160px); /* Responsive font size */
       line-height: 0.9;
       word-wrap: break-word;
       z-index: 1;
@@ -63,18 +73,19 @@
     }
     .about-body {
       position: relative;
-      width: 1164px;
+      width: 100%;
+      max-width: 1164px;
       color: #000;
       font-family: "Zalando Sans Expanded", sans-serif;
       font-weight: 700;
-      font-size: 36px;
-      line-height: 37px;
+      font-size: clamp(20px, 3vw, 36px); /* Responsive font size */
+      line-height: 1.03;
       text-transform: uppercase;
       word-wrap: break-word;
       z-index: 2;
     }
     .about-body p { margin: 0; }
-    .about-body p + p { margin-top: 37px; }
+    .about-body p + p { margin-top: 1em; }
 
     /* Work Section */
     #work {
@@ -177,6 +188,23 @@
       text-transform: uppercase;
     }
     
+    /* Margin guides - temporary pink lines */
+    .margin-guide {
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: pink;
+      z-index: 99999;
+      pointer-events: none;
+    }
+    .margin-guide-left {
+      left: 60px;
+    }
+    .margin-guide-right {
+      right: 60px;
+    }
+    
     .site-nav a {
       position: relative;
       display: block;
@@ -230,6 +258,26 @@
       opacity: 0.95;
       white-space: nowrap;
     }
+    
+    .name .letter {
+      display: inline-block;
+      opacity: 0;
+      animation: letterFadeIn 0.9s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+      animation-delay: calc(var(--delay) * 0.2s + 0.3s);
+      will-change: opacity, transform;
+      backface-visibility: hidden;
+    }
+    
+    @keyframes letterFadeIn {
+      0% {
+        opacity: 0;
+        transform: translateY(8px) translateZ(0);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) translateZ(0);
+      }
+    }
 
     #descriptor{
       position: absolute;
@@ -245,6 +293,15 @@
 
       color: rgba(255,255,255,0.9);
       pointer-events: none;
+      
+      /* Fade in descriptor after names */
+      opacity: 0;
+      animation: fadeIn 0.8s ease forwards;
+      animation-delay: 1.8s;
+    }
+    
+    @keyframes fadeIn {
+      to { opacity: 0.9; }
     }
 
     #downArrow{
@@ -293,14 +350,25 @@
 </head>
 <body>
   <div id="header">
-    <div 
-      id="unicorn-embed"
-      style="position: absolute; inset: 0; width: 100%; height: 100%;"
-    ></div>
+    <div id="unicorn-wrapper" style="position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 0.6s ease;">
+      <div data-us-project="IBucRrDfjuXD6saiKULP" style="width: 100%; height: 100%;"></div>
+    </div>
 
-    <!-- Names (positioned by JS) -->
-    <div id="nameLeft" class="name">NAEEM</div>
-    <div id="nameRight" class="name">WALJI</div>
+    <!-- Names with individual letters for animation -->
+    <div id="nameLeft" class="name">
+      <span class="letter" style="--delay: 0">N</span>
+      <span class="letter" style="--delay: 1">A</span>
+      <span class="letter" style="--delay: 2">E</span>
+      <span class="letter" style="--delay: 3">E</span>
+      <span class="letter" style="--delay: 4">M</span>
+    </div>
+    <div id="nameRight" class="name">
+      <span class="letter" style="--delay: 4">W</span>
+      <span class="letter" style="--delay: 3">A</span>
+      <span class="letter" style="--delay: 2">L</span>
+      <span class="letter" style="--delay: 1">J</span>
+      <span class="letter" style="--delay: 0">I</span>
+    </div>
     <div id="descriptor">FREELANCE CREATIVE / ART DIRECTOR</div>
   </div>
 
@@ -324,6 +392,10 @@
     <a href="#contact" id="navContact"><span class="nav-indicator"></span><span class="nav-text">CONTACT</span></a>
   </nav>
 
+  <!-- Temporary margin guides -->
+  <div class="margin-guide margin-guide-left"></div>
+  <div class="margin-guide margin-guide-right"></div>
+
   <div class="copyright">
     <span>©</span>
     <span>2026</span>
@@ -335,41 +407,39 @@
     </svg>
   </div>
 
-  <script src="https://cdn.unicorn.studio/v1.3.2/unicornStudio.umd.js"></script>
-  <script>
-    // Embedded Unicorn Studio project data
-    const unicornProjectData = {"history":[{"breakpoints":[],"visible":true,"aspectRatio":1,"userDownsample":1,"layerType":"effect","type":"gradient","usesPingPong":false,"speed":0.25,"trackMouse":0,"trackAxes":"xy","mouseMomentum":0,"texture":false,"animating":false,"isMask":0,"compiledFragmentShaders":["#version 300 es\nprecision highp float;in vec2 vTextureCoord;uniform vec2 uMousePos;vec3 getColor(int index) {\nswitch(index) {\ncase 0: return vec3(0, 0, 0);\ncase 1: return vec3(0, 0, 0);\ncase 2: return vec3(0, 0, 0);\ncase 3: return vec3(0, 0, 0);\ncase 4: return vec3(0, 0, 0);\ncase 5: return vec3(0, 0, 0);\ncase 6: return vec3(0, 0, 0);\ncase 7: return vec3(0, 0, 0);\ncase 8: return vec3(0, 0, 0);\ncase 9: return vec3(0, 0, 0);\ncase 10: return vec3(0, 0, 0);\ncase 11: return vec3(0, 0, 0);\ncase 12: return vec3(0, 0, 0);\ncase 13: return vec3(0, 0, 0);\ncase 14: return vec3(0, 0, 0);\ncase 15: return vec3(0, 0, 0);\ndefault: return vec3(0.0);\n}\n}const float PI = 3.14159265;vec2 rotate(vec2 coord, float angle) {\nfloat s = sin(angle);\nfloat c = cos(angle);\nreturn vec2(\ncoord.x * c - coord.y * s,\ncoord.x * s + coord.y * c\n);\n}out vec4 fragColor;vec3 getColor(vec2 uv) {return vec3(0, 0, 0);\n}void main() {vec2 uv = vTextureCoord;\nvec2 pos = vec2(0.5, 0.5) + mix(vec2(0), (uMousePos-0.5), 0.0000);\nuv -= pos;\nuv /= max(0.5000*2., 1e-5);\nuv = rotate(uv, (0.0000 - 0.5) * 2. * PI);\nvec4 color = vec4(getColor(uv), 1.0000);\nfragColor = color;\n}"],"compiledVertexShaders":["#version 300 es\nprecision mediump float;in vec3 aVertexPosition;\nin vec2 aTextureCoord;uniform mat4 uMVMatrix;\nuniform mat4 uPMatrix;out vec2 vTextureCoord;\nout vec3 vVertexPosition;void main() {\ngl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);\nvTextureCoord = aTextureCoord;\n}"],"data":{"downSample":0.5,"depth":false,"uniforms":{},"isBackground":true},"id":"gradient"},{"breakpoints":[],"aspectRatio":1.8537074148296593,"userDownsample":1,"states":{"appear":[],"scroll":[],"hover":[],"mousemove":[]},"effects":["112ba10e-0a52-4289-b802-672f01546695","f9e23a8d-96f5-427c-a8a6-1cda3729c30c","afb85a1a-3465-4ed6-8e46-695b7880fe5e","a660b5b9-548f-4cdd-8ddf-9e68346515e9","00e8cda2-44e2-4c57-9791-12fd088d8574","6f159bde-28d8-4825-8125-bf1f38e19e62","4819a27b-c620-4b97-8d08-6cf998a05488"],"anchorPoint":8,"mask":0,"maskDepthLayer":1,"layerType":"image","width":265.7815631262524,"widthMode":1,"height":143.37837837837833,"heightMode":2,"left":0.5,"top":0.5,"src":"https://assets.unicorn.studio/images/kVGq4eCHSdVQFv6P8TyCsgfRK2j1/NW%20no%20outline%20fat%20white.png","imageNaturalSize":{"type":"Vec2","_x":925,"_y":499},"compiledFragmentShaders":["#version 300 es\nprecision highp float;in vec2 vTextureCoord;\nin vec3 vVertexPosition;uniform sampler2D uSourceImage;uniform vec2 uArtboardResolution;\nuniform vec2 uMousePos;const float TAU = 6.28318530718;\nconst float PI = 3.1415926;out vec4 fragColor;vec2 rotate2D(vec2 p, float angle) {\nfloat s = sin(angle);\nfloat c = cos(angle);\nreturn vec2(p.x * c - p.y * s, p.x * s + p.y * c);\n}vec2 apply3DRotation(vec2 uv, vec2 elementCenter, vec2 elementSize, float rotX, float rotY, float fov, vec2 mouseRotOffset) {\nfloat angleX = rotX * TAU + mouseRotOffset.y;\nfloat angleY = rotY * TAU + mouseRotOffset.x;\nif (abs(angleX) < 0.001 && abs(angleY) < 0.001) {\nreturn uv;\n}\nvec2 pos = uv - 0.5;\nfloat aspect = elementSize.x / elementSize.y;\npos.x *= aspect;\nfloat focalLength = mix(0.5, 4.0, fov);\nfloat cosX = cos(angleX);\nfloat sinX = sin(angleX);\nfloat cosY = cos(angleY);\nfloat sinY = sin(angleY);\nvec3 rayDir = normalize(vec3(pos.x, pos.y, focalLength));\nvec3 r1;\nr1.x = rayDir.x * cosY - rayDir.z * sinY;\nr1.y = rayDir.y;\nr1.z = rayDir.x * sinY + rayDir.z * cosY;\nvec3 r2;\nr2.x = r1.x;\nr2.y = r1.y * cosX + r1.z * sinX;\nr2.z = -r1.y * sinX + r1.z * cosX;\nvec3 camPos = vec3(0.0, 0.0, -focalLength);\nvec3 c1;\nc1.x = camPos.x * cosY - camPos.z * sinY;\nc1.y = camPos.y;\nc1.z = camPos.x * sinY + camPos.z * cosY;\nvec3 c2;\nc2.x = c1.x;\nc2.y = c1.y * cosX + c1.z * sinX;\nc2.z = -c1.y * sinX + c1.z * cosX;\nif (abs(r2.z) < 0.01) {\nreturn vec2(-1.0);\n}\nfloat t = -c2.z / r2.z;\nif (t < 0.0 || t > 50.0) {\nreturn vec2(-1.0);\n}\nvec2 intersection = vec2(c2.x + t * r2.x, c2.y + t * r2.y);\nif (abs(intersection.x) > 2.0 || abs(intersection.y) > 2.0) {\nreturn vec2(-1.0);\n}\nintersection.x /= aspect;\nreturn intersection + 0.5;\n}vec2 getAnchorOffsets() {\nreturn vec2(0.5, 0.5);\n}vec4 sampleImage(vec2 canvasUV, vec2 mouseOffset, vec2 mouseRotOffset) {\nvec2 canvasPos = vec2(canvasUV.x * uArtboardResolution.x, (1.0 - canvasUV.y) * uArtboardResolution.y);\nvec2 imageUV;float absWidth = 265.7816;\nfloat absHeight = 143.3784 * uArtboardResolution.y;if (1 == 2) {\nabsWidth = absHeight * 1.8537;\n} else if (2 == 2) {\nabsHeight = absWidth / 1.8537;\n}vec2 elementSizePx = vec2(absWidth, absHeight);\nvec2 elementPosPx = vec2(0.5000, 0.5000) * uArtboardResolution - getAnchorOffsets() * elementSizePx;vec2 centerPos = elementPosPx + (elementSizePx * 0.5);\nvec2 relPos = canvasPos - centerPos + mouseOffset;\nvec2 unrotatedRelPos = rotate2D(relPos, 0.0000 * -TAU);\nvec2 elementPos = unrotatedRelPos + (elementSizePx * 0.5);\nimageUV = elementPos / elementSizePx;\nimageUV = apply3DRotation(imageUV, vec2(0.5), vec2(925, 499), 0.0000, 0.0000, 0.5000, mouseRotOffset);\nvec2 flippedUV = vec2(imageUV.x, 1.0 - imageUV.y);\nvec4 color = textureLod(uSourceImage, flippedUV, 0.0);\nif (imageUV.x >= 0.0 && imageUV.x <= 1.0 && imageUV.y >= 0.0 && imageUV.y <= 1.0) {\nreturn color;\n} else {\nreturn vec4(0.0);\n}\n}vec4 applyImageAdjustments(vec4 color) {color.rgb = clamp(color.rgb, 0.0, 1.0);\ncolor.rgb *= color.a;\nreturn color;\n}vec4 getSourceOutput(vec2 uv, vec2 mouseOffsetPx, vec2 mouseRotOffset) {\nvec4 color = sampleImage(uv, mouseOffsetPx, mouseRotOffset);\nreturn applyImageAdjustments(color);\n}void main() {\nvec2 uv = vTextureCoord;\nvec2 mouseOffsetUV = (uMousePos - 0.5) * 0.0000;\nvec2 mouseOffsetPx = mouseOffsetUV;\nvec2 mouseRotOffset = (uMousePos - 0.5) * 0.0000 * PI * 0.5;\nuv -= mouseOffsetUV;\nfragColor = getSourceOutput(uv, mouseOffsetPx, mouseRotOffset);\n}"],"compiledVertexShaders":["#version 300 es\nprecision highp float;in vec3 aVertexPosition;\nin vec2 aTextureCoord;uniform mat4 uMVMatrix;\nuniform mat4 uPMatrix;\nuniform vec2 uMousePos;out vec2 vTextureCoord;\nout vec3 vVertexPosition;void main() {\nfloat angleX = uMousePos.y * 0.5 - 0.25;\nfloat angleY = (1.-uMousePos.x) * 0.5 - 0.25;mat4 rotateX = mat4(1.0, 0.0, 0.0, 0.0,\n0.0, cos(angleX), -sin(angleX), 0.0,\n0.0, sin(angleX), cos(angleX), 0.0,\n0.0, 0.0, 0.0, 1.0);\nmat4 rotateY = mat4(cos(angleY), 0.0, sin(angleY), 0.0,\n0.0, 1.0, 0.0, 0.0,\n-sin(angleY), 0.0, cos(angleY), 0.0,\n0.0, 0.0, 0.0, 1.0);mat4 rotationMatrix = rotateX * rotateY;\ngl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);\nvVertexPosition = (rotationMatrix * vec4(aVertexPosition, 1.0)).xyz;\nvTextureCoord = (vec4(aTextureCoord, 0.0, 1.0)).xy;\n}"],"data":{"uniforms":{"artboardResolution":{"name":"uArtboardResolution","type":"2f","value":{"type":"Vec2","_x":1728,"_y":1117}},"aspectRatio":{"name":"uAspectRatio","type":"1f","value":1.8537074148296593}},"compositeShader":{"fragmentShader":"#version 300 es\nprecision highp float;\nin vec2 vTextureCoord;\nin vec3 vVertexPosition;uniform sampler2D uBgTexture;\nuniform sampler2D uTexture;const float STEPS = 24.0;\nconst float PI = 3.1415926;out vec4 fragColor;vec4 getNormalOutput(vec4 color, vec4 background) {\nreturn mix(background, color + background * (1.0 - color.a), 1.0000);\n}vec4 getOutputByMode(vec4 color, vec4 background) {\nreturn getNormalOutput(color, background);\n}void main() {\nvec2 uv = vTextureCoord;\nvec2 pos = vec2(0);uv -= pos;vec4 background = vec4(0);background = texture(uBgTexture, vTextureCoord);\nvec4 color = texture(uTexture, uv);vec4 col = getOutputByMode(color, background);fragColor = col;\n}","vertexShader":"#version 300 es\nprecision highp float;in vec3 aVertexPosition;\nin vec2 aTextureCoord;uniform mat4 uMVMatrix;\nuniform mat4 uPMatrix;out vec2 vTextureCoord;\nout vec3 vVertexPosition;void main() {\ngl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);\nvTextureCoord = aTextureCoord;\nvVertexPosition = aVertexPosition;\n}"}},"id":"5a4583b4-ece8-4192-ba93-2a770e1f23db"},{"breakpoints":[],"visible":true,"aspectRatio":1,"userDownsample":1,"layerType":"effect","type":"radial_blur","usesPingPong":false,"trackMouse":1,"trackAxes":"xy","mouseMomentum":0,"texture":false,"parentLayer":"5a4583b4-ece8-4192-ba93-2a770e1f23db","animating":false,"isMask":0,"compiledFragmentShaders":["#version 300 es\nprecision highp float;in vec2 vTextureCoord;uniform sampler2D uTexture;\nuniform sampler2D uBgTexture;\nuniform vec2 uMousePos;\nuniform vec2 uResolution;float randFibo(vec2 co) {\nreturn fract(sin(dot(co, vec2(12.9898, 78.233))) * 43758.5453);\n}float getExponentialWeight(int i) {\nfloat fi = float(i);\nreturn exp(-fi * fi / (2.0 * 3.0 * 3.0));\n}vec4 RadialBlur(sampler2D tex, vec2 uv) {\nfloat aspectRatio = uResolution.x/uResolution.y;\nvec2 pos = vec2(0.5, 0.49930555555555556) + mix(vec2(0), (uMousePos-0.5), 0.1000);\nfloat amount = 0.0200;vec4 color = vec4(0.0);\nfloat total_weight = 0.0;\nvec4 center = texture(tex, uv);\nfloat center_weight = getExponentialWeight(0);\ncolor += center * center_weight;\ntotal_weight += center_weight;\nvec2 toUv = uv - pos;\nvec2 toUvAR = vec2(toUv.x * aspectRatio, toUv.y);\nfloat radius = length(toUvAR);\nfloat baseAngle = atan(toUvAR.y, toUvAR.x);float angleStep = amount;for (int i = 1; i <= 8; i++) {\nfloat weight = getExponentialWeight(i);\nfloat step = float(i) * angleStep;float a1 = baseAngle + step;\nvec2 rot1AR = radius * vec2(cos(a1), sin(a1));\nvec2 rot1 = vec2(rot1AR.x / aspectRatio, rot1AR.y) + pos;float a2 = baseAngle - step;\nvec2 rot2AR = radius * vec2(cos(a2), sin(a2));\nvec2 rot2 = vec2(rot2AR.x / aspectRatio, rot2AR.y) + pos;vec4 sample1 = texture(tex, rot1);\nvec4 sample2 = texture(tex, rot2);color += (sample1 + sample2) * weight;\ntotal_weight += 2.0 * weight;\n}color = color / total_weight;\nif(2 == 3) {\nfloat dither = (randFibo(gl_FragCoord.xy) - 0.5) / 255.0;\ncolor.rgb += dither;\n}\nreturn color;\n}vec4 radialBlurPass(vec2 uv) {return RadialBlur(uTexture, uv);\n}vec4 getPassColor(vec2 uv) {\nreturn radialBlurPass(uv);\n}\nout vec4 fragColor;void main() {\nvec2 uv = vTextureCoord;\nvec4 color = getPassColor(uv);\nfragColor = color;}","#version 300 es\nprecision highp float;in vec2 vTextureCoord;uniform sampler2D uTexture;\nuniform sampler2D uBgTexture;\nuniform vec2 uMousePos;\nuniform vec2 uResolution;float randFibo(vec2 co) {\nreturn fract(sin(dot(co, vec2(12.9898, 78.233))) * 43758.5453);\n}float getExponentialWeight(int i) {\nfloat fi = float(i);\nreturn exp(-fi * fi / (2.0 * 3.0 * 3.0));\n}vec4 RadialBlur(sampler2D tex, vec2 uv) {\nfloat aspectRatio = uResolution.x/uResolution.y;\nvec2 pos = vec2(0.5, 0.49930555555555556) + mix(vec2(0), (uMousePos-0.5), 0.1000);\nfloat amount = 0.0200;vec4 color = vec4(0.0);\nfloat total_weight = 0.0;\nvec4 center = texture(tex, uv);\nfloat center_weight = getExponentialWeight(0);\ncolor += center * center_weight;\ntotal_weight += center_weight;\nvec2 toUv = uv - pos;\nvec2 toUvAR = vec2(toUv.x * aspectRatio, toUv.y);\nfloat radius = length(toUvAR);\nfloat baseAngle = atan(toUvAR.y, toUvAR.x);float angleStep = amount;for (int i = 1; i <= 8; i++) {\nfloat weight = getExponentialWeight(i);\nfloat step = float(i) * angleStep;float a1 = baseAngle + step;\nvec2 rot1AR = radius * vec2(cos(a1), sin(a1));\nvec2 rot1 = vec2(rot1AR.x / aspectRatio, rot1AR.y) + pos;float a2 = baseAngle - step;\nvec2 rot2AR = radius * vec2(cos(a2), sin(a2));\nvec2 rot2 = vec2(rot2AR.x / aspectRatio, rot2AR.y) + pos;vec4 sample1 = texture(tex, rot1);\nvec4 sample2 = texture(tex, rot2);color += (sample1 + sample2) * weight;\ntotal_weight += 2.0 * weight;\n}color = color / total_weight;\nif(2 == 3) {\nfloat dither = (randFibo(gl_FragCoord.xy) - 0.5) / 255.0;\ncolor.rgb += dither;\n}\nreturn color;\n}vec4 radialBlurPass(vec2 uv) {return RadialBlur(uTexture, uv);\n}vec4 getPassColor(vec2 uv) {\nreturn radialBlurPass(uv);\n}\nout vec4 fragColor;void main() {\nvec2 uv = vTextureCoord;\nvec4 color = getPassColor(uv);\nfragColor = color;}","#version 300 es\nprecision highp float;in vec2 vTextureCoord;uniform sampler2D uTexture;\nuniform sampler2D uBgTexture;\nuniform vec2 uMousePos;\nuniform vec2 uResolution;\nfloat ease (int easingFunc, float t) {\nreturn 1.0 - sqrt(1.0 - t * t);\n}out vec4 fragColor;vec4 finalPass(vec2 uv) {\nif (0.6200 == 0.00) {\nreturn texture(uBgTexture, uv);\n}\nvec4 blurredColor = texture(uTexture, uv);\nvec4 originalColor = texture(uBgTexture, uv);\nvec2 pos = vec2(0.5, 0.49930555555555556) + mix(vec2(0), (uMousePos-0.5), 0.1000);\nfloat aspectRatio = uResolution.x/uResolution.y;\nfloat dist = ease(13, max(0.,1.-distance(uv * vec2(aspectRatio, 1), pos * vec2(aspectRatio, 1)) * 4. * (1. - 0.6700)));\nif (0 == 1) {\ndist = max(0., (0.5 - dist));\n}return mix(originalColor, blurredColor, (0.6200 * dist > 0.001) ? 1.0 : 0.0);\n}vec4 getPassColor(vec2 uv) {\nreturn finalPass(uv);\n}\nvoid main() {\nvec2 uv = vTextureCoord;\nvec4 color = getPassColor(uv);\nfragColor = color;}"],"compiledVertexShaders":["#version 300 es\nprecision mediump float;in vec3 aVertexPosition;\nin vec2 aTextureCoord;uniform mat4 uMVMatrix;\nuniform mat4 uPMatrix;\nuniform mat4 uTextureMatrix;out vec2 vTextureCoord;\nout vec3 vVertexPosition;void main() {\ngl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);\nvTextureCoord = (uTextureMatrix * vec4(aTextureCoord, 0.0, 1.0)).xy;\n}"],"data":{"downSample":0.5,"depth":false,"uniforms":{},"isBackground":false,"passes":[{"prop":"pass","value":1,"downSample":0.25},{"prop":"pass","value":2,"downSample":0.5},{"prop":"pass","value":3,"includeBg":true}]},"id":"radial_blur"},{"breakpoints":[],"visible":true,"aspectRatio":1,"userDownsample":1,"layerType":"effect","type":"vignette","usesPingPong":false,"trackMouse":0,"trackAxes":"xy","mouseMomentum":0,"texture":false,"animating":false,"isMask":0,"compiledFragmentShaders":["#version 300 es\nprecision highp float;\nin vec3 vVertexPosition;\nin vec2 vTextureCoord;\nuniform sampler2D uTexture;\nuniform vec2 uResolution;out vec4 fragColor;\nmat2 rot(float a) {\nreturn mat2(cos(a),-sin(a),sin(a),cos(a));\n}\nvoid main() {\nvec2 uv = vTextureCoord;\nvec4 bg = texture(uTexture, uv);\nfloat luma = dot(bg.rgb, vec3(0.299, 0.587, 0.114));\nfloat displacement = (luma - 0.5) * 0.0000 * 0.5;\nvec2 aspectRatio = vec2(uResolution.x/uResolution.y, 1.0);\nvec2 skew = vec2(0.5000, 1.0 - 0.5000);\nfloat halfRadius = 0.5000 * 0.5;\nfloat innerEdge = halfRadius - 1.0000 * halfRadius * 0.5;\nfloat outerEdge = halfRadius + 1.0000 * halfRadius * 0.5;\nvec2 pos = vec2(0.5, 0.5);\nconst float TWO_PI = 6.28318530718;\nvec2 scaledUV = uv * aspectRatio * rot(0.0000 * TWO_PI) * skew;\nvec2 scaledPos = pos * aspectRatio * rot(0.0000 * TWO_PI) * skew;\nfloat radius = distance(scaledUV, scaledPos);\nfloat falloff = smoothstep(innerEdge + displacement, outerEdge + displacement, radius);\nvec3 finalColor;finalColor = mix(bg.rgb, mix(bg.rgb, vec3(0, 0, 0), 1.0000), falloff);float alpha = max(bg.a, falloff * 1.0000);\nvec4 color = mix(bg * (1.-falloff), vec4(finalColor * alpha, alpha), 1.0000);\nfragColor = color;}"],"compiledVertexShaders":["#version 300 es\nprecision mediump float;in vec3 aVertexPosition;\nin vec2 aTextureCoord;uniform mat4 uMVMatrix;\nuniform mat4 uPMatrix;\nuniform mat4 uTextureMatrix;out vec2 vTextureCoord;\nout vec3 vVertexPosition;void main() {\ngl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);\nvTextureCoord = (uTextureMatrix * vec4(aTextureCoord, 0.0, 1.0)).xy;\n}"],"data":{"depth":false,"uniforms":{},"isBackground":false},"id":"vignette"},{"breakpoints":[],"visible":true,"aspectRatio":1,"userDownsample":1,"layerType":"effect","type":"godrays","usesPingPong":false,"trackMouse":1,"trackAxes":"xy","mouseMomentum":0,"texture":false,"parentLayer":"5a4583b4-ece8-4192-ba93-2a770e1f23db","animating":false,"isMask":0,"compiledFragmentShaders":["#version 300 es\nprecision highp float;\nprecision highp int;in vec3 vVertexPosition;\nin vec2 vTextureCoord;uniform sampler2D uTexture;const float PI2 = 6.28318530718;vec4 getBrightAreas(vec2 uv) {\nvec4 color = texture(uTexture, uv);\nfloat lum = dot(color.rgb, vec3(0.299, 0.587, 0.114));\ncolor = color * smoothstep(1.0000 - 0.1, 1.0000, lum);\nreturn color;\n}vec4 getColor(vec2 uv) {\nreturn getBrightAreas(uv);\n}out vec4 fragColor;void main() {\nvec2 uv = vTextureCoord;\nvec4 color = getColor(uv);\nif(0 == 1) {\nfragColor = color;} else {\nfragColor = color;\n}\n}","#version 300 es\nprecision highp float;\nprecision highp int;in vec3 vVertexPosition;\nin vec2 vTextureCoord;uniform sampler2D uTexture;\nuniform sampler2D uBgTexture;uniform vec2 uMousePos;\nuniform vec2 uResolution;const float PI2 = 6.28318530718;float interleavedGradientNoise(vec2 st) {\nreturn fract(52.9829189 * fract(dot(st, vec2(0.06711056, 0.00583715))));\n}vec4 godRays(vec2 st) {\nvec3 color = vec3(0);\nfloat decay = mix(0.89, 0.965, 0.2800);\nvec2 pos = vec2(0.5, 0.5) - mix(vec2(0), (vec2(1. - uMousePos.x, 1. - uMousePos.y) - 0.5), 1.0000);\nfloat weight = 1.0;\nfloat MAX_ITERATIONS = 32.0;\nvec2 stepDir = (pos - st) / MAX_ITERATIONS * (0.25 + min(1., 0.2800)) * 0.75;\nfloat noise = interleavedGradientNoise(st * uResolution);\nvec2 sampleUv = st + stepDir * noise;\nvec2 perpDir = vec2(-stepDir.y, stepDir.x);\nfloat intensity = 2.8 * 0.4500;for (float i = 0.0; i < MAX_ITERATIONS; i++) {\nfloat theta = i/MAX_ITERATIONS;\nsampleUv += stepDir + (perpDir * theta * sin((noise * 0.25) * (1.0 + theta) * 50.0)) * 0.0000 * 0.25;\ncolor += texture(uTexture, sampleUv).rgb * weight * intensity;\nweight *= decay;\nif(weight < 0.05) break;\n}\nreturn vec4(color / MAX_ITERATIONS, 1.0);\n}vec4 getGodRays(vec2 uv) {\nvec4 bg = texture(uBgTexture, uv);\nif(0.4500 <= 0.01) {\nreturn bg;\n}\nvec4 rays = godRays(uv);\nrays.rgb *= vec3(1, 1, 1);vec4 color;\ncolor.rgb = bg.rgb + rays.rgb;\ncolor.a = bg.a + rays.r;\nreturn color;\n}vec4 getColor(vec2 uv) {\nreturn getGodRays(uv);\n}out vec4 fragColor;void main() {\nvec2 uv = vTextureCoord;\nvec4 color = getColor(uv);\nif(1 == 1) {\nfragColor = color;} else {\nfragColor = color;\n}\n}"],"compiledVertexShaders":["#version 300 es\nprecision mediump float;in vec3 aVertexPosition;\nin vec2 aTextureCoord;uniform mat4 uMVMatrix;\nuniform mat4 uPMatrix;\nuniform mat4 uTextureMatrix;out vec2 vTextureCoord;\nout vec3 vVertexPosition;void main() {\ngl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);\nvTextureCoord = (uTextureMatrix * vec4(aTextureCoord, 0.0, 1.0)).xy;\n}"],"data":{"depth":false,"uniforms":{},"isBackground":false,"passes":[{"prop":"pass","value":1,"includeBg":true}]},"id":"god_rays1"}],"options":{"name":"Untitled project","fps":60,"dpi":1.5,"scale":1,"includeLogo":false,"isProduction":false},"version":"2.0.4","id":"IBucRrDfjuXD6saiKULP"};
-
-    // Initialize Unicorn Studio when script loads
-    function initUnicorn() {
-      if (typeof UnicornStudio !== 'undefined') {
-        UnicornStudio.addScene({
-          elementId: 'unicorn-embed',
-          fps: 60,
-          scale: 1,
-          dpi: 1.5,
-          projectId: 'IBucRrDfjuXD6saiKULP',
-          interactivity: {
-            mouse: {
-              disableMobile: false
-            }
-          },
-          production: false,
-          lazyLoad: false
-        }).then(scene => {
-          console.log('Unicorn Studio scene loaded', scene);
-        }).catch(err => {
-          console.error('Unicorn Studio error:', err);
-        });
-      } else {
-        console.warn('UnicornStudio not loaded - CDN may be blocked');
+  <!-- Initialize Unicorn Studio -->
+  <script type="text/javascript">
+    let unicornRevealed = false;
+    
+    // Show effect on first mouse move
+    function onFirstMouseMoveForUnicorn() {
+      if (unicornRevealed) return;
+      unicornRevealed = true;
+      
+      const wrapper = document.getElementById('unicorn-wrapper');
+      if (wrapper) {
+        wrapper.style.opacity = '1';
       }
+      
+      // Remove listener after first move
+      document.removeEventListener('mousemove', onFirstMouseMoveForUnicorn);
     }
     
-    // Try to init after a brief delay to ensure script is loaded
-    setTimeout(initUnicorn, 100);
-    window.addEventListener('load', initUnicorn);
-
+    // Listen for first mouse move
+    document.addEventListener('mousemove', onFirstMouseMoveForUnicorn);
+    
+    // Script already loaded in head, just init
+    if (window.UnicornStudio && UnicornStudio.init) {
+      UnicornStudio.init().then(function(scenes) {
+        console.log('Unicorn Studio loaded');
+        // Effect will fade in on first mouse move, not here
+      }).catch(function(err) {
+        console.log('Unicorn init error:', err);
+      });
+    }
+  </script>
+  
+  <script>
     const nameLeftEl = document.getElementById("nameLeft");
     const nameRightEl = document.getElementById("nameRight");
 
@@ -784,15 +854,8 @@
       if (!aboutContainer) return;
       
       const viewportWidth = window.innerWidth;
-      const designWidth = 1920;
-      // Content width including the title offset (171px) + body width (1164px) + some padding
-      const contentWidth = 1400;
-      
-      // Calculate scale - fit content with some margin (90% of viewport)
-      let scale = Math.min(1, (viewportWidth * 0.9) / contentWidth);
-      scale = Math.max(0.4, scale); // Minimum scale of 0.4
-      
-      aboutContainer.style.transform = `scale(${scale})`;
+      const margin = 60; // Same as menu left position
+      // About section now uses CSS reflow instead of scaling
     }
     
     // Scale the work container based on viewport width - same as About
@@ -819,10 +882,8 @@
     }
     
     // Run on load and resize
-    scaleAboutContent();
     scaleWorkContent();
     window.addEventListener('resize', () => {
-      scaleAboutContent();
       scaleWorkContent();
     });
     
@@ -837,14 +898,20 @@
       const headerSpacerBottom = headerSpacer.getBoundingClientRect().bottom;
       
       // About becomes fixed when headerSpacer bottom reaches top of viewport
-      const shouldBeFixed = headerSpacerBottom <= 0;
+      // Use a small threshold to prevent jitter at the exact transition point
+      const shouldBeFixed = headerSpacerBottom <= 1;
       
       if (shouldBeFixed) {
-        aboutSection.style.position = 'fixed';
-        aboutSection.style.inset = '0';
-        aboutSection.style.width = '';
-        aboutSection.style.height = '';
-        placeholder.style.display = 'block';
+        if (aboutSection.style.position !== 'fixed') {
+          aboutSection.style.position = 'fixed';
+          aboutSection.style.top = '0';
+          aboutSection.style.left = '0';
+          aboutSection.style.right = '0';
+          aboutSection.style.bottom = '0';
+          aboutSection.style.width = '100%';
+          aboutSection.style.height = '100vh';
+          placeholder.style.display = 'block';
+        }
         
         // Fully visible - use full opaque gradient (not 'none' to avoid flicker)
         aboutTitle.style.webkitMaskImage = 'linear-gradient(to right, #000 0%, #000 100%)';
@@ -856,11 +923,16 @@
         aboutBody.style.transform = 'translateX(0)';
         return;
       } else {
-        aboutSection.style.position = 'relative';
-        aboutSection.style.inset = '';
-        aboutSection.style.width = '';
-        aboutSection.style.height = '';
-        placeholder.style.display = 'none';
+        if (aboutSection.style.position !== 'relative') {
+          aboutSection.style.position = 'relative';
+          aboutSection.style.top = '';
+          aboutSection.style.left = '';
+          aboutSection.style.right = '';
+          aboutSection.style.bottom = '';
+          aboutSection.style.width = '';
+          aboutSection.style.height = '';
+          placeholder.style.display = 'none';
+        }
       }
       
       // Get element positions
