@@ -175,12 +175,16 @@
         opacity: 1 !important;
       }
       
-      /* Stack names vertically centered */
+      /* Stack names vertically centered and justified */
       .name {
         position: absolute;
         left: 50% !important;
         transform: translateX(-50%) !important;
-        text-align: center;
+        text-align: justify;
+        text-align-last: justify;
+        width: 200px;
+        font-size: clamp(28px, 4vw, 50px); /* 25% larger */
+        letter-spacing: 0;
       }
       
       #nameLeft {
@@ -188,17 +192,22 @@
       }
       
       #nameRight {
-        top: calc(50% + 1.5em) !important;
+        top: calc(50% + 1.3em) !important;
       }
       
-      /* Position NW graphic above the names - handled by unicorn mobile centering */
+      /* NW graphic 25% smaller */
       #unicorn-mobile {
-        top: calc(50% - 60px) !important;
+        top: calc(50% - 80px) !important;
+        transform: translate(-50%, -50%) scale(0.75) !important;
       }
       
+      /* Descriptor centered, same font size as menu */
       #descriptor {
-        top: calc(50% + 3.5em) !important;
+        top: calc(50% + 3em) !important;
         bottom: auto !important;
+        font-size: 14.67px !important;
+        letter-spacing: 2px !important;
+        text-align: center;
       }
     }
     
