@@ -188,23 +188,23 @@
       }
       
       #nameLeft {
-        top: 50% !important;
+        top: calc(50% + 40px) !important; /* moved down 20px closer to NW */
       }
       
       #nameRight {
-        top: calc(50% + 1.2em) !important;
+        top: calc(50% + 40px + 1.0em) !important; /* tightened line spacing by ~5px */
       }
       
-      /* NW graphic centered, original size */
+      /* NW graphic centered */
       #unicorn-mobile {
-        top: calc(50% - 100px) !important;
+        top: calc(50% - 80px) !important; /* moved down 20px */
         transform: translate(-50%, -50%) !important;
       }
       
       /* Descriptor centered between WALJI and arrow */
       #descriptor {
         top: auto !important;
-        bottom: calc(30px + 50px) !important; /* arrow is at 30px, center between walji and arrow */
+        bottom: 80px !important; /* positioned above arrow, will be centered via JS */
         font-size: 14.67px !important;
         letter-spacing: 2px !important;
         text-align: center;
@@ -549,9 +549,20 @@
       // Update descriptor position - centered between content and arrow
       const descriptor = document.getElementById("descriptor");
       const arrowTop = height - 30 - 20; // arrow is at bottom: 30px, height ~20px
-      const contentBottom = (height / 2) + 75; // approximate content bottom
-      const descriptorY = contentBottom + (arrowTop - contentBottom) / 2;
-      descriptor.style.top = `${descriptorY}px`;
+      const isMobile = window.innerWidth <= 768;
+      
+      if (isMobile) {
+        // On mobile, get WALJI bottom position
+        const waljiBottom = height / 2 + 40 + 50 + 30; // nameLeft top + line height + some padding
+        const descriptorY = waljiBottom + (arrowTop - waljiBottom) / 2;
+        descriptor.style.top = `${descriptorY}px`;
+        descriptor.style.bottom = 'auto';
+      } else {
+        // On desktop, center between logo bottom and arrow
+        const contentBottom = (height / 2) + 30; // names are at center
+        const descriptorY = contentBottom + (arrowTop - contentBottom) / 2;
+        descriptor.style.top = `${descriptorY}px`;
+      }
     }
 
     window.addEventListener('resize', updateNamePositions);
