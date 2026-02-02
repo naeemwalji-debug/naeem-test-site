@@ -146,20 +146,26 @@
         grid-template-columns: repeat(2, 1fr);
       }
       #unicorn-desktop {
-        display: none;
+        visibility: hidden;
+        opacity: 0;
+        pointer-events: none;
       }
       #unicorn-mobile {
-        display: block;
+        visibility: visible;
+        opacity: 1;
       }
     }
     
     /* Desktop: show desktop version, hide mobile */
     @media (min-width: 769px) {
       #unicorn-desktop {
-        display: block;
+        visibility: visible;
+        opacity: 1;
       }
       #unicorn-mobile {
-        display: none;
+        visibility: hidden;
+        opacity: 0;
+        pointer-events: none;
       }
     }
     
