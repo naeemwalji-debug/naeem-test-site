@@ -193,18 +193,18 @@
         letter-spacing: 0 !important;
       }
       
-      /* Name overlaps NW by 5px */
+      /* Name overlaps NW - move up to center the unit */
       #nameLeft {
-        top: calc(50% + 25px) !important;
+        top: calc(50% - 10px) !important;
       }
       
       #nameRight {
-        top: calc(50% + 25px + 1.0em) !important;
+        top: calc(50% - 10px + 1.0em) !important;
       }
       
-      /* NW graphic - move up so it overlaps with name */
+      /* NW graphic - move up to center as unit with name */
       #unicorn-mobile {
-        top: calc(50% - 30px) !important;
+        top: calc(50% - 65px) !important;
         transform: translate(-50%, -50%) !important;
       }
       
@@ -213,7 +213,12 @@
         font-size: 14.67px !important;
         letter-spacing: 2px !important;
         text-align: center;
-        line-height: 1.6 !important;
+        line-height: 1.8 !important;
+        white-space: nowrap !important;
+      }
+      
+      #descriptor .mobile-break {
+        display: block;
       }
     }
     
@@ -453,7 +458,7 @@
       <span class="letter" style="--delay: 1">J</span>
       <span class="letter" style="--delay: 0">I</span>
     </div>
-    <div id="descriptor">FREELANCE<br class="mobile-break"> CREATIVE / ART DIRECTOR</div>
+    <div id="descriptor">FREELANCE <span class="mobile-break"></span>CREATIVE / ART DIRECTOR</div>
   </div>
 
   <!-- Fixed UI elements - OUTSIDE header so not clipped -->
@@ -553,17 +558,17 @@
 
       // Update descriptor position - centered between content and arrow
       const descriptor = document.getElementById("descriptor");
-      const arrowTopY = height - 50; // arrow is at bottom: 30px
+      const arrowTopY = height - 70; // arrow is at bottom: 30px, give some padding
       const isMobile = window.innerWidth <= 768;
       
       if (isMobile) {
-        // On mobile, WALJI bottom is at ~50% + 25px + 2 lines of text (~100px)
-        const waljiBottom = (height / 2) + 25 + 100;
-        const descriptorY = waljiBottom + (arrowTopY - waljiBottom) / 2;
+        // On mobile, WALJI bottom is at ~50% - 10px + 2 lines (~80px)
+        const waljiBottom = (height / 2) - 10 + 80;
+        const descriptorY = waljiBottom + (arrowTopY - waljiBottom) / 2 - 15; // center the descriptor element
         descriptor.style.top = `${descriptorY}px`;
       } else {
         // On desktop, center between names (at 50%) and arrow
-        const namesY = height / 2 + 20; // names are slightly below center
+        const namesY = height / 2 + 20;
         const descriptorY = namesY + (arrowTopY - namesY) / 2;
         descriptor.style.top = `${descriptorY}px`;
       }
