@@ -333,8 +333,8 @@
       font-weight: 700;
       font-style: normal;
 
-      font-size: clamp(22px, 3vw, 40px);
-      letter-spacing: 0.40em;
+      font-size: clamp(44px, 6vw, 80px);
+      letter-spacing: 0.10em;
       color: #ffffff;
       text-transform: uppercase;
       opacity: 0.95;
@@ -536,18 +536,43 @@
       width = document.documentElement.clientWidth;
       height = document.documentElement.clientHeight;
       
-      // Position names on either side of center - names are centered with transform
-      // so we position them in the middle of each half
-      const logoWidth = 280; // approximate logo width
-      const inset = 30; // tighter to logo
+      const isMobile = width <= 768;
       
-      // Left name: center of space between left edge and logo left edge
-      const logoLeftEdge = (width / 2) - (logoWidth / 2);
-      const leftCenterX = (logoLeftEdge + inset) / 2;
+      // Update descriptor position - for both mobile and desktop
+      const descriptor = document.getElementById("descriptor");
+      const arrowTopY = height - 70; // arrow is at bottom: 30px, give some padding
       
-      // Right name: center of space between logo right edge and right edge
-      const logoRightEdge = (width / 2) + (logoWidth / 2);
-      const rightCenterX = logoRightEdge - inset + (width - logoRightEdge + inset) / 2;
+      if (isMobile) {
+        // Mobile name positioning handled by CSS
+        // But still position descriptor
+        const waljiBottom = (height / 2) - 50 + 80;
+        const descriptorY = waljiBottom + (arrowTopY - waljiBottom) / 2 - 15;
+        descriptor.style.top = `${descriptorY}px`;
+        return;
+      }
+      
+      // Desktop positioning below
+      
+      // Side margins same as other pages
+      const sideMargin = 55;
+      
+      // Logo bounding box (logo width + 20px padding on each side)
+      const logoWidth = 280;
+      const boundingBox = logoWidth + 40; // 20px larger on each side
+      
+      // Available width for names = viewport - margins - bounding box
+      const availableWidth = width - (sideMargin * 2) - boundingBox;
+      const nameAreaWidth = availableWidth / 2; // each name gets half
+      
+      // Position names centered in their areas
+      const logoLeftEdge = (width / 2) - (boundingBox / 2);
+      const logoRightEdge = (width / 2) + (boundingBox / 2);
+      
+      // Left name: centered between left margin and logo bounding box
+      const leftCenterX = sideMargin + (logoLeftEdge - sideMargin) / 2;
+      
+      // Right name: centered between logo bounding box and right margin
+      const rightCenterX = logoRightEdge + (width - sideMargin - logoRightEdge) / 2;
       
       const centerY = height / 2;
 
@@ -555,23 +580,20 @@
       nameLeftEl.style.top = `${centerY}px`;
       nameRightEl.style.left = `${rightCenterX}px`;
       nameRightEl.style.top = `${centerY}px`;
-
-      // Update descriptor position - centered between content and arrow
-      const descriptor = document.getElementById("descriptor");
-      const arrowTopY = height - 70; // arrow is at bottom: 30px, give some padding
-      const isMobile = window.innerWidth <= 768;
       
-      if (isMobile) {
-        // On mobile, WALJI bottom is at ~50% - 50px + 2 lines (~80px)
-        const waljiBottom = (height / 2) - 50 + 80;
-        const descriptorY = waljiBottom + (arrowTopY - waljiBottom) / 2 - 15; // center the descriptor element
-        descriptor.style.top = `${descriptorY}px`;
-      } else {
-        // On desktop, center between names (at 50%) and arrow
-        const namesY = height / 2 + 20;
-        const descriptorY = namesY + (arrowTopY - namesY) / 2;
-        descriptor.style.top = `${descriptorY}px`;
-      }
+      // Scale font size based on available space
+      // Base size is 80px at full width, scale down proportionally
+      const baseWidth = 1400; // reference width where font is 80px
+      const scaleFactor = Math.min(1, (width - sideMargin * 2) / baseWidth);
+      const fontSize = Math.max(44, 80 * scaleFactor); // min 44px, max 80px
+      
+      nameLeftEl.style.fontSize = `${fontSize}px`;
+      nameRightEl.style.fontSize = `${fontSize}px`;
+
+      // Desktop descriptor position
+      const namesY = height / 2 + 20;
+      const descriptorY = namesY + (arrowTopY - namesY) / 2;
+      descriptor.style.top = `${descriptorY}px`;
     }
 
     window.addEventListener('resize', updateNamePositions);
