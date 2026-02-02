@@ -154,6 +154,9 @@
         visibility: visible;
         opacity: 1;
       }
+      .mobile-break {
+        display: block;
+      }
     }
     
     /* Desktop: show desktop version, hide mobile */
@@ -166,6 +169,9 @@
         visibility: hidden;
         opacity: 0;
         pointer-events: none;
+      }
+      .mobile-break {
+        display: none;
       }
     }
     
@@ -187,26 +193,28 @@
         letter-spacing: 0 !important;
       }
       
+      /* Name overlaps NW by 5px, centered as a unit */
       #nameLeft {
-        top: calc(50% + 55px) !important; /* 5px overlap with NW graphic */
+        top: calc(50% - 5px) !important; /* 5px overlap with NW graphic above */
       }
       
       #nameRight {
-        top: calc(50% + 55px + 1.0em) !important; /* tightened line spacing */
+        top: calc(50% - 5px + 1.0em) !important; /* tightened line spacing */
       }
       
-      /* NW graphic centered */
+      /* NW graphic positioned above name, centered as unit */
       #unicorn-mobile {
-        top: calc(50% - 40px) !important;
+        top: calc(50% - 120px) !important;
         transform: translate(-50%, -50%) !important;
       }
       
-      /* Descriptor - will be positioned by JS */
+      /* Descriptor - two lines, FREELANCE on first line */
       #descriptor {
         font-size: 14.67px !important;
         letter-spacing: 2px !important;
         text-align: center;
-        white-space: nowrap !important;
+        white-space: pre-line !important;
+        line-height: 1.6 !important;
       }
     }
     
@@ -446,7 +454,7 @@
       <span class="letter" style="--delay: 1">J</span>
       <span class="letter" style="--delay: 0">I</span>
     </div>
-    <div id="descriptor">FREELANCE CREATIVE / ART DIRECTOR</div>
+    <div id="descriptor">FREELANCE<br class="mobile-break"> CREATIVE / ART DIRECTOR</div>
   </div>
 
   <!-- Fixed UI elements - OUTSIDE header so not clipped -->
