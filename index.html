@@ -188,23 +188,21 @@
       }
       
       #nameLeft {
-        top: calc(50% + 40px) !important; /* moved down 20px closer to NW */
+        top: calc(50% + 55px) !important; /* 5px overlap with NW graphic */
       }
       
       #nameRight {
-        top: calc(50% + 40px + 1.0em) !important; /* tightened line spacing by ~5px */
+        top: calc(50% + 55px + 1.0em) !important; /* tightened line spacing */
       }
       
       /* NW graphic centered */
       #unicorn-mobile {
-        top: calc(50% - 80px) !important; /* moved down 20px */
+        top: calc(50% - 40px) !important;
         transform: translate(-50%, -50%) !important;
       }
       
-      /* Descriptor centered between WALJI and arrow */
+      /* Descriptor - will be positioned by JS */
       #descriptor {
-        top: auto !important;
-        bottom: 80px !important; /* positioned above arrow, will be centered via JS */
         font-size: 14.67px !important;
         letter-spacing: 2px !important;
         text-align: center;
@@ -548,19 +546,18 @@
 
       // Update descriptor position - centered between content and arrow
       const descriptor = document.getElementById("descriptor");
-      const arrowTop = height - 30 - 20; // arrow is at bottom: 30px, height ~20px
+      const arrowTopY = height - 50; // arrow is at bottom: 30px, so top of arrow area
       const isMobile = window.innerWidth <= 768;
       
       if (isMobile) {
-        // On mobile, get WALJI bottom position
-        const waljiBottom = height / 2 + 40 + 50 + 30; // nameLeft top + line height + some padding
-        const descriptorY = waljiBottom + (arrowTop - waljiBottom) / 2;
+        // On mobile, WALJI bottom is approximately at 50% + 55px + 2em (two lines)
+        const waljiBottom = (height / 2) + 55 + 100; // approximate WALJI bottom
+        const descriptorY = waljiBottom + (arrowTopY - waljiBottom) / 2;
         descriptor.style.top = `${descriptorY}px`;
-        descriptor.style.bottom = 'auto';
       } else {
-        // On desktop, center between logo bottom and arrow
-        const contentBottom = (height / 2) + 30; // names are at center
-        const descriptorY = contentBottom + (arrowTop - contentBottom) / 2;
+        // On desktop, center between names (at 50%) and arrow
+        const namesY = height / 2;
+        const descriptorY = namesY + (arrowTopY - namesY) / 2;
         descriptor.style.top = `${descriptorY}px`;
       }
     }
