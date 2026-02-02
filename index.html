@@ -545,9 +545,10 @@
 
     function updateCornerMarks() {
       const w = document.documentElement.clientWidth;
-      const h = document.documentElement.clientHeight;
+      const h = window.innerHeight;
 
       cornerSvg.setAttribute("viewBox", `0 0 ${w} ${h}`);
+      cornerSvg.style.height = h + 'px';
 
       const cxL = INSET + HALF;
       const cxR = w - INSET - HALF;
@@ -578,6 +579,12 @@
     }
 
     window.addEventListener("resize", updateCornerMarks);
+    
+    // Handle mobile browser chrome changes (address bar show/hide)
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener("resize", updateCornerMarks);
+    }
+    
     updateCornerMarks();
 
     window.cornerRunning = true;
