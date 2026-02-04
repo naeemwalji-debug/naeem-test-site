@@ -777,6 +777,11 @@
       
       .project-down-arrow {
         display: block;
+        position: fixed;
+        bottom: 30px; /* Align with copyright bottom margin */
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 5;
       }
       
       .project-detail-arrow {
@@ -1904,11 +1909,7 @@
           blocks.push(col);
         });
         
-        // 4. Down arrow
-        const downArrow = content.querySelector('.project-down-arrow');
-        if (downArrow) {
-          blocks.push(downArrow);
-        }
+        // Down arrow is now fixed positioned, so don't include in fade blocks
         
         // Ensure all blocks start fully visible and add transition
         blocks.forEach(b => {
@@ -1946,15 +1947,17 @@
         }
         
         // Fade distance - how far from header to start fading
-        const fadeDistance = 100;
+        const fadeDistance = 120;
         
-        // Update each block's opacity based on its BOTTOM edge distance from header
-        // This way tall blocks (like description) fade gradually as their bottom approaches
-        blocks.forEach(block => {
+        // Update each block's opacity
+        blocks.forEach((block, index) => {
           const rect = block.getBoundingClientRect();
-          // Use the bottom of the block for fade calculation
-          const blockBottom = rect.bottom;
-          const dist = blockBottom - headerBottom;
+          
+          // For description (index 0), use TOP edge so fade starts when top of text approaches
+          // For credits (index 1, 2), use TOP edge so they fade as section header approaches
+          // All use top edge for consistent behavior
+          const measurePoint = rect.top;
+          const dist = measurePoint - headerBottom;
           
           let newOpacity;
           if (dist >= fadeDistance) {
