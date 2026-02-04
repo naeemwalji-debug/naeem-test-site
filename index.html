@@ -760,7 +760,7 @@
       
       .project-subtitle {
         font-size: 24px;
-        margin-bottom: 20px;
+        margin-bottom: 10px;
         margin-top: -21px;
       }
       
@@ -796,7 +796,7 @@
         font-size: 14.67px;
         line-height: 16px;
         letter-spacing: 2px;
-        margin-bottom: 0;
+        margin: 0;
       }
       
       .project-back {
@@ -1878,7 +1878,15 @@
       if (!headerMobile || !contentMobile || !rightPanel) return;
       
       const headerRect = headerMobile.getBoundingClientRect();
-      const fadeStart = headerRect.bottom; // Where fade begins (bottom of header)
+      const subtitleEl = headerMobile.querySelector('.project-subtitle');
+      const subtitleRect = subtitleEl ? subtitleEl.getBoundingClientRect() : headerRect;
+      
+      // The fade line is at the bottom of the header
+      const fadeStart = headerRect.bottom;
+      
+      // The lock point is where the black area should stop - 
+      // 10px below the subtitle (same gap as subtitle to description)
+      const lockPoint = subtitleRect.bottom + 10;
       
       // Different fade distances for description vs credits
       const descFadeDistance = 140; // Slower fade for description
@@ -1915,11 +1923,11 @@
         }
       });
       
-      // Lock scroll when black area reaches header
+      // Lock scroll when black area reaches the lock point (10px below subtitle)
       const rightPanelTop = rightPanel.getBoundingClientRect().top;
-      if (rightPanelTop <= fadeStart) {
+      if (rightPanelTop <= lockPoint) {
         const currentScroll = projectDetailHeartStroke.scrollTop;
-        const overshoot = fadeStart - rightPanelTop;
+        const overshoot = lockPoint - rightPanelTop;
         projectDetailHeartStroke.scrollTop = currentScroll - overshoot;
       }
     }
