@@ -39,6 +39,7 @@
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html { overflow-y: scroll; overflow-x: hidden; background: #1a1a1a; scrollbar-gutter: stable; }
+    html.no-scroll { overflow: hidden; }
     body { background: #000; overflow-x: hidden; }
     
     /* Custom scrollbar - dark style for consistency */
@@ -468,11 +469,10 @@
     
     /* Project Detail Page */
     .project-detail {
-      /* Use 100vw to cover scrollbar area */
       position: fixed;
       top: 100vh;
       left: 0;
-      width: 100vw;
+      width: 100%;
       height: 100vh;
       z-index: 10000; /* Above menu and all other elements */
       transition: top 1.2s cubic-bezier(0.4, 0, 0.2, 1);
@@ -514,11 +514,16 @@
     }
     
     .project-detail-right::-webkit-scrollbar-track {
-      background: #000;
+      background: #1a1a1a;
     }
     
     .project-detail-right::-webkit-scrollbar-thumb {
-      background: #666;
+      background: #888;
+      border-radius: 6px;
+    }
+    
+    .project-detail-right::-webkit-scrollbar-thumb:hover {
+      background: #aaa;
     }
     
     .project-detail-right .project-media {
@@ -1721,14 +1726,18 @@
       // Save current scroll position
       scrollPosition = window.pageYOffset;
       
-      // Hide scrollbar - scrollbar-gutter: stable keeps the space reserved
-      document.documentElement.style.overflow = 'hidden';
+      // Prevent main page scroll
+      document.documentElement.classList.add('no-scroll');
       
       projectDetailHeartStroke.classList.add('open');
       // Update URL hash
       updateHash('#work/theundeading');
       // Reset project detail scroll to top
       projectDetailHeartStroke.scrollTop = 0;
+      
+      // Also reset the right panel scroll
+      const rightPanel = projectDetailHeartStroke.querySelector('.project-detail-right');
+      if (rightPanel) rightPanel.scrollTop = 0;
     });
     
     function closeProjectDetail() {
@@ -1736,9 +1745,9 @@
       // Update URL hash back to work
       updateHash('#work');
       
-      // Wait for transition to complete before restoring scroll
+      // Wait for transition then restore scroll
       setTimeout(() => {
-        document.documentElement.style.overflow = '';
+        document.documentElement.classList.remove('no-scroll');
       }, 1200);
       
       // Scroll to work section with same duration as nav
