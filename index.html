@@ -38,8 +38,7 @@
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    html { overflow-y: scroll; overflow-x: hidden; background: #1a1a1a; scrollbar-gutter: stable; }
-    html.no-scroll { overflow: hidden; }
+    html { overflow-y: scroll; overflow-x: hidden; background: #1a1a1a; }
     body { background: #000; overflow-x: hidden; }
     
     /* Custom scrollbar - dark style for consistency */
@@ -1726,29 +1725,36 @@
       // Save current scroll position
       scrollPosition = window.pageYOffset;
       
-      // Prevent main page scroll
-      document.documentElement.classList.add('no-scroll');
-      
       projectDetailHeartStroke.classList.add('open');
       // Update URL hash
       updateHash('#work/theundeading');
-      // Reset project detail scroll to top
-      projectDetailHeartStroke.scrollTop = 0;
       
       // Also reset the right panel scroll
       const rightPanel = projectDetailHeartStroke.querySelector('.project-detail-right');
       if (rightPanel) rightPanel.scrollTop = 0;
     });
     
+    // Prevent main page scroll when project is open
+    window.addEventListener('wheel', function(e) {
+      if (projectDetailHeartStroke.classList.contains('open')) {
+        // Check if scrolling inside project-detail-right
+        const rightPanel = projectDetailHeartStroke.querySelector('.project-detail-right');
+        if (!rightPanel.contains(e.target)) {
+          e.preventDefault();
+        }
+      }
+    }, { passive: false });
+    
+    window.addEventListener('scroll', function() {
+      if (projectDetailHeartStroke.classList.contains('open')) {
+        window.scrollTo(0, scrollPosition);
+      }
+    });
+    
     function closeProjectDetail() {
       projectDetailHeartStroke.classList.remove('open');
       // Update URL hash back to work
       updateHash('#work');
-      
-      // Wait for transition then restore scroll
-      setTimeout(() => {
-        document.documentElement.classList.remove('no-scroll');
-      }, 1200);
       
       // Scroll to work section with same duration as nav
       const workSection = document.getElementById('work');
