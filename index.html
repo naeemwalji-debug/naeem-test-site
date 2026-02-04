@@ -474,14 +474,17 @@
       width: 100%;
       height: 100vh;
       z-index: 10000; /* Above menu and all other elements */
-      transition: top 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: top 1.2s cubic-bezier(0.4, 0, 0.2, 1), visibility 0s linear 1.2s;
       display: flex;
       overflow: hidden;
       overscroll-behavior: contain;
+      visibility: hidden;
     }
     
     .project-detail.open {
       top: 0;
+      visibility: visible;
+      transition: top 1.2s cubic-bezier(0.4, 0, 0.2, 1), visibility 0s linear 0s;
     }
     
     .project-detail-left {
@@ -1870,8 +1873,10 @@
       const isMobile = () => window.innerWidth <= 768;
       
       const projectDetail = document.getElementById('project-detail-heart-stroke');
+      if (!projectDetail) return;
+      
       const header = projectDetail.querySelector('.project-detail-header-mobile');
-      const content = document.getElementById('project-content-mobile');
+      const content = projectDetail.querySelector('#project-content-mobile');
       const rightPanel = projectDetail.querySelector('.project-detail-right');
       
       if (!header || !content || !rightPanel) return;
@@ -1881,7 +1886,8 @@
       let maxScrollTop = null;
       
       function initialize() {
-        if (!isMobile() || initialized) return;
+        if (!isMobile()) return;
+        if (initialized) return;
         
         // Get content blocks: description, each credit column, and arrow
         const description = content.querySelector('.project-description');
@@ -1894,16 +1900,22 @@
         if (downArrow) blocks.push(downArrow);
         
         // Ensure all blocks start fully visible
-        blocks.forEach(b => b.style.opacity = '1');
+        blocks.forEach(b => {
+          b.style.opacity = '1';
+          b.style.transition = 'opacity 0.1s ease-out';
+        });
         
         initialized = true;
-        // Don't call update() here - wait for scroll
+        maxScrollTop = null;
       }
       
       function update() {
-        if (!isMobile() || !initialized) return;
+        if (!isMobile()) return;
+        if (!initialized) return;
+        if (!projectDetail.classList.contains('open')) return;
         
-        const headerBottom = header.getBoundingClientRect().bottom;
+        const headerRect = header.getBoundingClientRect();
+        const headerBottom = headerRect.bottom;
         const rightPanelTop = rightPanel.getBoundingClientRect().top;
         const currentScroll = projectDetail.scrollTop;
         
@@ -1938,19 +1950,33 @@
         });
       }
       
+      // Only listen to scroll on the project detail container
       projectDetail.addEventListener('scroll', () => {
-        requestAnimationFrame(update);
+        if (projectDetail.classList.contains('open')) {
+          requestAnimationFrame(update);
+        }
       }, { passive: true });
       
-      const observer = new MutationObserver(() => {
-        if (projectDetail.classList.contains('open')) {
-          setTimeout(initialize, 1400);
-        } else {
-          initialized = false;
-          maxScrollTop = null;
-          blocks.forEach(b => b.style.opacity = '');
-          blocks = [];
-        }
+      const observer = new MutationObserver((mutations) => {
+        mutations.forEach(mutation => {
+          if (mutation.attributeName === 'class') {
+            if (projectDetail.classList.contains('open')) {
+              // Wait for animation then initialize
+              setTimeout(() => {
+                initialize();
+              }, 1400);
+            } else {
+              // Reset on close
+              blocks.forEach(b => {
+                b.style.opacity = '1';
+                b.style.transition = '';
+              });
+              initialized = false;
+              maxScrollTop = null;
+              blocks = [];
+            }
+          }
+        });
       });
       observer.observe(projectDetail, { attributes: true, attributeFilter: ['class'] });
     })();
