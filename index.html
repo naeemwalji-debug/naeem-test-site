@@ -1529,6 +1529,12 @@
       <div class="project-media" style="margin-top: 30px;">
         <iframe src="https://player.vimeo.com/video/97123199?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" title="Heart &amp; Stroke Foundation - The Undeading 2"></iframe>
       </div>
+      <div class="project-media" style="margin-top: 30px;">
+        <iframe src="https://player.vimeo.com/video/97123199?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" title="Heart &amp; Stroke Foundation - The Undeading 3"></iframe>
+      </div>
+      <div class="project-media" style="margin-top: 30px;">
+        <iframe src="https://player.vimeo.com/video/97123199?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" title="Heart &amp; Stroke Foundation - The Undeading 4"></iframe>
+      </div>
       <svg class="project-detail-arrow" viewBox="0 0 40 20">
         <line x1="20" y1="20" x2="10" y2="10"/>
         <line x1="20" y1="20" x2="30" y2="10"/>
@@ -1954,18 +1960,39 @@
         }
         
         description.innerHTML = newHTML;
-        document.body.removeChild(measure);
         
-        // Make credits sticky too
+        // Process credits - wrap into lines like description
         if (credits) {
-          credits.querySelectorAll('.project-credit-label, .project-credit-list').forEach(el => {
-            el.classList.add('sticky-line');
-            el.style.top = stickyTopValue + 'px';
-            el.style.display = 'block';
-            el.style.position = 'sticky';
-            el.style.background = '#fff';
+          const creditStyle = window.getComputedStyle(credits.querySelector('.project-credit-label') || credits);
+          measure.style.font = creditStyle.font || style.font;
+          measure.style.letterSpacing = creditStyle.letterSpacing || style.letterSpacing;
+          
+          credits.querySelectorAll('.project-credit-column').forEach(col => {
+            const label = col.querySelector('.project-credit-label');
+            const list = col.querySelector('.project-credit-list');
+            
+            // Wrap label as sticky line
+            if (label) {
+              const labelText = label.textContent;
+              label.outerHTML = `<span class="sticky-line project-credit-label" style="top:${stickyTopValue}px; display:block; position:sticky; background:#fff;">${labelText}</span>`;
+            }
+            
+            // Wrap list text into lines
+            if (list) {
+              const items = list.querySelectorAll('span');
+              const listText = Array.from(items).map(s => s.textContent).join(' / ');
+              const listLines = textToLines(listText, containerWidth);
+              
+              let listHTML = '';
+              listLines.forEach(lineText => {
+                listHTML += `<span class="sticky-line" style="top:${stickyTopValue}px; display:block; position:sticky; background:#fff; font-weight:700;">${lineText}</span>`;
+              });
+              list.outerHTML = listHTML;
+            }
           });
         }
+        
+        document.body.removeChild(measure);
         
         // Make arrow sticky
         if (downArrow) {
@@ -2040,8 +2067,9 @@
       
       // Track max scroll position for lock
       let maxScrollTop = null;
+      let isLocked = false;
       
-      // Scroll handler with lock
+      // Scroll handler with lock and black area independent scroll
       projectDetail.addEventListener('scroll', () => {
         const headerBottom = header.getBoundingClientRect().bottom;
         const rightPanelTop = rightPanel.getBoundingClientRect().top;
@@ -2052,8 +2080,18 @@
           // Lock at this position
           if (maxScrollTop === null) {
             maxScrollTop = currentScroll - (headerBottom - rightPanelTop);
+            
+            // Enable independent scrolling of black area
+            rightPanel.style.position = 'fixed';
+            rightPanel.style.top = headerBottom + 'px';
+            rightPanel.style.left = '0';
+            rightPanel.style.right = '0';
+            rightPanel.style.bottom = '0';
+            rightPanel.style.overflowY = 'auto';
+            rightPanel.style.overflowX = 'hidden';
+            isLocked = true;
           }
-          // Prevent scrolling past lock point
+          // Prevent main container from scrolling past lock point
           if (currentScroll > maxScrollTop) {
             projectDetail.scrollTop = maxScrollTop;
           }
@@ -2061,6 +2099,15 @@
           // Allow unlocking if scrolled back up significantly
           if (maxScrollTop !== null && currentScroll < maxScrollTop - 20) {
             maxScrollTop = null;
+            // Restore normal scroll
+            rightPanel.style.position = '';
+            rightPanel.style.top = '';
+            rightPanel.style.left = '';
+            rightPanel.style.right = '';
+            rightPanel.style.bottom = '';
+            rightPanel.style.overflowY = '';
+            rightPanel.style.overflowX = '';
+            isLocked = false;
           }
         }
         
@@ -2076,7 +2123,16 @@
           // Reset on close
           initialized = false;
           maxScrollTop = null;
+          isLocked = false;
           lines = [];
+          // Reset rightPanel styles
+          rightPanel.style.position = '';
+          rightPanel.style.top = '';
+          rightPanel.style.left = '';
+          rightPanel.style.right = '';
+          rightPanel.style.bottom = '';
+          rightPanel.style.overflowY = '';
+          rightPanel.style.overflowX = '';
         }
       });
       observer.observe(projectDetail, { attributes: true, attributeFilter: ['class'] });
