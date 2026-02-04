@@ -761,7 +761,7 @@
       
       .project-subtitle {
         font-size: 24px;
-        margin-bottom: 10px;
+        margin-bottom: 30px;
         margin-top: -21px;
       }
       
@@ -1892,43 +1892,35 @@
       let blocks = [];
       let initialized = false;
       let maxScrollTop = null;
-      let hasScrolled = false;
-      let initialScrollTop = 0;
+      let startPositions = []; // Store initial top positions of each block
       
       function initialize() {
         if (!isMobile()) return;
         if (initialized) return;
         
-        // Get ALL content blocks that should fade in order
         blocks = [];
+        startPositions = [];
         
         // 1. Description
         const description = content.querySelector('.project-description');
-        if (description) {
-          blocks.push(description);
-        }
+        if (description) blocks.push(description);
         
-        // 2. Recognition column (first credit column)
-        // 3. Press column (second credit column)
+        // 2. Recognition column
+        // 3. Press column
         const creditColumns = content.querySelectorAll('.project-credit-column');
-        creditColumns.forEach(col => {
-          blocks.push(col);
-        });
+        creditColumns.forEach(col => blocks.push(col));
         
-        // Down arrow is now fixed positioned, so don't include in fade blocks
-        
-        // Ensure all blocks start fully visible and add transition
+        // Store initial positions and ensure visible
+        const headerBottom = header.getBoundingClientRect().bottom;
         blocks.forEach(b => {
           b.style.opacity = '1';
-          b.style.transition = 'opacity 0.15s ease-out';
+          b.style.transition = 'opacity 0.1s linear';
+          const rect = b.getBoundingClientRect();
+          startPositions.push(rect.top - headerBottom);
         });
         
         initialized = true;
         maxScrollTop = null;
-        hasScrolled = false;
-        initialScrollTop = projectDetail.scrollTop;
-        
-        console.log('Fade initialized with blocks:', blocks.length);
       }
       
       function update() {
@@ -1937,20 +1929,9 @@
         if (!projectDetail.classList.contains('open')) return;
         if (blocks.length === 0) return;
         
-        const currentScroll = projectDetail.scrollTop;
-        
-        // Only start fading after user has scrolled at least 10px
-        if (!hasScrolled) {
-          if (Math.abs(currentScroll - initialScrollTop) > 10) {
-            hasScrolled = true;
-          } else {
-            return; // Don't fade yet
-          }
-        }
-        
-        const headerRect = header.getBoundingClientRect();
-        const headerBottom = headerRect.bottom;
+        const headerBottom = header.getBoundingClientRect().bottom;
         const rightPanelTop = rightPanel.getBoundingClientRect().top;
+        const currentScroll = projectDetail.scrollTop;
         
         // Lock scroll when black area reaches header
         if (rightPanelTop <= headerBottom + 1) {
@@ -1964,33 +1945,31 @@
           maxScrollTop = null;
         }
         
-        // Fade distance - how far from header to start fading
-        const fadeDistance = 120;
+        // Fade each block based on its top position relative to header
+        // Use a longer fade distance for more gradual fade
+        const fadeDistance = 150; // pixels of travel to go from 1 to 0 opacity
         
-        // Update each block's opacity
         blocks.forEach((block, index) => {
           const rect = block.getBoundingClientRect();
+          const blockTop = rect.top;
+          const dist = blockTop - headerBottom;
           
-          // For description (index 0), use TOP edge so fade starts when top of text approaches
-          // For credits (index 1, 2), use TOP edge so they fade as section header approaches
-          // All use top edge for consistent behavior
-          const measurePoint = rect.top;
-          const dist = measurePoint - headerBottom;
-          
-          let newOpacity;
+          // Block fades as its top approaches the header
+          // Full opacity when dist >= fadeDistance
+          // Zero opacity when dist <= 0
+          let opacity;
           if (dist >= fadeDistance) {
-            newOpacity = 1;
+            opacity = 1;
           } else if (dist <= 0) {
-            newOpacity = 0;
+            opacity = 0;
           } else {
-            newOpacity = dist / fadeDistance;
+            opacity = dist / fadeDistance;
           }
           
-          block.style.opacity = newOpacity.toFixed(2);
+          block.style.opacity = opacity.toFixed(3);
         });
       }
       
-      // Only listen to scroll on the project detail container
       projectDetail.addEventListener('scroll', () => {
         if (projectDetail.classList.contains('open')) {
           requestAnimationFrame(update);
@@ -2001,20 +1980,18 @@
         mutations.forEach(mutation => {
           if (mutation.attributeName === 'class') {
             if (projectDetail.classList.contains('open')) {
-              // Wait for animation then initialize
               setTimeout(() => {
                 initialize();
               }, 1500);
             } else {
-              // Reset on close
               blocks.forEach(b => {
                 b.style.opacity = '1';
                 b.style.transition = '';
               });
               initialized = false;
               maxScrollTop = null;
-              hasScrolled = false;
               blocks = [];
+              startPositions = [];
             }
           }
         });
