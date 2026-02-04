@@ -474,17 +474,16 @@
       width: 100%;
       height: 100vh;
       z-index: 10000; /* Above menu and all other elements */
-      transition: top 1.2s cubic-bezier(0.4, 0, 0.2, 1), visibility 0s linear 1.2s;
+      transition: top 1.2s cubic-bezier(0.4, 0, 0.2, 1);
       display: flex;
       overflow: hidden;
       overscroll-behavior: contain;
-      visibility: hidden;
+      pointer-events: none;
     }
     
     .project-detail.open {
       top: 0;
-      visibility: visible;
-      transition: top 1.2s cubic-bezier(0.4, 0, 0.2, 1), visibility 0s linear 0s;
+      pointer-events: auto;
     }
     
     .project-detail-left {
@@ -1876,7 +1875,7 @@
       if (!projectDetail) return;
       
       const header = projectDetail.querySelector('.project-detail-header-mobile');
-      const content = projectDetail.querySelector('#project-content-mobile');
+      const content = projectDetail.querySelector('.project-detail-content-mobile');
       const rightPanel = projectDetail.querySelector('.project-detail-right');
       
       if (!header || !content || !rightPanel) return;
@@ -1889,20 +1888,30 @@
         if (!isMobile()) return;
         if (initialized) return;
         
-        // Get content blocks: description, each credit column, and arrow
-        const description = content.querySelector('.project-description');
-        const creditColumns = content.querySelectorAll('.project-credit-column');
-        const downArrow = content.querySelector('.project-down-arrow');
-        
+        // Get ALL content blocks that should fade
         blocks = [];
-        if (description) blocks.push(description);
-        creditColumns.forEach(col => blocks.push(col));
-        if (downArrow) blocks.push(downArrow);
+        
+        // Get description
+        const description = content.querySelector('.project-description');
+        if (description) {
+          blocks.push(description);
+        }
+        
+        // Get entire credits section (not individual columns)
+        const credits = content.querySelector('.project-credits');
+        if (credits) {
+          blocks.push(credits);
+        }
+        
+        // Get down arrow
+        const downArrow = content.querySelector('.project-down-arrow');
+        if (downArrow) {
+          blocks.push(downArrow);
+        }
         
         // Ensure all blocks start fully visible
         blocks.forEach(b => {
           b.style.opacity = '1';
-          b.style.transition = 'opacity 0.1s ease-out';
         });
         
         initialized = true;
@@ -1913,6 +1922,7 @@
         if (!isMobile()) return;
         if (!initialized) return;
         if (!projectDetail.classList.contains('open')) return;
+        if (blocks.length === 0) return;
         
         const headerRect = header.getBoundingClientRect();
         const headerBottom = headerRect.bottom;
@@ -1932,7 +1942,7 @@
         }
         
         // Fade distance - how far from header to start fading
-        const fadeDistance = 80;
+        const fadeDistance = 100;
         
         // Update each block's opacity based on distance from header
         blocks.forEach(block => {
@@ -1969,7 +1979,6 @@
               // Reset on close
               blocks.forEach(b => {
                 b.style.opacity = '1';
-                b.style.transition = '';
               });
               initialized = false;
               maxScrollTop = null;
