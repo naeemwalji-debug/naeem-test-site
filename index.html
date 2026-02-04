@@ -735,7 +735,7 @@
         background: #fff;
         z-index: 10;
         padding: 30px;
-        padding-bottom: 10px;
+        padding-bottom: 0;
       }
       
       .project-detail-content-mobile {
@@ -760,7 +760,7 @@
       
       .project-subtitle {
         font-size: 24px;
-        margin-bottom: 10px;
+        margin-bottom: 20px;
         margin-top: -21px;
       }
       
@@ -1881,8 +1881,8 @@
       const fadeStart = headerRect.bottom; // Where fade begins (bottom of header)
       
       // Different fade distances for description vs credits
-      const descFadeDistance = 120; // Slower fade for description
-      const creditFadeDistance = 60; // Faster fade for credits
+      const descFadeDistance = 140; // Slower fade for description
+      const creditFadeDistance = 50; // Faster fade for credits
       
       // Get description
       const description = contentMobile.querySelector('.project-description');
