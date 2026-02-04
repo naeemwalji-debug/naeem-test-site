@@ -905,6 +905,17 @@
       history.scrollRestoration = 'auto';
     }
     
+    // Helper to safely update URL hash (fails silently in sandboxed iframes)
+    function updateHash(hash) {
+      try {
+        if (window.location.hash !== hash) {
+          history.replaceState(null, null, hash);
+        }
+      } catch (e) {
+        // Ignore SecurityError in sandboxed environments
+      }
+    }
+    
     const nameLeftEl = document.getElementById("nameLeft");
     const nameRightEl = document.getElementById("nameRight");
 
@@ -1143,7 +1154,7 @@
         console.log('Nav clicked:', href);
         
         // Update URL hash
-        history.replaceState(null, null, href);
+        updateHash(href);
         
         let target;
         
@@ -1276,7 +1287,7 @@
           currentHash = '#about';
         }
         if (window.location.hash !== currentHash) {
-          history.replaceState(null, null, currentHash);
+          updateHash(currentHash);
         }
       }
     }
@@ -1670,7 +1681,7 @@
       scrollPosition = window.pageYOffset;
       projectDetailHeartStroke.classList.add('open');
       // Update URL hash
-      history.replaceState(null, null, '#work/theundeading');
+      updateHash('#work/theundeading');
       // Lock the body scroll (only on desktop)
       if (!isMobile()) {
         document.body.style.overflow = 'hidden';
@@ -1685,7 +1696,7 @@
     function closeProjectDetail() {
       projectDetailHeartStroke.classList.remove('open');
       // Update URL hash back to work
-      history.replaceState(null, null, '#work');
+      updateHash('#work');
       // Restore body scroll
       document.body.style.overflow = '';
       if (!isMobile()) {
