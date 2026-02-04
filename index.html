@@ -61,11 +61,11 @@
     .about-title {
       position: absolute;
       left: -40px; /* Compensate for the 40px padding to align visually */
-      bottom: calc(100% - 27px); /* Base overlap for small screens */
-      color: #797979;
+      bottom: calc(100% + 13px); /* Base overlap for small screens */
+      color: #a6a6a6;
       font-family: "selfie-neue-round", "Brush Script MT", cursive;
       font-weight: 700;
-      font-size: clamp(80px, 12vw, 160px); /* Responsive font size */
+      font-size: 115px;
       line-height: 0.9;
       word-wrap: break-word;
       z-index: 1;
@@ -73,6 +73,7 @@
       overflow: visible;
       padding: 20px 40px;
       margin: -20px -40px;
+      pointer-events: none;
     }
     .about-body {
       position: relative;
@@ -115,11 +116,11 @@
     .work-title {
       position: absolute;
       left: 15px;
-      bottom: calc(100% - 23px); /* Base overlap for small screens */
-      color: #797979;
+      bottom: calc(100% + 19px);
+      color: #666666;
       font-family: "selfie-neue-round", "Brush Script MT", cursive;
       font-weight: 700;
-      font-size: clamp(80px, 12vw, 160px);
+      font-size: 115px;
       line-height: 0.9;
       word-wrap: break-word;
       z-index: 1;
@@ -127,6 +128,7 @@
       overflow: visible;
       padding: 20px 40px;
       margin: -20px -40px;
+      pointer-events: none;
     }
     .work-grid {
       position: relative;
@@ -225,10 +227,10 @@
     /* Increase title overlap on larger screens */
     @media (min-width: 1024px) {
       .about-title {
-        bottom: calc(100% - 52px);
+        bottom: calc(100% - 37px);
       }
       .work-title {
-        bottom: calc(100% - 50px);
+        bottom: calc(100% - 31px);
       }
     }
     
@@ -279,9 +281,9 @@
       font-family: "Zalando Sans Expanded", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       font-weight: 700;
 
-      font-size: 14.67px;
+      font-size: 13.33px;
       line-height: 16px;
-      letter-spacing: 2px;
+      letter-spacing: 0.53px;
 
       text-transform: uppercase;
     }
@@ -300,8 +302,9 @@
     .nav-indicator {
       position: absolute;
       left: -1px;
-      top: -1px;
-      bottom: -1px;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 18px;
       background: #fff;
       pointer-events: none;
       z-index: 0;
@@ -333,8 +336,8 @@
       font-weight: 700;
       font-style: normal;
 
-      font-size: clamp(44px, 6vw, 80px);
-      letter-spacing: 0.10em;
+      font-size: clamp(22px, 3vw, 40px);
+      letter-spacing: 0.40em;
       color: #ffffff;
       text-transform: uppercase;
       opacity: 0.95;
@@ -369,9 +372,11 @@
 
       font-family: "Zalando Sans Expanded", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       font-weight: 400; /* Regular */
-      font-size: 20px;
-      letter-spacing: 2px; /* ≈ 20 tracking */
+      font-size: 18.67px;
+      letter-spacing: 0.75px;
+      line-height: 20.67px; /* 15.5pt */
       text-transform: uppercase;
+      text-align: center;
 
       color: rgba(255,255,255,0.9);
       pointer-events: none;
@@ -409,8 +414,9 @@
       position: fixed;
       right: 55px;
       bottom: 55px;
-      z-index: 9999;
+      z-index: 10001;
       mix-blend-mode: difference;
+      pointer-events: none;
       
       display: flex;
       flex-direction: column;
@@ -427,6 +433,214 @@
     
     .copyright-logo {
       margin-top: 1.5px; /* 2 * 0.75 = 1.5 */
+    }
+    
+    /* Project Detail Page */
+    .project-detail {
+      position: fixed;
+      top: 100vh;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      z-index: 10000; /* Above menu and all other elements */
+      transition: top 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      overflow: hidden;
+    }
+    
+    .project-detail.open {
+      top: 0;
+    }
+    
+    .project-detail-left {
+      width: 33.33%;
+      min-width: 500px;
+      height: 100%;
+      background: #fff;
+      padding: 50px;
+      box-sizing: border-box;
+      position: relative;
+    }
+    
+    .project-detail-right {
+      flex: 1;
+      height: 100%;
+      background: #000;
+      padding: 50px;
+      box-sizing: border-box;
+      display: block;
+    }
+    
+    .project-detail-right .project-media {
+      width: 100%;
+      aspect-ratio: 16/9;
+    }
+    
+    .project-detail-right .project-media iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+    
+    .project-back {
+      color: #000;
+      text-decoration: none;
+      font-family: "Zalando Sans Expanded", sans-serif;
+      font-weight: 400;
+      font-size: 13.33px;
+      text-transform: uppercase;
+      letter-spacing: 0.53px;
+      line-height: 16px;
+      cursor: pointer;
+      margin-bottom: 50px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0;
+      padding: 10px;
+      margin-left: -10px;
+      margin-top: -10px;
+    }
+    
+    .project-back-arrow {
+      width: 20px;
+      height: 10px;
+      margin-right: 3px;
+      margin-left: -23px;
+      transform: rotate(90deg);
+    }
+    
+    .project-back-arrow polyline {
+      fill: none;
+      stroke: #000;
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    
+    .project-back:hover {
+      opacity: 0.7;
+    }
+    
+    .project-title {
+      color: #a6a6a6;
+      font-family: "selfie-neue-round", "Brush Script MT", cursive;
+      font-weight: 700;
+      font-size: 115px;
+      line-height: 0.7;
+      margin-left: -27px;
+      margin-top: 13px;
+      margin-bottom: 0;
+    }
+    
+    .project-subtitle {
+      color: #000;
+      font-family: "Zalando Sans Expanded", sans-serif;
+      font-weight: 700;
+      font-size: 36px;
+      text-transform: uppercase;
+      line-height: 37px;
+      margin-top: -26px; /* Overlap bottom of title */
+      margin-bottom: 50px; /* 50px gap before description */
+    }
+    
+    .project-description {
+      color: #000;
+      font-family: "Zalando Sans Expanded", sans-serif;
+      font-weight: 400;
+      font-size: 18.67px;
+      line-height: 20.67px;
+      letter-spacing: 0.75px;
+      text-transform: uppercase;
+      margin: 0;
+      width: 100%;
+      padding-right: 50px;
+      box-sizing: border-box;
+    }
+    
+    .project-credits {
+      display: flex;
+      gap: 22px;
+      position: absolute;
+      bottom: 50px;
+      left: 50px;
+      align-items: flex-end;
+    }
+    
+    .project-credit-column {
+      width: 200px;
+    }
+    
+    .project-credit-label {
+      color: #000;
+      font-family: "Zalando Sans Expanded", sans-serif;
+      font-weight: 400;
+      font-size: 13.33px;
+      line-height: 16px !important;
+      letter-spacing: 0.53px;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 0;
+    }
+    
+    .project-credit-list {
+      color: #000;
+      font-family: "Zalando Sans Expanded", sans-serif;
+      font-weight: 700;
+      font-size: 13.33px;
+      line-height: 16px !important;
+      letter-spacing: 0.53px;
+      text-transform: uppercase;
+    }
+    
+    /* Responsive project detail */
+    @media (max-width: 1024px) {
+      .project-detail-left {
+        min-width: 350px;
+      }
+      
+      .project-title {
+        font-size: 80px;
+        margin-left: -18px;
+      }
+      
+      .project-subtitle {
+        font-size: 28px;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .project-detail {
+        flex-direction: column;
+        overflow-y: auto;
+      }
+      
+      .project-detail-left {
+        width: 100%;
+        min-width: unset;
+        height: auto;
+        padding: 30px;
+      }
+      
+      .project-detail-right {
+        width: 100%;
+        height: 50vh;
+        padding: 30px;
+      }
+      
+      .project-title {
+        font-size: 60px;
+        margin-left: -12px;
+      }
+      
+      .project-subtitle {
+        font-size: 24px;
+        margin-bottom: 30px;
+      }
+      
+      .project-credits {
+        flex-direction: column;
+        gap: 20px;
+      }
     }
   </style>
 </head>
@@ -536,43 +750,18 @@
       width = document.documentElement.clientWidth;
       height = document.documentElement.clientHeight;
       
-      const isMobile = width <= 768;
+      // Position names on either side of center - names are centered with transform
+      // so we position them in the middle of each half
+      const logoWidth = 280; // approximate logo width
+      const inset = 30; // tighter to logo
       
-      // Update descriptor position - for both mobile and desktop
-      const descriptor = document.getElementById("descriptor");
-      const arrowTopY = height - 70; // arrow is at bottom: 30px, give some padding
+      // Left name: center of space between left edge and logo left edge
+      const logoLeftEdge = (width / 2) - (logoWidth / 2);
+      const leftCenterX = (logoLeftEdge + inset) / 2;
       
-      if (isMobile) {
-        // Mobile name positioning handled by CSS
-        // But still position descriptor
-        const waljiBottom = (height / 2) - 50 + 80;
-        const descriptorY = waljiBottom + (arrowTopY - waljiBottom) / 2 - 15;
-        descriptor.style.top = `${descriptorY}px`;
-        return;
-      }
-      
-      // Desktop positioning below
-      
-      // Side margins same as other pages
-      const sideMargin = 55;
-      
-      // Logo bounding box (logo width + 20px padding on each side)
-      const logoWidth = 280;
-      const boundingBox = logoWidth + 40; // 20px larger on each side
-      
-      // Available width for names = viewport - margins - bounding box
-      const availableWidth = width - (sideMargin * 2) - boundingBox;
-      const nameAreaWidth = availableWidth / 2; // each name gets half
-      
-      // Position names centered in their areas
-      const logoLeftEdge = (width / 2) - (boundingBox / 2);
-      const logoRightEdge = (width / 2) + (boundingBox / 2);
-      
-      // Left name: centered between left margin and logo bounding box
-      const leftCenterX = sideMargin + (logoLeftEdge - sideMargin) / 2;
-      
-      // Right name: centered between logo bounding box and right margin
-      const rightCenterX = logoRightEdge + (width - sideMargin - logoRightEdge) / 2;
+      // Right name: center of space between logo right edge and right edge
+      const logoRightEdge = (width / 2) + (logoWidth / 2);
+      const rightCenterX = logoRightEdge - inset + (width - logoRightEdge + inset) / 2;
       
       const centerY = height / 2;
 
@@ -580,20 +769,23 @@
       nameLeftEl.style.top = `${centerY}px`;
       nameRightEl.style.left = `${rightCenterX}px`;
       nameRightEl.style.top = `${centerY}px`;
-      
-      // Scale font size based on available space
-      // Base size is 80px at full width, scale down proportionally
-      const baseWidth = 1400; // reference width where font is 80px
-      const scaleFactor = Math.min(1, (width - sideMargin * 2) / baseWidth);
-      const fontSize = Math.max(44, 80 * scaleFactor); // min 44px, max 80px
-      
-      nameLeftEl.style.fontSize = `${fontSize}px`;
-      nameRightEl.style.fontSize = `${fontSize}px`;
 
-      // Desktop descriptor position
-      const namesY = height / 2 + 20;
-      const descriptorY = namesY + (arrowTopY - namesY) / 2;
-      descriptor.style.top = `${descriptorY}px`;
+      // Update descriptor position - centered between content and arrow
+      const descriptor = document.getElementById("descriptor");
+      const arrowTopY = height - 70; // arrow is at bottom: 30px, give some padding
+      const isMobile = window.innerWidth <= 768;
+      
+      if (isMobile) {
+        // On mobile, WALJI bottom is at ~50% - 50px + 2 lines (~80px)
+        const waljiBottom = (height / 2) - 50 + 80;
+        const descriptorY = waljiBottom + (arrowTopY - waljiBottom) / 2 - 15; // center the descriptor element
+        descriptor.style.top = `${descriptorY}px`;
+      } else {
+        // On desktop, center between names (at 50%) and arrow
+        const namesY = height / 2 + 20;
+        const descriptorY = namesY + (arrowTopY - namesY) / 2;
+        descriptor.style.top = `${descriptorY}px`;
+      }
     }
 
     window.addEventListener('resize', updateNamePositions);
@@ -776,6 +968,7 @@
       a.addEventListener('click', (e) => {
         e.preventDefault();
         const href = a.getAttribute('href');
+        console.log('Nav clicked:', href);
         let target;
         
         // Handle both #header and #home for the home link
@@ -783,9 +976,43 @@
           target = document.getElementById('header') || document.body;
           // Scroll to top of page
           smoothScrollTo(document.body, SCROLL_DURATION);
+        } else if (href === '#about') {
+          // Special handling for About - scroll to headerSpacer bottom position
+          // since About section may be position:fixed
+          const headerSpacer = document.getElementById('headerSpacer');
+          if (headerSpacer) {
+            const targetY = headerSpacer.offsetTop + headerSpacer.offsetHeight;
+            // Create a temporary element at the target position for smoothScrollTo
+            const startPosition = window.pageYOffset;
+            const distance = targetY - startPosition;
+            let startTime = null;
+            
+            function easeInOutCubic(t) {
+              return t < 0.5 
+                ? 4 * t * t * t 
+                : 1 - Math.pow(-2 * t + 2, 3) / 2;
+            }
+            
+            function animation(currentTime) {
+              if (startTime === null) startTime = currentTime;
+              const timeElapsed = currentTime - startTime;
+              const progress = Math.min(timeElapsed / SCROLL_DURATION, 1);
+              const easedProgress = easeInOutCubic(progress);
+              
+              window.scrollTo(0, startPosition + distance * easedProgress);
+              
+              if (timeElapsed < SCROLL_DURATION) {
+                requestAnimationFrame(animation);
+              }
+            }
+            
+            requestAnimationFrame(animation);
+          }
         } else {
           target = document.querySelector(href);
+          console.log('Target element:', target);
           if (target) {
+            console.log('Scrolling to:', target.id);
             smoothScrollTo(target, SCROLL_DURATION);
           }
         }
@@ -906,6 +1133,7 @@
     }, { passive: true });
     // Size copyright logo to match "2026" width
     function sizeCopyrightLogo() {
+      // Main copyright
       const copyrightEl = document.querySelector('.copyright');
       const spans = copyrightEl.querySelectorAll('span');
       const yearSpan = spans[1]; // "2026"
@@ -949,7 +1177,11 @@
           <div class="work-item" style="background: #b9b9b9;"></div>
           <div class="work-item" style="background: #a9a9a9;"></div>
           <div class="work-item" style="background: #999999;"></div>
-          <div class="work-item" style="background: #898989;"></div>
+          <div class="work-item" id="project-heart-stroke" style="cursor: pointer; position: relative; overflow: hidden;">
+            <video autoplay muted loop playsinline style="width: 100%; height: 100%; object-fit: cover; transform: scale(1.35);">
+              <source src="images/TheUndeading.mp4" type="video/mp4">
+            </video>
+          </div>
           <div class="work-item" style="background: #797979;"></div>
           <div class="work-item" style="background: #696969;"></div>
           <div class="work-item" style="background: #595959;"></div>
@@ -957,6 +1189,38 @@
       </div>
     </section>
   </div>
+
+  <!-- Project Detail: Heart & Stroke -->
+  <div id="project-detail-heart-stroke" class="project-detail">
+    <div class="project-detail-left">
+      <a href="#work" class="project-back" onclick="closeProjectDetail()">
+        <svg class="project-back-arrow" viewBox="0 0 40 20">
+          <polyline points="5,5 20,15 35,5"/>
+        </svg>
+        BACK TO WORK
+      </a>
+      
+      <h1 class="project-title">Heart & Stroke</h1>
+      <h2 class="project-subtitle">THE UNDEADING</h2>
+      
+      <p class="project-description">Every young soccer player dreams of playing on the same field as their heroes.<br><br>Following Toronto FC winning the 2017 MLS Cup, we moved the championship pitch from BMO Field to a youth recreation centre and replanted it, inspiring future generations to play like champions.</p>
+      
+      <div class="project-credits">
+        <div class="project-credit-column">
+          <span class="project-credit-label">RECOGNITION: </span><span class="project-credit-list">CASSIES<br>APPLIED ARTS<br>ADCC<br>MARKETING<br>W3<br>MEDIA&nbsp;INNOVATION<br>WARC TOP 100<br>AME<br>CMA</span>
+        </div>
+        <div class="project-credit-column">
+          <span class="project-credit-label">PRESS: </span><span class="project-credit-list">MASHABLE<br>GIZMODO<br>CBS NEWS<br>FAST COMPANY<br>DAILY MAIL UNCRATE<br>HUFF POST<br>ADWEEK<br>ADAGE<br>CTV NEWS<br>GLOBAL NEWS</span>
+        </div>
+      </div>
+    </div>
+    <div class="project-detail-right">
+      <div class="project-media">
+        <iframe src="https://player.vimeo.com/video/97123199?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" title="Heart &amp; Stroke Foundation - The Undeading"></iframe>
+      </div>
+    </div>
+  </div>
+  <script src="https://player.vimeo.com/api/player.js"></script>
 
   <script>
     // About and Work section fade-in based on scroll (runs after DOM ready)
@@ -1197,6 +1461,30 @@
     
     window.addEventListener("scroll", updateWorkFade, { passive: true });
     updateWorkFade();
+    
+    // Project Detail Page Functionality
+    const projectHeartStroke = document.getElementById('project-heart-stroke');
+    const projectDetailHeartStroke = document.getElementById('project-detail-heart-stroke');
+    
+    projectHeartStroke.addEventListener('click', function() {
+      projectDetailHeartStroke.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    });
+    
+    function closeProjectDetail() {
+      projectDetailHeartStroke.classList.remove('open');
+      document.body.style.overflow = '';
+      // Scroll to work section with same duration as nav
+      const workSection = document.getElementById('work');
+      smoothScrollTo(workSection, SCROLL_DURATION);
+    }
+    
+    // Close on escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && projectDetailHeartStroke.classList.contains('open')) {
+        closeProjectDetail();
+      }
+    });
   </script>
 </body>
 </html>
