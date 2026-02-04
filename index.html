@@ -278,8 +278,8 @@
 
     .site-nav{
       position: fixed;
-      left: calc(var(--cornerInset) + var(--plusSize) + 10px);
-      top: calc(var(--cornerInset) + var(--plusSize) + 10px);
+      left: calc(var(--cornerInset) + var(--plusSize));
+      top: calc(var(--cornerInset) + var(--plusSize));
       z-index: 9999;
       mix-blend-mode: difference;
 
@@ -420,8 +420,8 @@
     
     .copyright {
       position: fixed;
-      right: calc(var(--cornerInset) + var(--plusSize) + 10px);
-      bottom: calc(var(--cornerInset) + var(--plusSize) + 10px);
+      right: calc(var(--cornerInset) + var(--plusSize));
+      bottom: calc(var(--cornerInset) + var(--plusSize));
       z-index: 10001;
       mix-blend-mode: difference;
       pointer-events: none;
@@ -568,15 +568,17 @@
     
     .project-credits {
       display: flex;
-      gap: 22px;
+      flex-direction: column;
+      gap: 16px;
       position: absolute;
       bottom: 50px;
       left: 50px;
-      align-items: flex-end;
     }
     
     .project-credit-column {
-      width: 200px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
     }
     
     .project-credit-label {
@@ -584,7 +586,7 @@
       font-family: "Zalando Sans Expanded", sans-serif;
       font-weight: 400;
       font-size: 13.33px;
-      line-height: 16px !important;
+      line-height: 16px;
       letter-spacing: 0.53px;
       text-transform: uppercase;
       display: block;
@@ -596,7 +598,7 @@
       font-family: "Zalando Sans Expanded", sans-serif;
       font-weight: 700;
       font-size: 13.33px;
-      line-height: 16px !important;
+      line-height: 16px;
       letter-spacing: 0.53px;
       text-transform: uppercase;
     }
@@ -645,6 +647,7 @@
       .project-subtitle {
         font-size: 24px;
         margin-bottom: 30px;
+        margin-top: -21px; /* Move down 5px from base -26px */
       }
       
       .project-credits {
@@ -662,6 +665,14 @@
       
       .project-back {
         margin-bottom: 30px;
+        font-size: 11px;
+        line-height: 14px;
+      }
+      
+      .project-credit-label,
+      .project-credit-list {
+        font-size: 11px;
+        line-height: 14px;
       }
       
       /* Nav - smaller font on mobile */
@@ -681,10 +692,11 @@
       }
       
       .about-title {
-        font-size: 70px;
-        left: -20px;
-        padding: 10px 20px;
-        margin: -10px -20px;
+        font-size: 60px;
+        left: -15px;
+        padding: 10px 15px;
+        margin: -10px -15px;
+        bottom: calc(100% - 2px); /* Move down 15px from base */
       }
       
       /* Work section - smaller padding */
@@ -693,8 +705,9 @@
       }
       
       .work-title {
-        font-size: 70px;
+        font-size: 60px;
         left: 5px;
+        bottom: calc(100% + 3px); /* Move down 15px from base */
       }
     }
     
@@ -1308,10 +1321,12 @@
       
       <div class="project-credits">
         <div class="project-credit-column">
-          <span class="project-credit-label">RECOGNITION: </span><span class="project-credit-list">CASSIES<br>APPLIED ARTS<br>ADCC<br>MARKETING<br>W3<br>MEDIA&nbsp;INNOVATION<br>WARC TOP 100<br>AME<br>CMA</span>
+          <span class="project-credit-label">RECOGNITION:</span>
+          <span class="project-credit-list">CASSIES / APPLIED ARTS / ADCC / MARKETING / W3 / MEDIA INNOVATION / WARC TOP 100 / AME / CMA</span>
         </div>
         <div class="project-credit-column">
-          <span class="project-credit-label">PRESS: </span><span class="project-credit-list">MASHABLE<br>GIZMODO<br>CBS NEWS<br>FAST COMPANY<br>DAILY MAIL UNCRATE<br>HUFF POST<br>ADWEEK<br>ADAGE<br>CTV NEWS<br>GLOBAL NEWS</span>
+          <span class="project-credit-label">PRESS:</span>
+          <span class="project-credit-list">MASHABLE / GIZMODO / CBS NEWS / FAST COMPANY / DAILY MAIL UNCRATE / HUFF POST / ADWEEK / ADAGE / CTV NEWS / GLOBAL NEWS</span>
         </div>
       </div>
     </div>
