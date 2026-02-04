@@ -30,7 +30,7 @@
     
     @media (max-width: 768px) {
       :root {
-        --cornerInset: 5px;   /* + signs closer to edge on mobile */
+        --cornerInset: 10px;   /* + signs closer to edge on mobile */
         --plusSize: 20px;
         --navClearance: 12px;
         --contentInset: 25px; /* nav/copyright position on mobile */
@@ -649,7 +649,7 @@
       .project-subtitle {
         font-size: 24px;
         margin-bottom: 30px;
-        margin-top: -21px; /* Move down 5px from base -26px */
+        margin-top: -20px; /* Move down 1px more */
       }
       
       .project-credits {
@@ -698,7 +698,7 @@
         left: -15px;
         padding: 10px 15px;
         margin: -10px -15px;
-        bottom: calc(100% - 2px); /* Move down 15px from base */
+        bottom: calc(100% - 17px); /* Move down additional 15px */
       }
       
       /* Work section - smaller padding */
@@ -709,7 +709,7 @@
       .work-title {
         font-size: 60px;
         left: 5px;
-        bottom: calc(100% + 3px); /* Move down 15px from base */
+        bottom: calc(100% - 12px); /* Move down additional 15px */
       }
     }
     
@@ -855,6 +855,12 @@
   </script>
   
   <script>
+    // Force scroll to top on page load/reload
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+    window.scrollTo(0, 0);
+    
     const nameLeftEl = document.getElementById("nameLeft");
     const nameRightEl = document.getElementById("nameRight");
 
