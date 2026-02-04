@@ -1982,14 +1982,10 @@
       rightPanel.style.zIndex = '';
     }
     
-    // Listen for scroll on the right panel to detect when user wants to scroll back up
-    projectDetailHeartStroke.querySelector('.project-detail-right')?.addEventListener('scroll', function(e) {
-      // If at top of black area and locked, prepare to unlock on next scroll up attempt
-    });
-    
-    // Use wheel event to detect scroll direction
+    // Use wheel event to detect scroll direction and handle smooth transition
     projectDetailHeartStroke.addEventListener('wheel', function(e) {
       if (!isLocked) return;
+      if (window.innerWidth > 768) return;
       
       const rightPanel = projectDetailHeartStroke.querySelector('.project-detail-right');
       if (!rightPanel) return;
@@ -1997,33 +1993,44 @@
       // If scrolling up (negative deltaY) and at top of black area content
       if (e.deltaY < 0 && rightPanel.scrollTop <= 0) {
         e.preventDefault();
+        
+        // Unlock and apply the scroll delta to main container
         unlockHeader();
-        // Scroll main container up a bit to start the transition
-        projectDetailHeartStroke.scrollTop = Math.max(0, lockScrollTop - 50);
+        
+        // Apply the scroll movement to expand header smoothly
+        projectDetailHeartStroke.scrollTop = lockScrollTop + e.deltaY;
       }
     }, { passive: false });
     
-    // Also handle touch for mobile
+    // Handle touch for mobile - smooth continuous scroll
     let touchStartY = 0;
+    let lastTouchY = 0;
+    
     projectDetailHeartStroke.addEventListener('touchstart', function(e) {
       touchStartY = e.touches[0].clientY;
+      lastTouchY = e.touches[0].clientY;
     }, { passive: true });
     
     projectDetailHeartStroke.addEventListener('touchmove', function(e) {
       if (!isLocked) return;
+      if (window.innerWidth > 768) return;
       
       const rightPanel = projectDetailHeartStroke.querySelector('.project-detail-right');
       if (!rightPanel) return;
       
       const touchCurrentY = e.touches[0].clientY;
-      const deltaY = touchStartY - touchCurrentY; // positive = scrolling up content (finger moving up)
+      const deltaY = lastTouchY - touchCurrentY; // positive = finger moving up (scroll content up)
+      lastTouchY = touchCurrentY;
       
-      // If swiping down (to scroll up) and at top of black area content
-      if (deltaY < -10 && rightPanel.scrollTop <= 0) {
+      // If swiping down (finger moving down, deltaY negative) and at top of black area
+      if (deltaY < 0 && rightPanel.scrollTop <= 0) {
         e.preventDefault();
+        
+        // Unlock and apply the scroll delta to main container
         unlockHeader();
-        // Scroll main container up a bit to start the transition
-        projectDetailHeartStroke.scrollTop = Math.max(0, lockScrollTop - 50);
+        
+        // Apply the touch movement to expand header smoothly (deltaY is negative, so subtract to scroll down)
+        projectDetailHeartStroke.scrollTop = lockScrollTop + deltaY;
       }
     }, { passive: false });
     
