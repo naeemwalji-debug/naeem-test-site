@@ -1266,15 +1266,18 @@
       // Work indicator: grows as Work comes up
       workIndicator.style.width = (workFullWidth * workProgress) + "px";
       
-      // Update URL hash based on current section
-      let currentHash = '#header';
-      if (workProgress > 0.5) {
-        currentHash = '#work';
-      } else if (aboutProgress > 0.5) {
-        currentHash = '#about';
-      }
-      if (window.location.hash !== currentHash) {
-        history.replaceState(null, null, currentHash);
+      // Update URL hash based on current section (but not when project is open)
+      const projectOpen = document.querySelector('.project-detail.open');
+      if (!projectOpen) {
+        let currentHash = '#header';
+        if (workProgress > 0.5) {
+          currentHash = '#work';
+        } else if (aboutProgress > 0.5) {
+          currentHash = '#about';
+        }
+        if (window.location.hash !== currentHash) {
+          history.replaceState(null, null, currentHash);
+        }
       }
     }
     
@@ -1660,27 +1663,38 @@
     const projectHeartStroke = document.getElementById('project-heart-stroke');
     const projectDetailHeartStroke = document.getElementById('project-detail-heart-stroke');
     let scrollPosition = 0;
+    const isMobile = () => window.innerWidth <= 768;
     
     projectHeartStroke.addEventListener('click', function() {
       // Save current scroll position
       scrollPosition = window.pageYOffset;
       projectDetailHeartStroke.classList.add('open');
-      // Lock the body scroll
-      document.body.style.overflow = 'hidden';
-      document.body.style.position = 'fixed';
-      document.body.style.top = `-${scrollPosition}px`;
-      document.body.style.width = '100%';
+      // Update URL hash
+      history.replaceState(null, null, '#work/theundeading');
+      // Lock the body scroll (only on desktop)
+      if (!isMobile()) {
+        document.body.style.overflow = 'hidden';
+        document.body.style.position = 'fixed';
+        document.body.style.top = `-${scrollPosition}px`;
+        document.body.style.width = '100%';
+      } else {
+        document.body.style.overflow = 'hidden';
+      }
     });
     
     function closeProjectDetail() {
       projectDetailHeartStroke.classList.remove('open');
+      // Update URL hash back to work
+      history.replaceState(null, null, '#work');
       // Restore body scroll
       document.body.style.overflow = '';
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.width = '';
-      // Restore scroll position then scroll to work
-      window.scrollTo(0, scrollPosition);
+      if (!isMobile()) {
+        document.body.style.position = '';
+        document.body.style.top = '';
+        document.body.style.width = '';
+        // Restore scroll position then scroll to work
+        window.scrollTo(0, scrollPosition);
+      }
       // Scroll to work section with same duration as nav
       const workSection = document.getElementById('work');
       smoothScrollTo(workSection, SCROLL_DURATION);
@@ -1692,6 +1706,15 @@
         closeProjectDetail();
       }
     });
+    
+    // Open project page if URL hash matches on page load
+    if (window.location.hash === '#work/theundeading') {
+      projectDetailHeartStroke.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.top = '0';
+      document.body.style.width = '100%';
+    }
   </script>
 </body>
 </html>
