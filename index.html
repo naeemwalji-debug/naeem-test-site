@@ -1965,16 +1965,67 @@
       }
     }
     
-    // Reset when scrolling back up in the black area
-    function handleRightPanelScroll() {
+    // Handle unlocking when scrolling up at top of black area
+    function unlockHeader() {
       const rightPanel = projectDetailHeartStroke.querySelector('.project-detail-right');
-      if (!rightPanel || !isLocked) return;
+      if (!rightPanel) return;
       
-      // If scrolled to top of black area and trying to scroll up more, unlock
-      if (rightPanel.scrollTop <= 0) {
-        // Check if user is trying to scroll up (we'll unlock on next main scroll)
-      }
+      isLocked = false;
+      lockScrollTop = null;
+      
+      rightPanel.style.position = '';
+      rightPanel.style.top = '';
+      rightPanel.style.left = '';
+      rightPanel.style.right = '';
+      rightPanel.style.bottom = '';
+      rightPanel.style.overflowY = '';
+      rightPanel.style.zIndex = '';
     }
+    
+    // Listen for scroll on the right panel to detect when user wants to scroll back up
+    projectDetailHeartStroke.querySelector('.project-detail-right')?.addEventListener('scroll', function(e) {
+      // If at top of black area and locked, prepare to unlock on next scroll up attempt
+    });
+    
+    // Use wheel event to detect scroll direction
+    projectDetailHeartStroke.addEventListener('wheel', function(e) {
+      if (!isLocked) return;
+      
+      const rightPanel = projectDetailHeartStroke.querySelector('.project-detail-right');
+      if (!rightPanel) return;
+      
+      // If scrolling up (negative deltaY) and at top of black area content
+      if (e.deltaY < 0 && rightPanel.scrollTop <= 0) {
+        e.preventDefault();
+        unlockHeader();
+        // Scroll main container up a bit to start the transition
+        projectDetailHeartStroke.scrollTop = Math.max(0, lockScrollTop - 50);
+      }
+    }, { passive: false });
+    
+    // Also handle touch for mobile
+    let touchStartY = 0;
+    projectDetailHeartStroke.addEventListener('touchstart', function(e) {
+      touchStartY = e.touches[0].clientY;
+    }, { passive: true });
+    
+    projectDetailHeartStroke.addEventListener('touchmove', function(e) {
+      if (!isLocked) return;
+      
+      const rightPanel = projectDetailHeartStroke.querySelector('.project-detail-right');
+      if (!rightPanel) return;
+      
+      const touchCurrentY = e.touches[0].clientY;
+      const deltaY = touchStartY - touchCurrentY; // positive = scrolling up content (finger moving up)
+      
+      // If swiping down (to scroll up) and at top of black area content
+      if (deltaY < -10 && rightPanel.scrollTop <= 0) {
+        e.preventDefault();
+        unlockHeader();
+        // Scroll main container up a bit to start the transition
+        projectDetailHeartStroke.scrollTop = Math.max(0, lockScrollTop - 50);
+      }
+    }, { passive: false });
     
     projectDetailHeartStroke.addEventListener('scroll', updateMobileContentFade);
     window.addEventListener('resize', function() {
