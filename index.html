@@ -721,6 +721,7 @@
         width: 100%;
         min-width: unset;
         height: auto;
+        min-height: 0;
         padding: 0;
         flex-shrink: 0;
         overflow: visible;
@@ -733,32 +734,26 @@
         background: #fff;
         z-index: 10;
         padding: 30px;
-        padding-bottom: 20px;
-      }
-      
-      /* Fade mask - white gradient that fades content line by line */
-      .project-detail-header-mobile::after {
-        content: '';
-        position: absolute;
-        bottom: -60px;
-        left: 0;
-        right: 0;
-        height: 60px;
-        background: linear-gradient(to bottom, #fff 0%, transparent 100%);
-        pointer-events: none;
-        z-index: 5;
+        padding-bottom: 15px;
       }
       
       .project-detail-content-mobile {
-        padding: 0 30px 10px 30px;
+        padding: 0 30px 20px 30px;
         position: relative;
+        background: #fff;
+      }
+      
+      /* Line wrapper for individual line fading */
+      .project-detail-content-mobile .fade-line {
+        display: block;
+        transition: opacity 0.15s ease-out;
       }
       
       .project-detail-right {
         width: 100%;
         height: auto;
         padding: 30px;
-        padding-bottom: 100px; /* Extra space to clear copyright */
+        padding-bottom: 100px;
         flex-shrink: 0;
         overflow: visible;
       }
@@ -1505,7 +1500,7 @@
         <h2 class="project-subtitle">THE UNDEADING</h2>
       </div>
       
-      <div class="project-detail-content-mobile">
+      <div class="project-detail-content-mobile" id="project-content-mobile">
         <p class="project-description">Every young soccer player dreams of playing on the same field as their heroes.<br><br>Following Toronto FC winning the 2017 MLS Cup, we moved the championship pitch from BMO Field to a youth recreation centre and replanted it, inspiring future generations to play like champions.</p>
         
         <div class="project-credits">
@@ -1870,6 +1865,195 @@
       document.body.style.top = '0';
       document.body.style.width = '100%';
     }
+    
+    // ===== MOBILE LINE-BY-LINE FADE EFFECT =====
+    (function() {
+      const projectDetail = document.getElementById('project-detail-heart-stroke');
+      const header = projectDetail.querySelector('.project-detail-header-mobile');
+      const content = document.getElementById('project-content-mobile');
+      
+      if (!header || !content) return;
+      
+      let linesWrapped = false;
+      let fadeLines = [];
+      
+      // Function to wrap text content into individual line spans
+      function wrapTextIntoLines() {
+        if (window.innerWidth > 768) return;
+        if (linesWrapped) return;
+        
+        const description = content.querySelector('.project-description');
+        const credits = content.querySelector('.project-credits');
+        const downArrow = content.querySelector('.project-down-arrow');
+        
+        if (!description) return;
+        
+        // Get the computed line height
+        const computedStyle = window.getComputedStyle(description);
+        const lineHeight = parseFloat(computedStyle.lineHeight) || 16;
+        const containerWidth = description.offsetWidth;
+        
+        // Create a temporary element to measure text
+        const measureEl = document.createElement('span');
+        measureEl.style.cssText = `
+          position: absolute;
+          visibility: hidden;
+          white-space: nowrap;
+          font-family: ${computedStyle.fontFamily};
+          font-size: ${computedStyle.fontSize};
+          font-weight: ${computedStyle.fontWeight};
+          letter-spacing: ${computedStyle.letterSpacing};
+          text-transform: ${computedStyle.textTransform};
+        `;
+        document.body.appendChild(measureEl);
+        
+        // Parse the description HTML and split into lines
+        const htmlContent = description.innerHTML;
+        // Split on <br> tags first
+        const paragraphs = htmlContent.split(/<br\s*\/?>/gi);
+        
+        let allLines = [];
+        
+        paragraphs.forEach((para, pIndex) => {
+          if (para.trim() === '') {
+            // Empty paragraph (from double <br>)
+            allLines.push({ text: '', isBreak: true });
+            return;
+          }
+          
+          // Split paragraph into words
+          const words = para.trim().split(/\s+/);
+          let currentLine = '';
+          
+          words.forEach((word, wIndex) => {
+            const testLine = currentLine ? currentLine + ' ' + word : word;
+            measureEl.textContent = testLine;
+            
+            if (measureEl.offsetWidth > containerWidth && currentLine) {
+              // Current line is full, push it
+              allLines.push({ text: currentLine, isBreak: false });
+              currentLine = word;
+            } else {
+              currentLine = testLine;
+            }
+          });
+          
+          // Push remaining text
+          if (currentLine) {
+            allLines.push({ text: currentLine, isBreak: false });
+          }
+        });
+        
+        document.body.removeChild(measureEl);
+        
+        // Build new HTML with each line wrapped
+        let newHTML = '';
+        allLines.forEach((line, i) => {
+          if (line.isBreak) {
+            newHTML += '<span class="fade-line" style="height: 1em; display: block;"></span>';
+          } else {
+            newHTML += `<span class="fade-line">${line.text}</span>`;
+          }
+        });
+        
+        description.innerHTML = newHTML;
+        
+        // Also wrap credits - they're already in spans, just add the class
+        const creditColumns = credits.querySelectorAll('.project-credit-column');
+        creditColumns.forEach(col => {
+          const label = col.querySelector('.project-credit-label');
+          const list = col.querySelector('.project-credit-list');
+          if (label) label.classList.add('fade-line');
+          if (list) list.classList.add('fade-line');
+        });
+        
+        // Add fade-line to down arrow
+        if (downArrow) downArrow.classList.add('fade-line');
+        
+        // Cache all fade lines
+        fadeLines = content.querySelectorAll('.fade-line');
+        linesWrapped = true;
+      }
+      
+      // Function to update line opacities based on scroll
+      function updateLineFade() {
+        if (!projectDetail.classList.contains('open')) return;
+        if (window.innerWidth > 768) {
+          // Reset all opacities on desktop
+          fadeLines.forEach(line => line.style.opacity = '1');
+          return;
+        }
+        
+        if (!linesWrapped) {
+          wrapTextIntoLines();
+        }
+        
+        // Get the bottom edge of the sticky header
+        const headerRect = header.getBoundingClientRect();
+        const fadeThreshold = headerRect.bottom;
+        const fadeDistance = 30; // Distance over which each line fades (pixels)
+        
+        fadeLines.forEach(line => {
+          const lineRect = line.getBoundingClientRect();
+          const lineCenter = lineRect.top + (lineRect.height / 2);
+          
+          // Calculate how far above the threshold this line is
+          const distanceAbove = fadeThreshold - lineCenter;
+          
+          if (distanceAbove <= 0) {
+            // Line is below threshold - fully visible
+            line.style.opacity = '1';
+          } else if (distanceAbove >= fadeDistance) {
+            // Line is fully above threshold - invisible
+            line.style.opacity = '0';
+          } else {
+            // Line is in the fade zone - interpolate opacity
+            const opacity = 1 - (distanceAbove / fadeDistance);
+            line.style.opacity = Math.max(0, Math.min(1, opacity)).toString();
+          }
+        });
+      }
+      
+      // Throttled scroll handler
+      let ticking = false;
+      function onScroll() {
+        if (!ticking) {
+          requestAnimationFrame(() => {
+            updateLineFade();
+            ticking = false;
+          });
+          ticking = true;
+        }
+      }
+      
+      // Listen to scroll on the project detail container
+      projectDetail.addEventListener('scroll', onScroll, { passive: true });
+      
+      // Handle resize
+      window.addEventListener('resize', function() {
+        if (window.innerWidth > 768) {
+          // Clear mobile state
+          fadeLines.forEach(line => line.style.opacity = '1');
+        } else {
+          updateLineFade();
+        }
+      }, { passive: true });
+      
+      // Watch for project opening
+      const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+          if (mutation.attributeName === 'class') {
+            if (projectDetail.classList.contains('open')) {
+              setTimeout(function() {
+                wrapTextIntoLines();
+                updateLineFade();
+              }, 150);
+            }
+          }
+        });
+      });
+      observer.observe(projectDetail, { attributes: true });
+    })();
   </script>
 </body>
 </html>
