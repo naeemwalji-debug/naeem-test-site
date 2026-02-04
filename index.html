@@ -742,18 +742,9 @@
         background: #fff;
       }
       
-      /* Sticky fade lines */
-      .project-detail-content-mobile .sticky-line {
-        display: block;
-        position: sticky;
-        background: #fff;
-        transition: opacity 0.05s linear;
-      }
-      
       .project-detail-right {
         width: 100%;
         height: auto;
-        min-height: 100vh;
         padding: 30px;
         padding-bottom: 100px;
         flex-shrink: 0;
@@ -1874,7 +1865,7 @@
       document.body.style.width = '100%';
     }
     
-    // ===== MOBILE STICKY FADE =====
+    // ===== MOBILE SIMPLE BLOCK FADE =====
     (function() {
       const isMobile = () => window.innerWidth <= 768;
       
@@ -1885,254 +1876,77 @@
       
       if (!header || !content || !rightPanel) return;
       
+      let blocks = [];
       let initialized = false;
-      let lines = [];
-      let stickyTopValue = 0;
+      let maxScrollTop = null;
       
       function initialize() {
         if (!isMobile() || initialized) return;
         
-        // Calculate sticky top (where lines should stick)
-        const headerHeight = header.offsetHeight;
-        stickyTopValue = headerHeight;
-        
+        // Get content blocks: description, each credit column, and arrow
         const description = content.querySelector('.project-description');
-        const credits = content.querySelector('.project-credits');
+        const creditColumns = content.querySelectorAll('.project-credit-column');
         const downArrow = content.querySelector('.project-down-arrow');
         
-        if (!description) return;
+        blocks = [];
+        if (description) blocks.push(description);
+        creditColumns.forEach(col => blocks.push(col));
+        if (downArrow) blocks.push(downArrow);
         
-        // Get text metrics
-        const style = window.getComputedStyle(description);
-        const containerWidth = description.offsetWidth;
-        const lineHeight = parseFloat(style.lineHeight) || 16;
-        
-        if (containerWidth <= 0) return;
-        
-        // Create measurement element
-        const measure = document.createElement('span');
-        measure.style.cssText = `
-          position:absolute; visibility:hidden; white-space:nowrap;
-          font:${style.font}; letter-spacing:${style.letterSpacing};
-          text-transform:${style.textTransform};
-        `;
-        document.body.appendChild(measure);
-        
-        // Split text into visual lines
-        function textToLines(text, maxWidth) {
-          const words = text.trim().split(/\s+/);
-          const result = [];
-          let current = '';
-          
-          for (const word of words) {
-            const test = current ? current + ' ' + word : word;
-            measure.textContent = test;
-            if (measure.offsetWidth > maxWidth && current) {
-              result.push(current);
-              current = word;
-            } else {
-              current = test;
-            }
-          }
-          if (current) result.push(current);
-          return result;
-        }
-        
-        // Process description
-        const html = description.innerHTML;
-        const paragraphs = html.split(/<br\s*\/?>/gi);
-        let lineIndex = 0;
-        let newHTML = '';
-        
-        for (const para of paragraphs) {
-          if (!para.trim()) {
-            // Empty line (paragraph break)
-            newHTML += `<span class="sticky-line" data-line="${lineIndex}" style="top:${stickyTopValue}px; height:${lineHeight}px;"></span>`;
-            lineIndex++;
-            continue;
-          }
-          
-          const textLines = textToLines(para, containerWidth);
-          for (const text of textLines) {
-            newHTML += `<span class="sticky-line" data-line="${lineIndex}" style="top:${stickyTopValue}px;">${text}</span>`;
-            lineIndex++;
-          }
-        }
-        
-        description.innerHTML = newHTML;
-        
-        // Process credits - wrap into lines like description
-        if (credits) {
-          const creditStyle = window.getComputedStyle(credits.querySelector('.project-credit-label') || credits);
-          measure.style.font = creditStyle.font || style.font;
-          measure.style.letterSpacing = creditStyle.letterSpacing || style.letterSpacing;
-          
-          credits.querySelectorAll('.project-credit-column').forEach(col => {
-            const label = col.querySelector('.project-credit-label');
-            const list = col.querySelector('.project-credit-list');
-            
-            // Wrap label as sticky line
-            if (label) {
-              const labelText = label.textContent;
-              label.outerHTML = `<span class="sticky-line project-credit-label" style="top:${stickyTopValue}px; display:block; position:sticky; background:#fff;">${labelText}</span>`;
-            }
-            
-            // Wrap list text into lines
-            if (list) {
-              const items = list.querySelectorAll('span');
-              const listText = Array.from(items).map(s => s.textContent).join(' / ');
-              const listLines = textToLines(listText, containerWidth);
-              
-              let listHTML = '';
-              listLines.forEach(lineText => {
-                listHTML += `<span class="sticky-line" style="top:${stickyTopValue}px; display:block; position:sticky; background:#fff; font-weight:700;">${lineText}</span>`;
-              });
-              list.outerHTML = listHTML;
-            }
-          });
-        }
-        
-        document.body.removeChild(measure);
-        
-        // Make arrow sticky
-        if (downArrow) {
-          downArrow.classList.add('sticky-line');
-          downArrow.style.top = stickyTopValue + 'px';
-          downArrow.style.position = 'sticky';
-          downArrow.style.background = '#fff';
-        }
-        
-        // Collect all sticky lines
-        lines = Array.from(content.querySelectorAll('.sticky-line'));
         initialized = true;
-        
-        // Do first update
-        updateOpacities();
+        update();
       }
       
-      function updateOpacities() {
+      function update() {
         if (!isMobile() || !initialized) return;
         
         const headerBottom = header.getBoundingClientRect().bottom;
         const rightPanelTop = rightPanel.getBoundingClientRect().top;
-        
-        for (let i = 0; i < lines.length; i++) {
-          const line = lines[i];
-          const rect = line.getBoundingClientRect();
-          
-          // Is this line at the sticky position (stuck)?
-          const isStuck = rect.top <= headerBottom + 2;
-          
-          if (!isStuck) {
-            // Not stuck yet - fully visible
-            line.style.opacity = '1';
-            continue;
-          }
-          
-          // Line is stuck - check if next line is pushing it
-          const nextLine = lines[i + 1];
-          const lineHeight = rect.height || 16;
-          
-          if (!nextLine) {
-            // Last line - fade based on black area position
-            const space = rightPanelTop - headerBottom;
-            if (space >= lineHeight) {
-              line.style.opacity = '1';
-            } else if (space <= 0) {
-              line.style.opacity = '0';
-            } else {
-              line.style.opacity = (space / lineHeight).toFixed(2);
-            }
-            continue;
-          }
-          
-          const nextRect = nextLine.getBoundingClientRect();
-          const nextTop = nextRect.top;
-          
-          // How much space between header and next line?
-          const space = nextTop - headerBottom;
-          
-          if (space >= lineHeight) {
-            // Next line is far away - current line fully visible
-            line.style.opacity = '1';
-          } else if (space <= 0) {
-            // Next line has reached header - current line invisible
-            line.style.opacity = '0';
-          } else {
-            // Next line approaching - fade current line
-            line.style.opacity = (space / lineHeight).toFixed(2);
-          }
-        }
-      }
-      
-      // Track max scroll position for lock
-      let maxScrollTop = null;
-      let isLocked = false;
-      
-      // Scroll handler with lock and black area independent scroll
-      projectDetail.addEventListener('scroll', () => {
-        const headerBottom = header.getBoundingClientRect().bottom;
-        const rightPanelTop = rightPanel.getBoundingClientRect().top;
         const currentScroll = projectDetail.scrollTop;
         
-        // Check if black area has reached header
+        // Lock scroll when black area reaches header
         if (rightPanelTop <= headerBottom + 1) {
-          // Lock at this position
           if (maxScrollTop === null) {
             maxScrollTop = currentScroll - (headerBottom - rightPanelTop);
-            
-            // Enable independent scrolling of black area
-            rightPanel.style.position = 'fixed';
-            rightPanel.style.top = headerBottom + 'px';
-            rightPanel.style.left = '0';
-            rightPanel.style.right = '0';
-            rightPanel.style.bottom = '0';
-            rightPanel.style.overflowY = 'auto';
-            rightPanel.style.overflowX = 'hidden';
-            isLocked = true;
           }
-          // Prevent main container from scrolling past lock point
           if (currentScroll > maxScrollTop) {
             projectDetail.scrollTop = maxScrollTop;
           }
-        } else {
-          // Allow unlocking if scrolled back up significantly
-          if (maxScrollTop !== null && currentScroll < maxScrollTop - 20) {
-            maxScrollTop = null;
-            // Restore normal scroll
-            rightPanel.style.position = '';
-            rightPanel.style.top = '';
-            rightPanel.style.left = '';
-            rightPanel.style.right = '';
-            rightPanel.style.bottom = '';
-            rightPanel.style.overflowY = '';
-            rightPanel.style.overflowX = '';
-            isLocked = false;
-          }
+        } else if (maxScrollTop !== null && currentScroll < maxScrollTop - 20) {
+          maxScrollTop = null;
         }
         
-        requestAnimationFrame(updateOpacities);
-      }, { passive: false });
+        // Fade distance - how far from header to start fading
+        const fadeDistance = 80;
+        
+        // Update each block's opacity based on distance from header
+        blocks.forEach(block => {
+          const rect = block.getBoundingClientRect();
+          const blockTop = rect.top;
+          const dist = blockTop - headerBottom;
+          
+          if (dist >= fadeDistance) {
+            block.style.opacity = '1';
+          } else if (dist <= 0) {
+            block.style.opacity = '0';
+          } else {
+            block.style.opacity = (dist / fadeDistance).toFixed(2);
+          }
+        });
+      }
       
-      // Initialize when project opens
+      projectDetail.addEventListener('scroll', () => {
+        requestAnimationFrame(update);
+      }, { passive: true });
+      
       const observer = new MutationObserver(() => {
         if (projectDetail.classList.contains('open')) {
-          // Wait for open animation
           setTimeout(initialize, 1400);
         } else {
-          // Reset on close
           initialized = false;
           maxScrollTop = null;
-          isLocked = false;
-          lines = [];
-          // Reset rightPanel styles
-          rightPanel.style.position = '';
-          rightPanel.style.top = '';
-          rightPanel.style.left = '';
-          rightPanel.style.right = '';
-          rightPanel.style.bottom = '';
-          rightPanel.style.overflowY = '';
-          rightPanel.style.overflowX = '';
+          blocks.forEach(b => b.style.opacity = '');
+          blocks = [];
         }
       });
       observer.observe(projectDetail, { attributes: true, attributeFilter: ['class'] });
