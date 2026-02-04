@@ -654,39 +654,15 @@
       .project-detail-left {
         width: 100%;
         min-width: unset;
-        height: 100%;
-        min-height: unset;
-        padding: 0;
-        padding-bottom: 0;
-        flex-shrink: 0;
-        overflow: hidden;
-        display: flex;
-        flex-direction: column;
-      }
-      
-      .project-detail-header {
-        position: relative;
-        z-index: 2;
-        background: #fff;
+        height: auto;
         padding: 30px;
-        padding-bottom: 10px;
+        padding-bottom: 5px;
         flex-shrink: 0;
-      }
-      
-      .project-detail-content {
-        flex: 1;
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
-        padding: 0 30px 30px 30px;
-        position: relative;
-        mask-image: linear-gradient(to bottom, black 0%, black 70%, transparent 100%);
-        -webkit-mask-image: linear-gradient(to bottom, black 0%, black 70%, transparent 100%);
       }
       
       .project-detail-right {
         width: 100%;
         height: 50vh;
-        min-height: 50vh;
         padding: 30px;
         flex-shrink: 0;
       }
@@ -699,7 +675,7 @@
       
       .project-subtitle {
         font-size: 24px;
-        margin-bottom: 0;
+        margin-bottom: 10px;
         margin-top: -21px;
       }
       
@@ -723,7 +699,6 @@
         line-height: 16px;
         letter-spacing: 2px;
         margin-bottom: 0;
-        margin-top: 20px;
       }
       
       .project-back {
@@ -1418,37 +1393,33 @@
   <!-- Project Detail: Heart & Stroke -->
   <div id="project-detail-heart-stroke" class="project-detail">
     <div class="project-detail-left">
-      <div class="project-detail-header">
-        <a href="#work" class="project-back" onclick="closeProjectDetail()">
-          <svg class="project-back-arrow" viewBox="0 0 40 20">
-            <polyline points="5,5 20,15 35,5"/>
-          </svg>
-          BACK TO WORK
-        </a>
-        
-        <h1 class="project-title">Heart & Stroke</h1>
-        <h2 class="project-subtitle">THE UNDEADING</h2>
+      <a href="#work" class="project-back" onclick="closeProjectDetail()">
+        <svg class="project-back-arrow" viewBox="0 0 40 20">
+          <polyline points="5,5 20,15 35,5"/>
+        </svg>
+        BACK TO WORK
+      </a>
+      
+      <h1 class="project-title">Heart & Stroke</h1>
+      <h2 class="project-subtitle">THE UNDEADING</h2>
+      
+      <p class="project-description">Every young soccer player dreams of playing on the same field as their heroes.<br><br>Following Toronto FC winning the 2017 MLS Cup, we moved the championship pitch from BMO Field to a youth recreation centre and replanted it, inspiring future generations to play like champions.</p>
+      
+      <div class="project-credits">
+        <div class="project-credit-column">
+          <span class="project-credit-label">RECOGNITION:</span>
+          <span class="project-credit-list"><span>CASSIES</span><span>APPLIED ARTS</span><span>ADCC</span><span>MARKETING</span><span>W3</span><span>MEDIA INNOVATION</span><span>WARC TOP 100</span><span>AME</span><span>CMA</span></span>
+        </div>
+        <div class="project-credit-column">
+          <span class="project-credit-label">PRESS:</span>
+          <span class="project-credit-list"><span>MASHABLE</span><span>GIZMODO</span><span>CBS NEWS</span><span>FAST COMPANY</span><span>DAILY MAIL UNCRATE</span><span>HUFF POST</span><span>ADWEEK</span><span>ADAGE</span><span>CTV NEWS</span><span>GLOBAL NEWS</span></span>
+        </div>
       </div>
       
-      <div class="project-detail-content">
-        <p class="project-description">Every young soccer player dreams of playing on the same field as their heroes.<br><br>Following Toronto FC winning the 2017 MLS Cup, we moved the championship pitch from BMO Field to a youth recreation centre and replanted it, inspiring future generations to play like champions.</p>
-        
-        <div class="project-credits">
-          <div class="project-credit-column">
-            <span class="project-credit-label">RECOGNITION:</span>
-            <span class="project-credit-list"><span>CASSIES</span><span>APPLIED ARTS</span><span>ADCC</span><span>MARKETING</span><span>W3</span><span>MEDIA INNOVATION</span><span>WARC TOP 100</span><span>AME</span><span>CMA</span></span>
-          </div>
-          <div class="project-credit-column">
-            <span class="project-credit-label">PRESS:</span>
-            <span class="project-credit-list"><span>MASHABLE</span><span>GIZMODO</span><span>CBS NEWS</span><span>FAST COMPANY</span><span>DAILY MAIL UNCRATE</span><span>HUFF POST</span><span>ADWEEK</span><span>ADAGE</span><span>CTV NEWS</span><span>GLOBAL NEWS</span></span>
-          </div>
-        </div>
-        
-        <svg class="project-down-arrow" viewBox="0 0 20 10">
-          <line x1="0" y1="0" x2="10" y2="10"/>
-          <line x1="10" y1="10" x2="20" y2="0"/>
-        </svg>
-      </div>
+      <svg class="project-down-arrow" viewBox="0 0 20 10">
+        <line x1="0" y1="0" x2="10" y2="10"/>
+        <line x1="10" y1="10" x2="20" y2="0"/>
+      </svg>
     </div>
     <div class="project-detail-right">
       <div class="project-media">
