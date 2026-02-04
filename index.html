@@ -1685,10 +1685,15 @@
     projectHeartStroke.addEventListener('click', function() {
       // Save current scroll position
       scrollPosition = window.pageYOffset;
+      
+      // Calculate scrollbar width and add padding to prevent layout shift
+      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+      document.body.style.paddingRight = scrollbarWidth + 'px';
+      
       projectDetailHeartStroke.classList.add('open');
       // Update URL hash
       updateHash('#work/theundeading');
-      // Lock scroll on html and body - no position change to avoid visual jump
+      // Lock scroll on html and body
       document.documentElement.style.overflow = 'hidden';
       document.body.style.overflow = 'hidden';
       // Reset project detail scroll to top
@@ -1699,9 +1704,10 @@
       projectDetailHeartStroke.classList.remove('open');
       // Update URL hash back to work
       updateHash('#work');
-      // Restore scroll
+      // Restore scroll and remove padding
       document.documentElement.style.overflow = '';
       document.body.style.overflow = '';
+      document.body.style.paddingRight = '';
       // Scroll to work section with same duration as nav
       const workSection = document.getElementById('work');
       smoothScrollTo(workSection, SCROLL_DURATION);
