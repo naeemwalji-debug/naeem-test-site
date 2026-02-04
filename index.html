@@ -772,7 +772,7 @@
         bottom: auto;
         left: auto;
         margin-top: 40px;
-        margin-bottom: 0;
+        margin-bottom: 30px;
       }
       
       .project-down-arrow {
@@ -782,6 +782,10 @@
         left: 50%;
         transform: translateX(-50%);
         z-index: 5;
+      }
+      
+      .project-down-arrow line {
+        stroke: #fff;
       }
       
       .project-detail-arrow {
@@ -1888,6 +1892,8 @@
       let blocks = [];
       let initialized = false;
       let maxScrollTop = null;
+      let hasScrolled = false;
+      let initialScrollTop = 0;
       
       function initialize() {
         if (!isMobile()) return;
@@ -1919,6 +1925,8 @@
         
         initialized = true;
         maxScrollTop = null;
+        hasScrolled = false;
+        initialScrollTop = projectDetail.scrollTop;
         
         console.log('Fade initialized with blocks:', blocks.length);
       }
@@ -1929,10 +1937,20 @@
         if (!projectDetail.classList.contains('open')) return;
         if (blocks.length === 0) return;
         
+        const currentScroll = projectDetail.scrollTop;
+        
+        // Only start fading after user has scrolled at least 10px
+        if (!hasScrolled) {
+          if (Math.abs(currentScroll - initialScrollTop) > 10) {
+            hasScrolled = true;
+          } else {
+            return; // Don't fade yet
+          }
+        }
+        
         const headerRect = header.getBoundingClientRect();
         const headerBottom = headerRect.bottom;
         const rightPanelTop = rightPanel.getBoundingClientRect().top;
-        const currentScroll = projectDetail.scrollTop;
         
         // Lock scroll when black area reaches header
         if (rightPanelTop <= headerBottom + 1) {
@@ -1995,6 +2013,7 @@
               });
               initialized = false;
               maxScrollTop = null;
+              hasScrolled = false;
               blocks = [];
             }
           }
