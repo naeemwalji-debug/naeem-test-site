@@ -571,6 +571,7 @@
     .project-credits {
       display: flex;
       flex-direction: row;
+      align-items: flex-end;
       gap: 40px;
       position: absolute;
       bottom: 50px;
@@ -605,12 +606,8 @@
       text-transform: uppercase;
     }
     
-    .project-credit-list-desktop {
+    .project-credit-list span {
       display: block;
-    }
-    
-    .project-credit-list-mobile {
-      display: none;
     }
     
     .project-down-arrow {
@@ -713,12 +710,12 @@
         line-height: 14px;
       }
       
-      .project-credit-list-desktop {
-        display: none;
+      .project-credit-list span {
+        display: inline;
       }
       
-      .project-credit-list-mobile {
-        display: block;
+      .project-credit-list span:not(:last-child)::after {
+        content: " / ";
       }
       
       /* Nav - smaller font on mobile */
@@ -1380,13 +1377,11 @@
       <div class="project-credits">
         <div class="project-credit-column">
           <span class="project-credit-label">RECOGNITION:</span>
-          <span class="project-credit-list project-credit-list-desktop">CASSIES<br>APPLIED ARTS<br>ADCC<br>MARKETING<br>W3<br>MEDIA INNOVATION<br>WARC TOP 100<br>AME<br>CMA</span>
-          <span class="project-credit-list project-credit-list-mobile">CASSIES / APPLIED ARTS / ADCC / MARKETING / W3 / MEDIA INNOVATION / WARC TOP 100 / AME / CMA</span>
+          <span class="project-credit-list"><span>CASSIES</span><span>APPLIED ARTS</span><span>ADCC</span><span>MARKETING</span><span>W3</span><span>MEDIA INNOVATION</span><span>WARC TOP 100</span><span>AME</span><span>CMA</span></span>
         </div>
         <div class="project-credit-column">
           <span class="project-credit-label">PRESS:</span>
-          <span class="project-credit-list project-credit-list-desktop">MASHABLE<br>GIZMODO<br>CBS NEWS<br>FAST COMPANY<br>DAILY MAIL UNCRATE<br>HUFF POST<br>ADWEEK<br>ADAGE<br>CTV NEWS<br>GLOBAL NEWS</span>
-          <span class="project-credit-list project-credit-list-mobile">MASHABLE / GIZMODO / CBS NEWS / FAST COMPANY / DAILY MAIL UNCRATE / HUFF POST / ADWEEK / ADAGE / CTV NEWS / GLOBAL NEWS</span>
+          <span class="project-credit-list"><span>MASHABLE</span><span>GIZMODO</span><span>CBS NEWS</span><span>FAST COMPANY</span><span>DAILY MAIL UNCRATE</span><span>HUFF POST</span><span>ADWEEK</span><span>ADAGE</span><span>CTV NEWS</span><span>GLOBAL NEWS</span></span>
         </div>
       </div>
       
