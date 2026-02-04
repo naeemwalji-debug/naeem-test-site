@@ -38,7 +38,7 @@
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    html { overflow-y: scroll; overflow-x: hidden; }
+    html { overflow-y: scroll; overflow-x: hidden; background: #1a1a1a; scrollbar-gutter: stable; }
     body { background: #000; overflow-x: hidden; }
     
     /* Custom scrollbar - dark style for consistency */
@@ -507,6 +507,18 @@
       overflow-y: auto;
       position: relative;
       overscroll-behavior: contain;
+    }
+    
+    .project-detail-right::-webkit-scrollbar {
+      width: 12px;
+    }
+    
+    .project-detail-right::-webkit-scrollbar-track {
+      background: #000;
+    }
+    
+    .project-detail-right::-webkit-scrollbar-thumb {
+      background: #666;
     }
     
     .project-detail-right .project-media {
@@ -1709,16 +1721,12 @@
       // Save current scroll position
       scrollPosition = window.pageYOffset;
       
-      // Calculate scrollbar width and add padding to prevent layout shift
-      // No scrollbar compensation needed
-      // Scrollbar handled by CSS
+      // Hide scrollbar - scrollbar-gutter: stable keeps the space reserved
+      document.documentElement.style.overflow = 'hidden';
       
       projectDetailHeartStroke.classList.add('open');
       // Update URL hash
       updateHash('#work/theundeading');
-      // Lock scroll on html and body
-      document.documentElement.style.overflow = 'hidden';
-      document.body.style.overflow = 'hidden';
       // Reset project detail scroll to top
       projectDetailHeartStroke.scrollTop = 0;
     });
@@ -1728,11 +1736,9 @@
       // Update URL hash back to work
       updateHash('#work');
       
-      // Wait for transition to complete before restoring scroll (1.2s transition)
+      // Wait for transition to complete before restoring scroll
       setTimeout(() => {
         document.documentElement.style.overflow = '';
-        document.body.style.overflow = '';
-        // Padding handled by CSS
       }, 1200);
       
       // Scroll to work section with same duration as nav
