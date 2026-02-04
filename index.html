@@ -739,7 +739,7 @@
       }
       
       .project-detail-content-mobile {
-        padding: 0 30px 20px 30px;
+        padding: 0 30px 30px 30px;
         position: relative;
         background: #fff;
       }
@@ -761,7 +761,7 @@
       
       .project-subtitle {
         font-size: 24px;
-        margin-bottom: 30px;
+        margin-bottom: 10px;
         margin-top: -21px;
       }
       
@@ -772,7 +772,7 @@
         bottom: auto;
         left: auto;
         margin-top: 40px;
-        margin-bottom: 30px;
+        margin-bottom: 0;
       }
       
       .project-down-arrow {
@@ -1868,6 +1868,50 @@
     });
     
     // Open project page if URL hash matches on page load
+    // Mobile content fade on scroll
+    function updateMobileContentFade() {
+      if (window.innerWidth > 768) return;
+      if (!projectDetailHeartStroke.classList.contains('open')) return;
+      
+      const headerMobile = projectDetailHeartStroke.querySelector('.project-detail-header-mobile');
+      const contentMobile = projectDetailHeartStroke.querySelector('.project-detail-content-mobile');
+      const rightPanel = projectDetailHeartStroke.querySelector('.project-detail-right');
+      if (!headerMobile || !contentMobile || !rightPanel) return;
+      
+      const headerRect = headerMobile.getBoundingClientRect();
+      const fadeStart = headerRect.bottom; // Where fade begins
+      const fadeDistance = 80; // Pixels over which content fades from 100% to 0%
+      
+      // Get all elements to fade
+      const allElements = contentMobile.querySelectorAll('.project-description, .project-credit-column');
+      
+      allElements.forEach(el => {
+        const rect = el.getBoundingClientRect();
+        const elementTop = rect.top;
+        
+        if (elementTop < fadeStart) {
+          // Element is above fade line - calculate opacity
+          const distanceAbove = fadeStart - elementTop;
+          const opacity = Math.max(0, 1 - (distanceAbove / fadeDistance));
+          el.style.opacity = opacity;
+        } else {
+          el.style.opacity = 1;
+        }
+      });
+      
+      // Lock scroll when black area reaches header
+      const rightPanelTop = rightPanel.getBoundingClientRect().top;
+      if (rightPanelTop <= fadeStart) {
+        const currentScroll = projectDetailHeartStroke.scrollTop;
+        const overshoot = fadeStart - rightPanelTop;
+        projectDetailHeartStroke.scrollTop = currentScroll - overshoot;
+      }
+    }
+    
+    projectDetailHeartStroke.addEventListener('scroll', updateMobileContentFade);
+    window.addEventListener('resize', updateMobileContentFade);
+    
+    // Open project page if URL hash matches on page load
     if (window.location.hash === '#work/theundeading') {
       projectDetailHeartStroke.classList.add('open');
       document.body.style.overflow = 'hidden';
@@ -1875,129 +1919,6 @@
       document.body.style.top = '0';
       document.body.style.width = '100%';
     }
-    
-    // ===== MOBILE SIMPLE BLOCK FADE =====
-    (function() {
-      const isMobile = () => window.innerWidth <= 768;
-      
-      const projectDetail = document.getElementById('project-detail-heart-stroke');
-      if (!projectDetail) return;
-      
-      const header = projectDetail.querySelector('.project-detail-header-mobile');
-      const content = projectDetail.querySelector('.project-detail-content-mobile');
-      const rightPanel = projectDetail.querySelector('.project-detail-right');
-      
-      if (!header || !content || !rightPanel) return;
-      
-      let blocks = [];
-      let initialized = false;
-      let maxScrollTop = null;
-      let startPositions = []; // Store initial top positions of each block
-      
-      function initialize() {
-        if (!isMobile()) return;
-        if (initialized) return;
-        
-        blocks = [];
-        startPositions = [];
-        
-        // 1. Description
-        const description = content.querySelector('.project-description');
-        if (description) blocks.push(description);
-        
-        // 2. Recognition column
-        // 3. Press column
-        const creditColumns = content.querySelectorAll('.project-credit-column');
-        creditColumns.forEach(col => blocks.push(col));
-        
-        // Store initial positions and ensure visible
-        const headerBottom = header.getBoundingClientRect().bottom;
-        blocks.forEach(b => {
-          b.style.opacity = '1';
-          b.style.transition = 'opacity 0.1s linear';
-          const rect = b.getBoundingClientRect();
-          startPositions.push(rect.top - headerBottom);
-        });
-        
-        initialized = true;
-        maxScrollTop = null;
-      }
-      
-      function update() {
-        if (!isMobile()) return;
-        if (!initialized) return;
-        if (!projectDetail.classList.contains('open')) return;
-        if (blocks.length === 0) return;
-        
-        const headerBottom = header.getBoundingClientRect().bottom;
-        const rightPanelTop = rightPanel.getBoundingClientRect().top;
-        const currentScroll = projectDetail.scrollTop;
-        
-        // Lock scroll when black area reaches header
-        if (rightPanelTop <= headerBottom + 1) {
-          if (maxScrollTop === null) {
-            maxScrollTop = currentScroll - (headerBottom - rightPanelTop);
-          }
-          if (currentScroll > maxScrollTop) {
-            projectDetail.scrollTop = maxScrollTop;
-          }
-        } else if (maxScrollTop !== null && currentScroll < maxScrollTop - 20) {
-          maxScrollTop = null;
-        }
-        
-        // Fade each block based on its top position relative to header
-        // Use a longer fade distance for more gradual fade
-        const fadeDistance = 150; // pixels of travel to go from 1 to 0 opacity
-        
-        blocks.forEach((block, index) => {
-          const rect = block.getBoundingClientRect();
-          const blockTop = rect.top;
-          const dist = blockTop - headerBottom;
-          
-          // Block fades as its top approaches the header
-          // Full opacity when dist >= fadeDistance
-          // Zero opacity when dist <= 0
-          let opacity;
-          if (dist >= fadeDistance) {
-            opacity = 1;
-          } else if (dist <= 0) {
-            opacity = 0;
-          } else {
-            opacity = dist / fadeDistance;
-          }
-          
-          block.style.opacity = opacity.toFixed(3);
-        });
-      }
-      
-      projectDetail.addEventListener('scroll', () => {
-        if (projectDetail.classList.contains('open')) {
-          requestAnimationFrame(update);
-        }
-      }, { passive: true });
-      
-      const observer = new MutationObserver((mutations) => {
-        mutations.forEach(mutation => {
-          if (mutation.attributeName === 'class') {
-            if (projectDetail.classList.contains('open')) {
-              setTimeout(() => {
-                initialize();
-              }, 1500);
-            } else {
-              blocks.forEach(b => {
-                b.style.opacity = '1';
-                b.style.transition = '';
-              });
-              initialized = false;
-              maxScrollTop = null;
-              blocks = [];
-              startPositions = [];
-            }
-          }
-        });
-      });
-      observer.observe(projectDetail, { attributes: true, attributeFilter: ['class'] });
-    })();
   </script>
 </body>
 </html>
