@@ -747,8 +747,7 @@
       .project-detail-right {
         width: 100%;
         height: auto;
-        padding: 30px;
-        padding-bottom: 100px;
+        padding: 0 30px 100px 30px;
         flex-shrink: 0;
         overflow: visible;
       }
@@ -1879,20 +1878,37 @@
       if (!headerMobile || !contentMobile || !rightPanel) return;
       
       const headerRect = headerMobile.getBoundingClientRect();
-      const fadeStart = headerRect.bottom; // Where fade begins
-      const fadeDistance = 80; // Pixels over which content fades from 100% to 0%
+      const fadeStart = headerRect.bottom; // Where fade begins (bottom of header)
       
-      // Get all elements to fade
-      const allElements = contentMobile.querySelectorAll('.project-description, .project-credit-column');
+      // Different fade distances for description vs credits
+      const descFadeDistance = 120; // Slower fade for description
+      const creditFadeDistance = 60; // Faster fade for credits
       
-      allElements.forEach(el => {
-        const rect = el.getBoundingClientRect();
+      // Get description
+      const description = contentMobile.querySelector('.project-description');
+      if (description) {
+        const rect = description.getBoundingClientRect();
         const elementTop = rect.top;
         
         if (elementTop < fadeStart) {
-          // Element is above fade line - calculate opacity
           const distanceAbove = fadeStart - elementTop;
-          const opacity = Math.max(0, 1 - (distanceAbove / fadeDistance));
+          const opacity = Math.max(0, 1 - (distanceAbove / descFadeDistance));
+          description.style.opacity = opacity;
+        } else {
+          description.style.opacity = 1;
+        }
+      }
+      
+      // Get credit columns - start fading as soon as they enter the header zone
+      const creditColumns = contentMobile.querySelectorAll('.project-credit-column');
+      creditColumns.forEach(el => {
+        const rect = el.getBoundingClientRect();
+        const elementTop = rect.top;
+        
+        // Start fade when top of credit reaches fadeStart (header bottom)
+        if (elementTop < fadeStart) {
+          const distanceAbove = fadeStart - elementTop;
+          const opacity = Math.max(0, 1 - (distanceAbove / creditFadeDistance));
           el.style.opacity = opacity;
         } else {
           el.style.opacity = 1;
