@@ -733,11 +733,24 @@
         background: #fff;
         z-index: 10;
         padding: 30px;
-        padding-bottom: 10px;
+        padding-bottom: 20px;
+      }
+      
+      /* Fade mask - white gradient that fades content line by line */
+      .project-detail-header-mobile::after {
+        content: '';
+        position: absolute;
+        bottom: -60px;
+        left: 0;
+        right: 0;
+        height: 60px;
+        background: linear-gradient(to bottom, #fff 0%, transparent 100%);
+        pointer-events: none;
+        z-index: 5;
       }
       
       .project-detail-content-mobile {
-        padding: 0 30px 20px 30px;
+        padding: 0 30px 10px 30px;
         position: relative;
       }
       
@@ -1841,38 +1854,6 @@
     projectHeartStroke.addEventListener('click', function() {
       setTimeout(updateProjectArrow, 100);
     });
-    
-    // Mobile: fade and clip content as it scrolls toward subtitle
-    function updateMobileContentFade() {
-      if (window.innerWidth > 768) return;
-      
-      const contentMobile = projectDetailHeartStroke.querySelector('.project-detail-content-mobile');
-      const headerMobile = projectDetailHeartStroke.querySelector('.project-detail-header-mobile');
-      if (!contentMobile || !headerMobile) return;
-      
-      const headerRect = headerMobile.getBoundingClientRect();
-      const fadeZoneTop = headerRect.bottom; // Content fades as it reaches subtitle bottom
-      const fadeZoneHeight = 60; // Height of fade zone
-      
-      // Get all fadeable elements
-      const fadeElements = contentMobile.querySelectorAll('.project-description, .project-credits, .project-down-arrow');
-      
-      fadeElements.forEach(el => {
-        const elRect = el.getBoundingClientRect();
-        
-        // If element top is above the fade zone
-        if (elRect.top < fadeZoneTop) {
-          // Calculate how far into the fade zone
-          const distanceIntoFade = fadeZoneTop - elRect.top;
-          const fadeProgress = Math.min(1, distanceIntoFade / fadeZoneHeight);
-          el.style.opacity = 1 - fadeProgress;
-        } else {
-          el.style.opacity = 1;
-        }
-      });
-    }
-    
-    projectDetailHeartStroke.addEventListener('scroll', updateMobileContentFade);
     
     // Close on escape key
     document.addEventListener('keydown', function(e) {
