@@ -71,7 +71,7 @@
     /* About Section */
     #about {
       position: relative;
-      width: 100vw;
+      width: 100%;
       height: 100vh;
       background: #fff;
       z-index: 10;
@@ -87,7 +87,7 @@
       position: relative;
       overflow: visible;
       max-width: 1164px;
-      width: 100vw;
+      width: 100%;
     }
     .about-title {
       position: absolute;
@@ -108,7 +108,7 @@
     }
     .about-body {
       position: relative;
-      width: 100vw;
+      width: 100%;
       max-width: 1164px;
       color: #000;
       font-family: "Zalando Sans Expanded", sans-serif;
@@ -125,7 +125,7 @@
     /* Work Section */
     #work {
       position: relative;
-      width: 100vw;
+      width: 100%;
       min-height: 100vh;
       background: #000;
       z-index: 20;
@@ -139,7 +139,7 @@
     .work-container {
       position: relative;
       overflow: visible;
-      width: 100vw;
+      width: 100%;
       max-width: 1200px;
       padding: 0 55px;
       box-sizing: border-box;
@@ -166,7 +166,7 @@
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 0;
-      width: 100vw;
+      width: 100%;
       z-index: 2;
     }
     .work-item {
@@ -268,14 +268,14 @@
     /* Spacer */
     #headerSpacer {
       height: 100vh;
-      width: 100vw;
+      width: 100%;
     }
 
     #header {
       position: fixed;
       top: 0;
       left: 0;
-      width: 100vw;
+      width: 100%;
       height: 100vh;
       background: #000;
       overflow: hidden;
@@ -286,7 +286,7 @@
       position: fixed;
       top: 0;
       left: 0;
-      width: 100vw;
+      width: 100%;
       height: 100%;
       pointer-events: none;
       z-index: 9999;
@@ -510,12 +510,12 @@
     }
     
     .project-detail-right .project-media {
-      width: 100vw;
+      width: 100%;
       aspect-ratio: 16/9;
     }
     
     .project-detail-right .project-media iframe {
-      width: 100vw;
+      width: 100%;
       height: 100%;
       border: none;
     }
@@ -590,7 +590,7 @@
       letter-spacing: 0.75px;
       text-transform: uppercase;
       margin: 0;
-      width: 100vw;
+      width: 100%;
       padding-right: 50px;
       box-sizing: border-box;
     }
@@ -678,7 +678,7 @@
       }
       
       .project-detail-left {
-        width: 100vw;
+        width: 100%;
         min-width: unset;
         height: auto;
         padding: 30px;
@@ -688,7 +688,7 @@
       }
       
       .project-detail-right {
-        width: 100vw;
+        width: 100%;
         height: auto;
         padding: 30px;
         flex-shrink: 0;
@@ -832,14 +832,14 @@
 </head>
 <body>
   <div id="header">
-    <div id="unicorn-wrapper" style="position: absolute; inset: 0; width: 100vw; height: 100%; opacity: 0; transition: opacity 0.6s ease;">
+    <div id="unicorn-wrapper" style="position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 0.6s ease;">
       <!-- Desktop version -->
-      <div id="unicorn-desktop" style="position: absolute; inset: 0; width: 100vw; height: 100%;">
-        <div data-us-project="IBucRrDfjuXD6saiKULP" style="width: 100vw; height: 100%;"></div>
+      <div id="unicorn-desktop" style="position: absolute; inset: 0; width: 100%; height: 100%;">
+        <div data-us-project="IBucRrDfjuXD6saiKULP" style="width: 100%; height: 100%;"></div>
       </div>
       <!-- Mobile version - centered fixed size -->
-      <div id="unicorn-mobile" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100vw; max-width: 393px; height: 852px;">
-        <div data-us-project="pb6EA2BpdpU2zK3wNcpU" style="width: 100vw; max-width: 393px; height: 852px;"></div>
+      <div id="unicorn-mobile" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100%; max-width: 393px; height: 852px;">
+        <div data-us-project="pb6EA2BpdpU2zK3wNcpU" style="width: 100%; max-width: 393px; height: 852px;"></div>
       </div>
     </div>
 
@@ -1406,7 +1406,7 @@
           <div class="work-item" style="background: #a9a9a9;"></div>
           <div class="work-item" style="background: #999999;"></div>
           <div class="work-item" id="project-heart-stroke" style="cursor: pointer; position: relative; overflow: hidden;">
-            <video autoplay muted loop playsinline style="width: 100vw; height: 100%; object-fit: cover; transform: scale(1.35);">
+            <video autoplay muted loop playsinline style="width: 100%; height: 100%; object-fit: cover; transform: scale(1.35);">
               <source src="/Images/TheUndeading.mp4" type="video/mp4">
             </video>
           </div>
