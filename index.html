@@ -478,10 +478,12 @@
       display: flex;
       overflow: hidden;
       overscroll-behavior: contain;
+      pointer-events: none;
     }
     
     .project-detail.open {
       top: 0;
+      pointer-events: auto;
     }
     
     .project-detail-left {
@@ -737,16 +739,16 @@
       }
       
       .project-detail-content-mobile {
-        padding: 0 30px 0 30px;
+        padding: 0 30px 20px 30px;
         position: relative;
-        min-height: 20px;
+        background: #fff;
       }
       
       .project-detail-right {
         width: 100%;
         height: auto;
         padding: 30px;
-        padding-bottom: 100px; /* Extra space to clear copyright */
+        padding-bottom: 100px;
         flex-shrink: 0;
         overflow: visible;
       }
@@ -1493,7 +1495,7 @@
         <h2 class="project-subtitle">THE UNDEADING</h2>
       </div>
       
-      <div class="project-detail-content-mobile">
+      <div class="project-detail-content-mobile" id="project-content-mobile">
         <p class="project-description">Every young soccer player dreams of playing on the same field as their heroes.<br><br>Following Toronto FC winning the 2017 MLS Cup, we moved the championship pitch from BMO Field to a youth recreation centre and replanted it, inspiring future generations to play like champions.</p>
         
         <div class="project-credits">
@@ -1519,6 +1521,12 @@
       </div>
       <div class="project-media" style="margin-top: 30px;">
         <iframe src="https://player.vimeo.com/video/97123199?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" title="Heart &amp; Stroke Foundation - The Undeading 2"></iframe>
+      </div>
+      <div class="project-media" style="margin-top: 30px;">
+        <iframe src="https://player.vimeo.com/video/97123199?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" title="Heart &amp; Stroke Foundation - The Undeading 3"></iframe>
+      </div>
+      <div class="project-media" style="margin-top: 30px;">
+        <iframe src="https://player.vimeo.com/video/97123199?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" title="Heart &amp; Stroke Foundation - The Undeading 4"></iframe>
       </div>
       <svg class="project-detail-arrow" viewBox="0 0 40 20">
         <line x1="20" y1="20" x2="10" y2="10"/>
@@ -1843,39 +1851,6 @@
       setTimeout(updateProjectArrow, 100);
     });
     
-    // Mobile: fade content line-by-line as it approaches subtitle
-    function updateMobileContentFade() {
-      if (window.innerWidth > 768) return;
-      
-      const headerMobile = projectDetailHeartStroke.querySelector('.project-detail-header-mobile');
-      const contentMobile = projectDetailHeartStroke.querySelector('.project-detail-content-mobile');
-      if (!headerMobile || !contentMobile) return;
-      
-      const headerRect = headerMobile.getBoundingClientRect();
-      const fadeStart = headerRect.bottom; // Where fade begins
-      const fadeDistance = 50; // Pixels over which content fades from 100% to 0%
-      
-      // Get all text nodes/elements to fade
-      const allElements = contentMobile.querySelectorAll('p, span, .project-credit-label, .project-credit-column, .project-down-arrow');
-      
-      allElements.forEach(el => {
-        const rect = el.getBoundingClientRect();
-        const elementTop = rect.top;
-        
-        if (elementTop < fadeStart) {
-          // Element is above fade line - calculate opacity
-          const distanceAbove = fadeStart - elementTop;
-          const opacity = Math.max(0, 1 - (distanceAbove / fadeDistance));
-          el.style.opacity = opacity;
-        } else {
-          el.style.opacity = 1;
-        }
-      });
-    }
-    
-    projectDetailHeartStroke.addEventListener('scroll', updateMobileContentFade);
-    window.addEventListener('resize', updateMobileContentFade);
-    
     // Close on escape key
     document.addEventListener('keydown', function(e) {
       if (e.key === 'Escape' && projectDetailHeartStroke.classList.contains('open')) {
@@ -1891,6 +1866,139 @@
       document.body.style.top = '0';
       document.body.style.width = '100%';
     }
+    
+    // ===== MOBILE SIMPLE BLOCK FADE =====
+    (function() {
+      const isMobile = () => window.innerWidth <= 768;
+      
+      const projectDetail = document.getElementById('project-detail-heart-stroke');
+      if (!projectDetail) return;
+      
+      const header = projectDetail.querySelector('.project-detail-header-mobile');
+      const content = projectDetail.querySelector('.project-detail-content-mobile');
+      const rightPanel = projectDetail.querySelector('.project-detail-right');
+      
+      if (!header || !content || !rightPanel) return;
+      
+      let blocks = [];
+      let initialized = false;
+      let maxScrollTop = null;
+      
+      function initialize() {
+        if (!isMobile()) return;
+        if (initialized) return;
+        
+        // Get ALL content blocks that should fade in order
+        blocks = [];
+        
+        // 1. Description
+        const description = content.querySelector('.project-description');
+        if (description) {
+          blocks.push(description);
+        }
+        
+        // 2. Recognition column (first credit column)
+        // 3. Press column (second credit column)
+        const creditColumns = content.querySelectorAll('.project-credit-column');
+        creditColumns.forEach(col => {
+          blocks.push(col);
+        });
+        
+        // 4. Down arrow
+        const downArrow = content.querySelector('.project-down-arrow');
+        if (downArrow) {
+          blocks.push(downArrow);
+        }
+        
+        // Ensure all blocks start fully visible and add transition
+        blocks.forEach(b => {
+          b.style.opacity = '1';
+          b.style.transition = 'opacity 0.15s ease-out';
+        });
+        
+        initialized = true;
+        maxScrollTop = null;
+        
+        console.log('Fade initialized with blocks:', blocks.length);
+      }
+      
+      function update() {
+        if (!isMobile()) return;
+        if (!initialized) return;
+        if (!projectDetail.classList.contains('open')) return;
+        if (blocks.length === 0) return;
+        
+        const headerRect = header.getBoundingClientRect();
+        const headerBottom = headerRect.bottom;
+        const rightPanelTop = rightPanel.getBoundingClientRect().top;
+        const currentScroll = projectDetail.scrollTop;
+        
+        // Lock scroll when black area reaches header
+        if (rightPanelTop <= headerBottom + 1) {
+          if (maxScrollTop === null) {
+            maxScrollTop = currentScroll - (headerBottom - rightPanelTop);
+          }
+          if (currentScroll > maxScrollTop) {
+            projectDetail.scrollTop = maxScrollTop;
+          }
+        } else if (maxScrollTop !== null && currentScroll < maxScrollTop - 20) {
+          maxScrollTop = null;
+        }
+        
+        // Fade distance - how far from header to start fading
+        const fadeDistance = 100;
+        
+        // Update each block's opacity based on its BOTTOM edge distance from header
+        // This way tall blocks (like description) fade gradually as their bottom approaches
+        blocks.forEach(block => {
+          const rect = block.getBoundingClientRect();
+          // Use the bottom of the block for fade calculation
+          const blockBottom = rect.bottom;
+          const dist = blockBottom - headerBottom;
+          
+          let newOpacity;
+          if (dist >= fadeDistance) {
+            newOpacity = 1;
+          } else if (dist <= 0) {
+            newOpacity = 0;
+          } else {
+            newOpacity = dist / fadeDistance;
+          }
+          
+          block.style.opacity = newOpacity.toFixed(2);
+        });
+      }
+      
+      // Only listen to scroll on the project detail container
+      projectDetail.addEventListener('scroll', () => {
+        if (projectDetail.classList.contains('open')) {
+          requestAnimationFrame(update);
+        }
+      }, { passive: true });
+      
+      const observer = new MutationObserver((mutations) => {
+        mutations.forEach(mutation => {
+          if (mutation.attributeName === 'class') {
+            if (projectDetail.classList.contains('open')) {
+              // Wait for animation then initialize
+              setTimeout(() => {
+                initialize();
+              }, 1500);
+            } else {
+              // Reset on close
+              blocks.forEach(b => {
+                b.style.opacity = '1';
+                b.style.transition = '';
+              });
+              initialized = false;
+              maxScrollTop = null;
+              blocks = [];
+            }
+          }
+        });
+      });
+      observer.observe(projectDetail, { attributes: true, attributeFilter: ['class'] });
+    })();
   </script>
 </body>
 </html>
