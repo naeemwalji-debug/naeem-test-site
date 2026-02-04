@@ -645,6 +645,7 @@
         flex-direction: column;
         overflow-y: auto;
         overflow-x: hidden;
+        -webkit-overflow-scrolling: touch;
       }
       
       .project-detail-left {
@@ -655,6 +656,7 @@
         padding: 30px;
         padding-bottom: 5px;
         flex-shrink: 0;
+        overflow: visible;
       }
       
       .project-detail-right {
@@ -899,6 +901,10 @@
     // Force scroll to top on page load/reload
     if ('scrollRestoration' in history) {
       history.scrollRestoration = 'manual';
+    }
+    // Clear hash and scroll to top
+    if (window.location.hash) {
+      history.replaceState(null, null, window.location.pathname);
     }
     window.scrollTo(0, 0);
     
