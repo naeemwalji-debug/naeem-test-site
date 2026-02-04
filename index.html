@@ -570,8 +570,8 @@
     
     .project-credits {
       display: flex;
-      flex-direction: column;
-      gap: 16px;
+      flex-direction: row;
+      gap: 40px;
       position: absolute;
       bottom: 50px;
       left: 50px;
@@ -603,6 +603,14 @@
       line-height: 16px;
       letter-spacing: 0.53px;
       text-transform: uppercase;
+    }
+    
+    .project-credit-list-desktop {
+      display: block;
+    }
+    
+    .project-credit-list-mobile {
+      display: none;
     }
     
     .project-down-arrow {
@@ -639,14 +647,17 @@
       .project-detail {
         flex-direction: column;
         overflow-y: auto;
+        overflow-x: hidden;
       }
       
       .project-detail-left {
         width: 100%;
         min-width: unset;
         height: auto;
+        min-height: min-content;
         padding: 30px;
         padding-bottom: 5px;
+        flex-shrink: 0;
       }
       
       .project-detail-right {
@@ -696,16 +707,18 @@
         line-height: 14px;
       }
       
-      .project-back-arrow {
-        width: 10px;
-        height: 5px;
-        margin-left: -13px;
-      }
-      
       .project-credit-label,
       .project-credit-list {
         font-size: 11px;
         line-height: 14px;
+      }
+      
+      .project-credit-list-desktop {
+        display: none;
+      }
+      
+      .project-credit-list-mobile {
+        display: block;
       }
       
       /* Nav - smaller font on mobile */
@@ -1367,11 +1380,13 @@
       <div class="project-credits">
         <div class="project-credit-column">
           <span class="project-credit-label">RECOGNITION:</span>
-          <span class="project-credit-list">CASSIES / APPLIED ARTS / ADCC / MARKETING / W3 / MEDIA INNOVATION / WARC TOP 100 / AME / CMA</span>
+          <span class="project-credit-list project-credit-list-desktop">CASSIES<br>APPLIED ARTS<br>ADCC<br>MARKETING<br>W3<br>MEDIA INNOVATION<br>WARC TOP 100<br>AME<br>CMA</span>
+          <span class="project-credit-list project-credit-list-mobile">CASSIES / APPLIED ARTS / ADCC / MARKETING / W3 / MEDIA INNOVATION / WARC TOP 100 / AME / CMA</span>
         </div>
         <div class="project-credit-column">
           <span class="project-credit-label">PRESS:</span>
-          <span class="project-credit-list">MASHABLE / GIZMODO / CBS NEWS / FAST COMPANY / DAILY MAIL UNCRATE / HUFF POST / ADWEEK / ADAGE / CTV NEWS / GLOBAL NEWS</span>
+          <span class="project-credit-list project-credit-list-desktop">MASHABLE<br>GIZMODO<br>CBS NEWS<br>FAST COMPANY<br>DAILY MAIL UNCRATE<br>HUFF POST<br>ADWEEK<br>ADAGE<br>CTV NEWS<br>GLOBAL NEWS</span>
+          <span class="project-credit-list project-credit-list-mobile">MASHABLE / GIZMODO / CBS NEWS / FAST COMPANY / DAILY MAIL UNCRATE / HUFF POST / ADWEEK / ADAGE / CTV NEWS / GLOBAL NEWS</span>
         </div>
       </div>
       
