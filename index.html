@@ -643,9 +643,11 @@
     @media (max-width: 768px) {
       .project-detail {
         flex-direction: column;
-        overflow-y: auto;
+        overflow-y: scroll;
         overflow-x: hidden;
         -webkit-overflow-scrolling: touch;
+        touch-action: pan-y;
+        overscroll-behavior: contain;
       }
       
       .project-detail-left {
@@ -898,15 +900,10 @@
   </script>
   
   <script>
-    // Force scroll to top on page load/reload
+    // Let browser handle hash navigation naturally on reload
     if ('scrollRestoration' in history) {
-      history.scrollRestoration = 'manual';
+      history.scrollRestoration = 'auto';
     }
-    // Clear hash and scroll to top
-    if (window.location.hash) {
-      history.replaceState(null, null, window.location.pathname);
-    }
-    window.scrollTo(0, 0);
     
     const nameLeftEl = document.getElementById("nameLeft");
     const nameRightEl = document.getElementById("nameRight");
@@ -1144,6 +1141,10 @@
         e.preventDefault();
         const href = a.getAttribute('href');
         console.log('Nav clicked:', href);
+        
+        // Update URL hash
+        history.replaceState(null, null, href);
+        
         let target;
         
         // Handle both #header and #home for the home link
@@ -1264,6 +1265,17 @@
       
       // Work indicator: grows as Work comes up
       workIndicator.style.width = (workFullWidth * workProgress) + "px";
+      
+      // Update URL hash based on current section
+      let currentHash = '#header';
+      if (workProgress > 0.5) {
+        currentHash = '#work';
+      } else if (aboutProgress > 0.5) {
+        currentHash = '#about';
+      }
+      if (window.location.hash !== currentHash) {
+        history.replaceState(null, null, currentHash);
+      }
     }
     
     // Wait for fonts to load before measuring
