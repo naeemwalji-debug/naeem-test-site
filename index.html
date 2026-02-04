@@ -41,6 +41,27 @@
     html { overflow-y: scroll; overflow-x: hidden; }
     body { background: #000; overflow-x: hidden; }
     
+    /* Custom scrollbar - dark style for consistency */
+    ::-webkit-scrollbar {
+      width: 12px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #1a1a1a;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #4a4a4a;
+      border-radius: 0;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #5a5a5a;
+    }
+    
+    /* Firefox scrollbar */
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: #4a4a4a #1a1a1a;
+    }
+    
     /* Pages container */
     #pagesWrapper {
       position: relative;
@@ -1704,10 +1725,14 @@
       projectDetailHeartStroke.classList.remove('open');
       // Update URL hash back to work
       updateHash('#work');
-      // Restore scroll and remove padding
-      document.documentElement.style.overflow = '';
-      document.body.style.overflow = '';
-      document.body.style.paddingRight = '';
+      
+      // Wait for transition to complete before restoring scroll (1.2s transition)
+      setTimeout(() => {
+        document.documentElement.style.overflow = '';
+        document.body.style.overflow = '';
+        document.body.style.paddingRight = '';
+      }, 1200);
+      
       // Scroll to work section with same duration as nav
       const workSection = document.getElementById('work');
       smoothScrollTo(workSection, SCROLL_DURATION);
