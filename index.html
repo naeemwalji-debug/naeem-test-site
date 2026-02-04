@@ -605,6 +605,20 @@
       text-transform: uppercase;
     }
     
+    .project-down-arrow {
+      display: none; /* Hidden by default, shown on mobile */
+      width: 20px;
+      height: 10px;
+      margin: 20px auto 5px auto;
+    }
+    
+    .project-down-arrow line {
+      stroke: #000;
+      stroke-width: 1;
+      shape-rendering: crispEdges;
+      vector-effect: non-scaling-stroke;
+    }
+    
     /* Responsive project detail */
     @media (max-width: 1024px) {
       .project-detail-left {
@@ -632,6 +646,7 @@
         min-width: unset;
         height: auto;
         padding: 30px;
+        padding-bottom: 5px;
       }
       
       .project-detail-right {
@@ -663,6 +678,10 @@
         margin-bottom: 0;
       }
       
+      .project-down-arrow {
+        display: block;
+      }
+      
       .project-description {
         padding-right: 0;
         font-size: 14.67px;
@@ -675,6 +694,12 @@
         margin-bottom: 40px;
         font-size: 11px;
         line-height: 14px;
+      }
+      
+      .project-back-arrow {
+        width: 10px;
+        height: 5px;
+        margin-left: -13px;
       }
       
       .project-credit-label,
@@ -1349,6 +1374,11 @@
           <span class="project-credit-list">MASHABLE / GIZMODO / CBS NEWS / FAST COMPANY / DAILY MAIL UNCRATE / HUFF POST / ADWEEK / ADAGE / CTV NEWS / GLOBAL NEWS</span>
         </div>
       </div>
+      
+      <svg class="project-down-arrow" viewBox="0 0 20 10">
+        <line x1="0" y1="0" x2="10" y2="10"/>
+        <line x1="10" y1="10" x2="20" y2="0"/>
+      </svg>
     </div>
     <div class="project-detail-right">
       <div class="project-media">
