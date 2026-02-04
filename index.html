@@ -1688,12 +1688,9 @@
       projectDetailHeartStroke.classList.add('open');
       // Update URL hash
       updateHash('#work/theundeading');
-      // Lock the body scroll completely
+      // Lock scroll on html and body - no position change to avoid visual jump
+      document.documentElement.style.overflow = 'hidden';
       document.body.style.overflow = 'hidden';
-      document.body.style.position = 'fixed';
-      document.body.style.top = `-${scrollPosition}px`;
-      document.body.style.width = '100%';
-      document.body.style.height = '100%';
       // Reset project detail scroll to top
       projectDetailHeartStroke.scrollTop = 0;
     });
@@ -1702,14 +1699,9 @@
       projectDetailHeartStroke.classList.remove('open');
       // Update URL hash back to work
       updateHash('#work');
-      // Restore body scroll
+      // Restore scroll
+      document.documentElement.style.overflow = '';
       document.body.style.overflow = '';
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.width = '';
-      document.body.style.height = '';
-      // Restore scroll position
-      window.scrollTo(0, scrollPosition);
       // Scroll to work section with same duration as nav
       const workSection = document.getElementById('work');
       smoothScrollTo(workSection, SCROLL_DURATION);
