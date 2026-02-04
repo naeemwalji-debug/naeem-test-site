@@ -501,6 +501,7 @@
       height: 100%;
       background: #000;
       padding: 50px;
+      padding-bottom: 100px; /* Extra space to clear copyright */
       box-sizing: border-box;
       display: block;
       overflow-y: auto;
@@ -523,6 +524,30 @@
     
     .project-detail-right::-webkit-scrollbar-thumb:hover {
       background: #aaa;
+    }
+    
+    .project-detail-arrow {
+      position: fixed;
+      bottom: 30px;
+      left: calc(33.33% + (100% - 33.33%) / 2);
+      transform: translateX(-50%);
+      width: 40px;
+      height: 20px;
+      z-index: 10001;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+    
+    .project-detail.open .project-detail-arrow.visible {
+      opacity: 1;
+    }
+    
+    .project-detail-arrow line {
+      stroke: #fff;
+      stroke-width: 1;
+      shape-rendering: crispEdges;
+      vector-effect: non-scaling-stroke;
     }
     
     .project-detail-right .project-media {
@@ -735,6 +760,10 @@
       
       .project-down-arrow {
         display: block;
+      }
+      
+      .project-detail-arrow {
+        display: none;
       }
       
       .project-description {
@@ -1472,6 +1501,10 @@
       <div class="project-media" style="margin-top: 30px;">
         <iframe src="https://player.vimeo.com/video/97123199?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" title="Heart &amp; Stroke Foundation - The Undeading 2"></iframe>
       </div>
+      <svg class="project-detail-arrow" viewBox="0 0 40 20">
+        <line x1="20" y1="20" x2="10" y2="10"/>
+        <line x1="20" y1="20" x2="30" y2="10"/>
+      </svg>
     </div>
   </div>
   <script src="https://player.vimeo.com/api/player.js"></script>
@@ -1734,12 +1767,17 @@
       if (rightPanel) rightPanel.scrollTop = 0;
     });
     
-    // Prevent main page scroll when project is open
+    // Prevent main page scroll when project is open, and forward scroll to right panel
     window.addEventListener('wheel', function(e) {
       if (projectDetailHeartStroke.classList.contains('open')) {
-        // Check if scrolling inside project-detail-right
         const rightPanel = projectDetailHeartStroke.querySelector('.project-detail-right');
-        if (!rightPanel.contains(e.target)) {
+        const leftPanel = projectDetailHeartStroke.querySelector('.project-detail-left');
+        
+        // If scrolling over left panel or anywhere outside right panel, forward to right panel
+        if (leftPanel && leftPanel.contains(e.target)) {
+          e.preventDefault();
+          rightPanel.scrollTop += e.deltaY;
+        } else if (!rightPanel.contains(e.target)) {
           e.preventDefault();
         }
       }
@@ -1760,6 +1798,31 @@
       const workSection = document.getElementById('work');
       smoothScrollTo(workSection, SCROLL_DURATION);
     }
+    
+    // Project detail arrow visibility
+    const projectArrow = projectDetailHeartStroke.querySelector('.project-detail-arrow');
+    const projectRightPanel = projectDetailHeartStroke.querySelector('.project-detail-right');
+    
+    function updateProjectArrow() {
+      if (!projectRightPanel || !projectArrow) return;
+      
+      const hasScrollableContent = projectRightPanel.scrollHeight > projectRightPanel.clientHeight;
+      const isAtBottom = projectRightPanel.scrollTop + projectRightPanel.clientHeight >= projectRightPanel.scrollHeight - 10;
+      
+      if (hasScrollableContent && !isAtBottom) {
+        projectArrow.classList.add('visible');
+      } else {
+        projectArrow.classList.remove('visible');
+      }
+    }
+    
+    projectRightPanel.addEventListener('scroll', updateProjectArrow);
+    
+    // Update arrow when project opens
+    const originalOpenHandler = projectHeartStroke.onclick;
+    projectHeartStroke.addEventListener('click', function() {
+      setTimeout(updateProjectArrow, 100);
+    });
     
     // Close on escape key
     document.addEventListener('keydown', function(e) {
