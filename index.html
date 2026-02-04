@@ -116,7 +116,7 @@
     .work-title {
       position: absolute;
       left: 15px;
-      bottom: calc(100% + 19px);
+      bottom: calc(100% + 18px);
       color: #666666;
       font-family: "selfie-neue-round", "Brush Script MT", cursive;
       font-weight: 700;
@@ -230,7 +230,7 @@
         bottom: calc(100% - 37px);
       }
       .work-title {
-        bottom: calc(100% - 31px);
+        bottom: calc(100% - 32px);
       }
     }
     
@@ -469,6 +469,7 @@
       padding: 50px;
       box-sizing: border-box;
       display: block;
+      overflow-y: auto;
     }
     
     .project-detail-right .project-media {
@@ -539,7 +540,7 @@
       font-size: 36px;
       text-transform: uppercase;
       line-height: 37px;
-      margin-top: -26px; /* Overlap bottom of title */
+      margin-top: -25px; /* Overlap bottom of title */
       margin-bottom: 50px; /* 50px gap before description */
     }
     
@@ -1465,15 +1466,28 @@
     // Project Detail Page Functionality
     const projectHeartStroke = document.getElementById('project-heart-stroke');
     const projectDetailHeartStroke = document.getElementById('project-detail-heart-stroke');
+    let scrollPosition = 0;
     
     projectHeartStroke.addEventListener('click', function() {
+      // Save current scroll position
+      scrollPosition = window.pageYOffset;
       projectDetailHeartStroke.classList.add('open');
+      // Lock the body scroll
       document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${scrollPosition}px`;
+      document.body.style.width = '100%';
     });
     
     function closeProjectDetail() {
       projectDetailHeartStroke.classList.remove('open');
+      // Restore body scroll
       document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      // Restore scroll position then scroll to work
+      window.scrollTo(0, scrollPosition);
       // Scroll to work section with same duration as nav
       const workSection = document.getElementById('work');
       smoothScrollTo(workSection, SCROLL_DURATION);
