@@ -278,8 +278,8 @@
 
     .site-nav{
       position: fixed;
-      left: 55px;
-      top: 55px;
+      left: calc(var(--cornerInset) + var(--plusSize) + 10px);
+      top: calc(var(--cornerInset) + var(--plusSize) + 10px);
       z-index: 9999;
       mix-blend-mode: difference;
 
@@ -420,8 +420,8 @@
     
     .copyright {
       position: fixed;
-      right: 55px;
-      bottom: 55px;
+      right: calc(var(--cornerInset) + var(--plusSize) + 10px);
+      bottom: calc(var(--cornerInset) + var(--plusSize) + 10px);
       z-index: 10001;
       mix-blend-mode: difference;
       pointer-events: none;
@@ -664,18 +664,10 @@
         margin-bottom: 30px;
       }
       
-      /* Nav - smaller margins */
+      /* Nav - smaller font on mobile */
       .site-nav {
-        left: 25px;
-        top: 25px;
         font-size: 11px;
         line-height: 14px;
-      }
-      
-      /* Copyright - smaller margins */
-      .copyright {
-        right: 25px;
-        bottom: 25px;
       }
       
       /* Down arrow - smaller margins */
@@ -709,15 +701,8 @@
     /* Extra small screens */
     @media (max-width: 375px) {
       .site-nav {
-        left: 20px;
-        top: 20px;
         font-size: 10px;
         line-height: 12px;
-      }
-      
-      .copyright {
-        right: 20px;
-        bottom: 20px;
       }
       
       #downArrow {
@@ -963,7 +948,9 @@
       setPlusGeometry(plus.BL, cxL, cyB);
       setPlusGeometry(plus.BR, cxR, cyB);
 
-      if (!hasMouseMoved) {
+      // Don't rotate on mobile (no mouse)
+      const isMobile = window.innerWidth <= 768;
+      if (!hasMouseMoved || isMobile) {
         rotateAroundCenter(plus.TL, 0, cxL, cyT);
         rotateAroundCenter(plus.TR, 0, cxR, cyT);
         rotateAroundCenter(plus.BL, 0, cxL, cyB);
