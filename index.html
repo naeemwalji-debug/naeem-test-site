@@ -651,7 +651,6 @@
         overflow-y: scroll;
         overflow-x: hidden;
         -webkit-overflow-scrolling: touch;
-        touch-action: pan-y;
         overscroll-behavior: contain;
       }
       
@@ -662,13 +661,15 @@
         padding: 30px;
         padding-bottom: 5px;
         flex-shrink: 0;
+        overflow: visible;
       }
       
       .project-detail-right {
         width: 100%;
-        height: 50vh;
+        height: auto;
         padding: 30px;
         flex-shrink: 0;
+        overflow: visible;
       }
       
       .project-title {
@@ -1428,6 +1429,9 @@
     <div class="project-detail-right">
       <div class="project-media">
         <iframe src="https://player.vimeo.com/video/97123199?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" title="Heart &amp; Stroke Foundation - The Undeading"></iframe>
+      </div>
+      <div class="project-media" style="margin-top: 30px;">
+        <iframe src="https://player.vimeo.com/video/97123199?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" title="Heart &amp; Stroke Foundation - The Undeading 2"></iframe>
       </div>
     </div>
   </div>
