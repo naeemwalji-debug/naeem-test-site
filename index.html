@@ -710,7 +710,6 @@
     
     @media (max-width: 768px) {
       .project-detail {
-      /* Use 100vw to cover scrollbar area */
         flex-direction: column;
         overflow-y: scroll;
         overflow-x: hidden;
@@ -722,10 +721,24 @@
         width: 100%;
         min-width: unset;
         height: auto;
-        padding: 30px;
-        padding-bottom: 5px;
+        padding: 0;
         flex-shrink: 0;
         overflow: visible;
+        position: relative;
+      }
+      
+      .project-detail-header-mobile {
+        position: sticky;
+        top: 0;
+        background: #fff;
+        z-index: 10;
+        padding: 30px;
+        padding-bottom: 10px;
+      }
+      
+      .project-detail-content-mobile {
+        padding: 0 30px 20px 30px;
+        position: relative;
       }
       
       .project-detail-right {
@@ -1467,33 +1480,37 @@
   <!-- Project Detail: Heart & Stroke -->
   <div id="project-detail-heart-stroke" class="project-detail">
     <div class="project-detail-left">
-      <a href="#work" class="project-back" onclick="closeProjectDetail()">
-        <svg class="project-back-arrow" viewBox="0 0 40 20">
-          <polyline points="5,5 20,15 35,5"/>
-        </svg>
-        BACK TO WORK
-      </a>
-      
-      <h1 class="project-title">Heart & Stroke</h1>
-      <h2 class="project-subtitle">THE UNDEADING</h2>
-      
-      <p class="project-description">Every young soccer player dreams of playing on the same field as their heroes.<br><br>Following Toronto FC winning the 2017 MLS Cup, we moved the championship pitch from BMO Field to a youth recreation centre and replanted it, inspiring future generations to play like champions.</p>
-      
-      <div class="project-credits">
-        <div class="project-credit-column">
-          <span class="project-credit-label">RECOGNITION:</span>
-          <span class="project-credit-list"><span>CASSIES</span><span>APPLIED ARTS</span><span>ADCC</span><span>MARKETING</span><span>W3</span><span>MEDIA INNOVATION</span><span>WARC TOP 100</span><span>AME</span><span>CMA</span></span>
-        </div>
-        <div class="project-credit-column">
-          <span class="project-credit-label">PRESS:</span>
-          <span class="project-credit-list"><span>MASHABLE</span><span>GIZMODO</span><span>CBS NEWS</span><span>FAST COMPANY</span><span>DAILY MAIL UNCRATE</span><span>HUFF POST</span><span>ADWEEK</span><span>ADAGE</span><span>CTV NEWS</span><span>GLOBAL NEWS</span></span>
-        </div>
+      <div class="project-detail-header-mobile">
+        <a href="#work" class="project-back" onclick="closeProjectDetail()">
+          <svg class="project-back-arrow" viewBox="0 0 40 20">
+            <polyline points="5,5 20,15 35,5"/>
+          </svg>
+          BACK TO WORK
+        </a>
+        
+        <h1 class="project-title">Heart & Stroke</h1>
+        <h2 class="project-subtitle">THE UNDEADING</h2>
       </div>
       
-      <svg class="project-down-arrow" viewBox="0 0 20 10">
-        <line x1="0" y1="0" x2="10" y2="10"/>
-        <line x1="10" y1="10" x2="20" y2="0"/>
-      </svg>
+      <div class="project-detail-content-mobile">
+        <p class="project-description">Every young soccer player dreams of playing on the same field as their heroes.<br><br>Following Toronto FC winning the 2017 MLS Cup, we moved the championship pitch from BMO Field to a youth recreation centre and replanted it, inspiring future generations to play like champions.</p>
+        
+        <div class="project-credits">
+          <div class="project-credit-column">
+            <span class="project-credit-label">RECOGNITION:</span>
+            <span class="project-credit-list"><span>CASSIES</span><span>APPLIED ARTS</span><span>ADCC</span><span>MARKETING</span><span>W3</span><span>MEDIA INNOVATION</span><span>WARC TOP 100</span><span>AME</span><span>CMA</span></span>
+          </div>
+          <div class="project-credit-column">
+            <span class="project-credit-label">PRESS:</span>
+            <span class="project-credit-list"><span>MASHABLE</span><span>GIZMODO</span><span>CBS NEWS</span><span>FAST COMPANY</span><span>DAILY MAIL UNCRATE</span><span>HUFF POST</span><span>ADWEEK</span><span>ADAGE</span><span>CTV NEWS</span><span>GLOBAL NEWS</span></span>
+          </div>
+        </div>
+        
+        <svg class="project-down-arrow" viewBox="0 0 20 10">
+          <line x1="0" y1="0" x2="10" y2="10"/>
+          <line x1="10" y1="10" x2="20" y2="0"/>
+        </svg>
+      </div>
     </div>
     <div class="project-detail-right">
       <div class="project-media">
@@ -1824,6 +1841,38 @@
     projectHeartStroke.addEventListener('click', function() {
       setTimeout(updateProjectArrow, 100);
     });
+    
+    // Mobile: fade and clip content as it scrolls toward subtitle
+    function updateMobileContentFade() {
+      if (window.innerWidth > 768) return;
+      
+      const contentMobile = projectDetailHeartStroke.querySelector('.project-detail-content-mobile');
+      const headerMobile = projectDetailHeartStroke.querySelector('.project-detail-header-mobile');
+      if (!contentMobile || !headerMobile) return;
+      
+      const headerRect = headerMobile.getBoundingClientRect();
+      const fadeZoneTop = headerRect.bottom; // Content fades as it reaches subtitle bottom
+      const fadeZoneHeight = 60; // Height of fade zone
+      
+      // Get all fadeable elements
+      const fadeElements = contentMobile.querySelectorAll('.project-description, .project-credits, .project-down-arrow');
+      
+      fadeElements.forEach(el => {
+        const elRect = el.getBoundingClientRect();
+        
+        // If element top is above the fade zone
+        if (elRect.top < fadeZoneTop) {
+          // Calculate how far into the fade zone
+          const distanceIntoFade = fadeZoneTop - elRect.top;
+          const fadeProgress = Math.min(1, distanceIntoFade / fadeZoneHeight);
+          el.style.opacity = 1 - fadeProgress;
+        } else {
+          el.style.opacity = 1;
+        }
+      });
+    }
+    
+    projectDetailHeartStroke.addEventListener('scroll', updateMobileContentFade);
     
     // Close on escape key
     document.addEventListener('keydown', function(e) {
