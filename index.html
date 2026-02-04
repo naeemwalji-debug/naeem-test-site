@@ -456,6 +456,7 @@
       transition: top 1.2s cubic-bezier(0.4, 0, 0.2, 1);
       display: flex;
       overflow: hidden;
+      overscroll-behavior: contain;
     }
     
     .project-detail.open {
@@ -470,6 +471,8 @@
       padding: 50px;
       box-sizing: border-box;
       position: relative;
+      overflow-y: auto;
+      overscroll-behavior: contain;
     }
     
     .project-detail-right {
@@ -481,6 +484,7 @@
       display: block;
       overflow-y: auto;
       position: relative;
+      overscroll-behavior: contain;
     }
     
     .project-detail-right .project-media {
@@ -1680,8 +1684,14 @@
       projectDetailHeartStroke.classList.add('open');
       // Update URL hash
       updateHash('#work/theundeading');
-      // Lock the body scroll
+      // Lock the body scroll completely
       document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${scrollPosition}px`;
+      document.body.style.width = '100%';
+      document.body.style.height = '100%';
+      // Reset project detail scroll to top
+      projectDetailHeartStroke.scrollTop = 0;
     });
     
     function closeProjectDetail() {
@@ -1690,6 +1700,12 @@
       updateHash('#work');
       // Restore body scroll
       document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      document.body.style.height = '';
+      // Restore scroll position
+      window.scrollTo(0, scrollPosition);
       // Scroll to work section with same duration as nav
       const workSection = document.getElementById('work');
       smoothScrollTo(workSection, SCROLL_DURATION);
