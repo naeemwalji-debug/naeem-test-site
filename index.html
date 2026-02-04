@@ -22,16 +22,18 @@
 
   <style>
     :root{
-      --cornerInset: 25px;   /* distance from edges */
+      --cornerInset: 25px;   /* distance from edges for + signs */
       --plusSize: 30px;      /* your + size */
       --navClearance: 18px;  /* extra breathing room from the rotating + */
+      --contentInset: 55px;  /* where nav/copyright sit (cornerInset + plusSize) */
     }
     
     @media (max-width: 768px) {
       :root {
-        --cornerInset: 15px;
+        --cornerInset: 5px;   /* + signs closer to edge on mobile */
         --plusSize: 20px;
         --navClearance: 12px;
+        --contentInset: 25px; /* nav/copyright position on mobile */
       }
     }
 
@@ -278,8 +280,8 @@
 
     .site-nav{
       position: fixed;
-      left: calc(var(--cornerInset) + var(--plusSize));
-      top: calc(var(--cornerInset) + var(--plusSize));
+      left: var(--contentInset);
+      top: var(--contentInset);
       z-index: 9999;
       mix-blend-mode: difference;
 
@@ -420,8 +422,8 @@
     
     .copyright {
       position: fixed;
-      right: calc(var(--cornerInset) + var(--plusSize));
-      bottom: calc(var(--cornerInset) + var(--plusSize));
+      right: var(--contentInset);
+      bottom: var(--contentInset);
       z-index: 10001;
       mix-blend-mode: difference;
       pointer-events: none;
@@ -912,8 +914,13 @@
       BR: document.getElementById("plusBR"),
     };
 
-    const INSET = 25;
-    const HALF = 15; // total size = 30px
+    // Read values from CSS variables
+    function getCornerValues() {
+      const styles = getComputedStyle(document.documentElement);
+      const inset = parseFloat(styles.getPropertyValue('--cornerInset'));
+      const plusSize = parseFloat(styles.getPropertyValue('--plusSize'));
+      return { inset, half: plusSize / 2 };
+    }
 
     let cornerMouse = { x: 0, y: 0 };
     let hasMouseMoved = false;
@@ -924,20 +931,20 @@
       hasMouseMoved = true;
     });
 
-    function setPlusGeometry(g, cx, cy) {
+    function setPlusGeometry(g, cx, cy, half) {
       const lines = g.querySelectorAll("line");
       const h = lines[0];
       const v = lines[1];
 
-      h.setAttribute("x1", cx - HALF);
+      h.setAttribute("x1", cx - half);
       h.setAttribute("y1", cy);
-      h.setAttribute("x2", cx + HALF);
+      h.setAttribute("x2", cx + half);
       h.setAttribute("y2", cy);
 
       v.setAttribute("x1", cx);
-      v.setAttribute("y1", cy - HALF);
+      v.setAttribute("y1", cy - half);
       v.setAttribute("x2", cx);
-      v.setAttribute("y2", cy + HALF);
+      v.setAttribute("y2", cy + half);
     }
 
     function rotateAroundCenter(g, deg, cx, cy) {
@@ -947,19 +954,20 @@
     function updateCornerMarks() {
       const w = document.documentElement.clientWidth;
       const h = window.innerHeight;
+      const { inset, half } = getCornerValues();
 
       cornerSvg.setAttribute("viewBox", `0 0 ${w} ${h}`);
       cornerSvg.style.height = h + 'px';
 
-      const cxL = INSET + HALF;
-      const cxR = w - INSET - HALF;
-      const cyT = INSET + HALF;
-      const cyB = h - INSET - HALF;
+      const cxL = inset + half;
+      const cxR = w - inset - half;
+      const cyT = inset + half;
+      const cyB = h - inset - half;
 
-      setPlusGeometry(plus.TL, cxL, cyT);
-      setPlusGeometry(plus.TR, cxR, cyT);
-      setPlusGeometry(plus.BL, cxL, cyB);
-      setPlusGeometry(plus.BR, cxR, cyB);
+      setPlusGeometry(plus.TL, cxL, cyT, half);
+      setPlusGeometry(plus.TR, cxR, cyT, half);
+      setPlusGeometry(plus.BL, cxL, cyB, half);
+      setPlusGeometry(plus.BR, cxR, cyB, half);
 
       // Don't rotate on mobile (no mouse)
       const isMobile = window.innerWidth <= 768;
