@@ -745,6 +745,10 @@
       vector-effect: non-scaling-stroke;
     }
     
+    .athlete-img {
+      object-position: calc(50% + 150px) center;
+    }
+    
     /* Responsive project detail */
     @media (max-width: 1024px) {
       .project-detail-left {
@@ -851,6 +855,10 @@
       
       .project-media-last {
         padding-bottom: 100px !important;
+      }
+      
+      .athlete-img {
+        object-position: calc(50% + 20px) center;
       }
       
       /* Ensure work grid videos autoplay on mobile */
@@ -1847,8 +1855,21 @@
           <img src="/Images/SobeysTableclothPatchesCrop.jpg" style="width: 100%; height: 100%; object-fit: cover; display: block;" alt="Sobeys Tablecloth Patches">
         </div>
         <div style="aspect-ratio: 1/1; overflow: hidden;">
-          <img src="/Images/SobeysTableclothAthlete.jpg" style="width: 100%; height: 100%; object-fit: cover; object-position: calc(50% + 300px) center; display: block;" alt="Team Canada Athlete with Tablecloth">
+          <img src="/Images/SobeysTableclothAthlete.jpg" class="athlete-img" style="width: 100%; height: 100%; object-fit: cover; display: block;" alt="Team Canada Athlete with Tablecloth">
         </div>
+      </div>
+      
+      <div class="project-work-item">
+        <h3 class="project-work-title">PATCH DESIGN</h3>
+        <p class="project-work-description">Canadians could send in messages of support and see their words stitched onto Team Canada's Tablecloth.</p>
+      </div>
+      <div class="project-media project-media-last" style="padding-bottom: 25px; display: flex; align-items: center; gap: 20px;">
+        <img src="/Images/PostMock.png" style="flex: 1; max-width: calc(50% - 30px); height: auto; display: block;" alt="Social media post with message of support">
+        <svg viewBox="0 0 24 24" style="width: 40px; height: 40px; flex-shrink: 0;">
+          <line x1="4" y1="12" x2="20" y2="12" stroke="#fff" stroke-width="1"/>
+          <polyline points="14,6 20,12 14,18" fill="none" stroke="#fff" stroke-width="1"/>
+        </svg>
+        <img src="/Images/SobeysTableclothDesignPatch.jpg" style="flex: 1; max-width: calc(50% - 30px); height: auto; display: block;" alt="Stitched patch on tablecloth">
       </div>
       
       <svg class="project-detail-arrow" viewBox="0 0 40 20">
