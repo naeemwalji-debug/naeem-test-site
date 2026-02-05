@@ -724,7 +724,7 @@
         min-width: unset;
         height: auto;
         padding: 30px;
-        padding-bottom: 30px;
+        padding-bottom: 0;
         flex-shrink: 0;
         overflow: visible;
         position: relative;
@@ -740,6 +740,7 @@
       
       .project-detail-content-mobile {
         padding: 0;
+        padding-bottom: 30px; /* 30px gap to black area */
         position: relative;
       }
       
@@ -754,26 +755,27 @@
       .project-title {
         font-size: 60px;
         margin-left: -12px;
-        margin-top: 40px; /* Space for fixed back button */
+        margin-top: 54px; /* Back button is at 30px, ~14px tall, plus 40px gap = need ~54px from container top (which has 30px padding, so 54px margin puts title at 84px from viewport, back button bottom is at ~44px, gap = 40px) */
+        margin-bottom: 0;
       }
       
       .project-subtitle {
         font-size: 24px;
-        margin-bottom: 20px;
+        margin-bottom: 12px; /* Visually match the 20px credits gap (accounts for line-height differences) */
         margin-top: -21px;
       }
       
       .project-credits {
         flex-direction: column;
-        gap: 20px;
+        gap: 20px; /* 20px between recognition and press */
         position: relative;
         bottom: auto;
         left: auto;
-        margin-top: 40px;
-        margin-bottom: 30px;
+        margin-top: 40px; /* 40px below description */
+        margin-bottom: 0;
       }
       
-      /* Fixed back button */
+      /* Fixed back button - only visible in project detail */
       .project-detail > .project-back {
         position: fixed;
         top: 30px;
@@ -782,19 +784,41 @@
         margin-bottom: 0;
         font-size: 11px;
         line-height: 14px;
+        color: #000;
+        display: none; /* Hidden by default */
+        transition: color 0.3s ease;
+      }
+      
+      .project-detail.open > .project-back {
+        display: flex; /* Show when project is open */
+      }
+      
+      .project-detail > .project-back .project-back-arrow polyline {
+        stroke: #000;
+        transition: stroke 0.3s ease;
+      }
+      
+      /* White/inverted state when over black background */
+      .project-detail > .project-back.inverted {
+        color: #fff;
+      }
+      
+      .project-detail > .project-back.inverted .project-back-arrow polyline {
+        stroke: #fff;
       }
       
       /* Fixed down arrow - white, at bottom */
-      .project-down-arrow {
+      .project-detail > .project-down-arrow {
         display: block;
         position: fixed;
         bottom: 30px;
         left: 50%;
         transform: translateX(-50%);
         z-index: 100;
+        transition: opacity 0.3s ease;
       }
       
-      .project-down-arrow line {
+      .project-detail > .project-down-arrow line {
         stroke: #fff;
       }
       
@@ -808,12 +832,6 @@
         line-height: 16px;
         letter-spacing: 2px;
         margin: 0; /* Remove all browser default margins */
-      }
-      
-      .project-detail > .project-back {
-        margin-bottom: 0;
-        font-size: 11px;
-        line-height: 14px;
       }
       
       .project-credit-label,
@@ -1847,7 +1865,7 @@
       smoothScrollTo(workSection, SCROLL_DURATION);
     }
     
-    // Project detail arrow visibility
+    // Project detail arrow visibility (desktop)
     const projectArrow = projectDetailHeartStroke.querySelector('.project-detail-arrow');
     const projectRightPanel = projectDetailHeartStroke.querySelector('.project-detail-right');
     
@@ -1866,10 +1884,53 @@
     
     projectRightPanel.addEventListener('scroll', updateProjectArrow);
     
+    // Mobile down arrow fade at bottom
+    const mobileDownArrow = projectDetailHeartStroke.querySelector('.project-detail > .project-down-arrow');
+    const mobileBackButton = projectDetailHeartStroke.querySelector('.project-detail > .project-back');
+    const projectDetailRight = projectDetailHeartStroke.querySelector('.project-detail-right');
+    
+    function updateMobileDownArrow() {
+      if (window.innerWidth > 768) return;
+      if (!mobileDownArrow) return;
+      
+      const scrollTop = projectDetailHeartStroke.scrollTop;
+      const scrollHeight = projectDetailHeartStroke.scrollHeight;
+      const clientHeight = projectDetailHeartStroke.clientHeight;
+      const isAtBottom = scrollTop + clientHeight >= scrollHeight - 20;
+      
+      if (isAtBottom) {
+        mobileDownArrow.style.opacity = '0';
+      } else {
+        mobileDownArrow.style.opacity = '1';
+      }
+    }
+    
+    function updateBackButtonColor() {
+      if (window.innerWidth > 768) return;
+      if (!mobileBackButton || !projectDetailRight) return;
+      
+      // Get the position of the black area (right panel)
+      const blackAreaTop = projectDetailRight.getBoundingClientRect().top;
+      // Back button is at top: 30px, so check if black area has scrolled past that point
+      const backButtonBottom = 30 + mobileBackButton.offsetHeight;
+      
+      if (blackAreaTop <= backButtonBottom) {
+        mobileBackButton.classList.add('inverted');
+      } else {
+        mobileBackButton.classList.remove('inverted');
+      }
+    }
+    
+    projectDetailHeartStroke.addEventListener('scroll', function() {
+      updateMobileDownArrow();
+      updateBackButtonColor();
+    });
+    
     // Update arrow when project opens
     const originalOpenHandler = projectHeartStroke.onclick;
     projectHeartStroke.addEventListener('click', function() {
       setTimeout(updateProjectArrow, 100);
+      setTimeout(updateMobileDownArrow, 100);
     });
     
     // Close on escape key
