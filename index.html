@@ -843,6 +843,15 @@
         display: none;
       }
       
+      .project-media-last {
+        padding-bottom: 100px !important;
+      }
+      
+      /* Ensure work grid videos autoplay on mobile */
+      .work-item video {
+        pointer-events: none;
+      }
+      
       /* Fixed back button - only visible in project detail */
       .project-back-mobile {
         position: fixed;
@@ -1753,7 +1762,7 @@
       <div class="project-work-item">
         <h3 class="project-work-title">PRESS BOARD</h3>
       </div>
-      <div class="project-media" style="padding-bottom: 25px;">
+      <div class="project-media project-media-last" style="padding-bottom: 25px;">
         <img src="/Images/BMO_GrassOfGreatness_AppliedArts_Experiential-09.jpg" style="width: 100%; display: block;" alt="BMO Grass of Greatness Press Board">
       </div>
       
@@ -2009,6 +2018,16 @@
     const projectHeartStroke = document.getElementById('project-heart-stroke');
     const projectDetailHeartStroke = document.getElementById('project-detail-heart-stroke');
     let scrollPosition = 0;
+    
+    // Force autoplay on work grid videos (mobile browsers may block autoplay)
+    document.querySelectorAll('.work-item video').forEach(function(video) {
+      video.play().catch(function() {});
+    });
+    document.addEventListener('touchstart', function() {
+      document.querySelectorAll('.work-item video').forEach(function(video) {
+        video.play().catch(function() {});
+      });
+    }, { once: true });
     
     projectHeartStroke.addEventListener('click', function() {
       // Save current scroll position
