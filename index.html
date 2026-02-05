@@ -1609,7 +1609,11 @@
           <div class="work-item" id="project-sobeys" style="cursor: pointer; position: relative; overflow: hidden;">
             <img src="/Images/SobyesThumbnail.png" style="width: 100%; height: 100%; object-fit: cover;" alt="Sobeys Team Canada Olympics">
           </div>
-          <div class="work-item" style="background: #b9b9b9;"></div>
+          <div class="work-item" id="project-eqbank" style="cursor: pointer; position: relative; overflow: hidden;">
+            <video autoplay muted loop playsinline style="width: 100%; height: 100%; object-fit: cover;">
+              <source src="/Images/EQThumbnail.mp4" type="video/mp4">
+            </video>
+          </div>
           <div class="work-item" id="project-bmo" style="cursor: pointer; position: relative; overflow: hidden;">
             <video autoplay muted loop playsinline style="width: 100%; height: 100%; object-fit: cover; transform: scale(1.40);">
               <source src="/Images/BMOGrassOfGreatness.mp4" type="video/mp4">
@@ -1701,6 +1705,89 @@
       <div class="project-media project-media-last" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding-bottom: 45px;">
         <img src="/Images/Plus_mesh_003_b.webp" style="width: 100%; display: block;" alt="Proline+ Plus Mesh Asset">
         <img src="/Images/Plus_mesh_002_b.webp" style="width: 100%; display: block;" alt="Proline+ Plus Mesh Asset">
+      </div>
+      
+      <svg class="project-detail-arrow" viewBox="0 0 40 20">
+        <line x1="20" y1="20" x2="10" y2="10"/>
+        <line x1="20" y1="20" x2="30" y2="10"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Project Detail: EQ Bank -->
+  <div id="project-detail-eqbank" class="project-detail">
+    <!-- Fixed back button (mobile only) -->
+    <a href="#work" class="project-back project-back-mobile" onclick="closeProjectDetailEQBank()">
+      <svg class="project-back-arrow" viewBox="0 0 40 20">
+        <polyline points="5,5 20,15 35,5"/>
+      </svg>
+      BACK TO WORK
+    </a>
+    
+    <!-- Fixed down arrow (mobile only) -->
+    <svg class="project-down-arrow project-down-arrow-mobile" viewBox="0 0 20 10">
+      <line x1="0" y1="0" x2="10" y2="10"/>
+      <line x1="10" y1="10" x2="20" y2="0"/>
+    </svg>
+    
+    <div class="project-detail-left">
+      <!-- Back button for desktop (inside left panel) -->
+      <a href="#work" class="project-back project-back-desktop" onclick="closeProjectDetailEQBank()">
+        <svg class="project-back-arrow" viewBox="0 0 40 20">
+          <polyline points="5,5 20,15 35,5"/>
+        </svg>
+        BACK TO WORK
+      </a>
+      
+      <div class="project-detail-header-mobile">
+        <h1 class="project-title">EQ Bank</h1>
+        <h2 class="project-subtitle">MAKE BANK</h2>
+      </div>
+      
+      <div class="project-detail-content-mobile">
+        <p class="project-description">EQ Bank wanted to break Canadians of their apathy towards big banks, who take more than they give. So we surfaced decades of frustration Canadians have towards the big banking system. Enough take, it's time to make. We leaned into the pain-points around the rising cost of living, while positioning EQ Bank's better banking benefits as a chance for people to Make Bank.</p>
+        
+        <div class="project-credits">
+        </div>
+      </div>
+    </div>
+    <div class="project-detail-right">
+      <div class="project-work-item">
+        <h3 class="project-work-title">LAUNCH VIDEO</h3>
+      </div>
+      <div class="project-media">
+        <div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1078296908?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="EQ Bank _ #MakeBank"></iframe></div>
+      </div>
+      
+      <div class="project-work-item">
+        <h3 class="project-work-title">OOH</h3>
+      </div>
+      <div class="project-media" style="margin-bottom: 10px;">
+        <img src="/Images/EQZeroFees.png" style="width: 100%; display: block;" alt="EQ Bank Zero Fees Given Billboard">
+      </div>
+      <div class="project-media" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
+        <img src="/Images/EQZeroInterestCrop.png" style="width: 100%; display: block;" alt="EQ Bank Zero Interest Billboard">
+        <img src="/Images/EQ247Crop.png" style="width: 100%; display: block;" alt="EQ Bank 24/7 Billboard">
+      </div>
+      <div class="project-media" style="margin-bottom: 10px;">
+        <img src="/Images/EQWild.png" style="width: 100%; display: block;" alt="EQ Bank Wild Posting">
+      </div>
+      <div class="project-media">
+        <img src="/Images/EQTrain.webp" style="width: 100%; display: block;" alt="EQ Bank Transit Wrap">
+      </div>
+      
+      <div class="project-work-item">
+        <h3 class="project-work-title">WEBSITE</h3>
+      </div>
+      <div class="project-media">
+        <img src="/Images/EQWebsite.webp" style="width: 100%; display: block;" alt="EQ Bank Website">
+      </div>
+      
+      <div class="project-work-item">
+        <h3 class="project-work-title">SWAG</h3>
+      </div>
+      <div class="project-media project-media-last" style="padding-bottom: 45px;">
+        <img src="/Images/EQSwag.webp" style="width: 100%; display: block;" alt="EQ Bank Swag">
       </div>
       
       <svg class="project-detail-arrow" viewBox="0 0 40 20">
@@ -2376,6 +2463,95 @@
       }
     });
     
+    // EQ Bank Project Detail Page Functionality
+    const projectEQBank = document.getElementById('project-eqbank');
+    const projectDetailEQBank = document.getElementById('project-detail-eqbank');
+    
+    projectEQBank.addEventListener('click', function() {
+      scrollPosition = window.pageYOffset;
+      projectDetailEQBank.classList.add('open');
+      updateHash('#work/makebank');
+      const rightPanel = projectDetailEQBank.querySelector('.project-detail-right');
+      if (rightPanel) rightPanel.scrollTop = 0;
+    });
+    
+    // Prevent main page scroll when EQ Bank project is open
+    window.addEventListener('wheel', function(e) {
+      if (projectDetailEQBank.classList.contains('open')) {
+        const rightPanel = projectDetailEQBank.querySelector('.project-detail-right');
+        const leftPanel = projectDetailEQBank.querySelector('.project-detail-left');
+        if (leftPanel && leftPanel.contains(e.target)) {
+          e.preventDefault();
+          rightPanel.scrollTop += e.deltaY;
+        } else if (!rightPanel.contains(e.target)) {
+          e.preventDefault();
+        }
+      }
+    }, { passive: false });
+    
+    window.addEventListener('scroll', function() {
+      if (projectDetailEQBank.classList.contains('open')) {
+        window.scrollTo(0, scrollPosition);
+      }
+    });
+    
+    function closeProjectDetailEQBank() {
+      projectDetailEQBank.classList.remove('open');
+      updateHash('#work');
+      const workSection = document.getElementById('work');
+      smoothScrollTo(workSection, SCROLL_DURATION);
+    }
+    
+    // EQ Bank desktop arrow visibility
+    const projectArrowEQBank = projectDetailEQBank.querySelector('.project-detail-arrow');
+    const projectRightPanelEQBank = projectDetailEQBank.querySelector('.project-detail-right');
+    
+    function updateProjectArrowEQBank() {
+      if (!projectRightPanelEQBank || !projectArrowEQBank) return;
+      const hasScrollableContent = projectRightPanelEQBank.scrollHeight > projectRightPanelEQBank.clientHeight;
+      const isAtBottom = projectRightPanelEQBank.scrollTop + projectRightPanelEQBank.clientHeight >= projectRightPanelEQBank.scrollHeight - 10;
+      if (hasScrollableContent && !isAtBottom) {
+        projectArrowEQBank.classList.add('visible');
+      } else {
+        projectArrowEQBank.classList.remove('visible');
+      }
+    }
+    
+    projectRightPanelEQBank.addEventListener('scroll', updateProjectArrowEQBank);
+    
+    // EQ Bank mobile down arrow fade
+    const mobileDownArrowEQBank = projectDetailEQBank.querySelector('.project-down-arrow-mobile');
+    
+    function updateMobileDownArrowEQBank() {
+      if (window.innerWidth > 768) return;
+      if (!mobileDownArrowEQBank) return;
+      const scrollTop = projectDetailEQBank.scrollTop;
+      const scrollHeight = projectDetailEQBank.scrollHeight;
+      const clientHeight = projectDetailEQBank.clientHeight;
+      const isAtBottom = scrollTop + clientHeight >= scrollHeight - 20;
+      if (isAtBottom) {
+        mobileDownArrowEQBank.style.opacity = '0';
+      } else {
+        mobileDownArrowEQBank.style.opacity = '1';
+      }
+    }
+    
+    projectDetailEQBank.addEventListener('scroll', function() {
+      updateMobileDownArrowEQBank();
+    });
+    
+    projectEQBank.addEventListener('click', function() {
+      setTimeout(updateProjectArrowEQBank, 100);
+      setTimeout(updateMobileDownArrowEQBank, 100);
+    });
+    
+    // Close EQ Bank on escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && projectDetailEQBank.classList.contains('open')) {
+        closeProjectDetailEQBank();
+      }
+    });
+    
     // BMO Project Detail Page Functionality
     const projectBMO = document.getElementById('project-bmo');
     const projectDetailBMO = document.getElementById('project-detail-bmo');
@@ -2672,6 +2848,14 @@
     
     if (window.location.hash === '#work/theplusside') {
       projectDetailProline.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.top = '0';
+      document.body.style.width = '100%';
+    }
+    
+    if (window.location.hash === '#work/makebank') {
+      projectDetailEQBank.classList.add('open');
       document.body.style.overflow = 'hidden';
       document.body.style.position = 'fixed';
       document.body.style.top = '0';
