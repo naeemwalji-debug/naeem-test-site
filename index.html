@@ -1588,7 +1588,9 @@
         <h1 class="work-title">Work</h1>
         <div class="work-grid">
           <div class="work-item" style="background: #d9d9d9;"></div>
-          <div class="work-item" style="background: #c9c9c9;"></div>
+          <div class="work-item" id="project-sobeys" style="cursor: pointer; position: relative; overflow: hidden;">
+            <img src="/Images/SobyesThumbnail.png" style="width: 100%; height: 100%; object-fit: cover;" alt="Sobeys Team Canada Olympics">
+          </div>
           <div class="work-item" style="background: #b9b9b9;"></div>
           <div class="work-item" id="project-bmo" style="cursor: pointer; position: relative; overflow: hidden;">
             <video autoplay muted loop playsinline style="width: 100%; height: 100%; object-fit: cover; transform: scale(1.40);">
@@ -1683,7 +1685,7 @@
         <h3 class="project-work-title">PLAYER REACTIONS</h3>
         <p class="project-work-description">Toronto FC players visit the new pitch and meet the young athletes.</p>
       </div>
-      <div class="project-media">
+      <div class="project-media project-media-last" style="padding-bottom: 25px;">
         <iframe src="https://player.vimeo.com/video/97123199?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" title="Heart &amp; Stroke Foundation - The Undeading 4"></iframe>
       </div>
       <svg class="project-detail-arrow" viewBox="0 0 40 20">
@@ -1764,6 +1766,66 @@
       </div>
       <div class="project-media project-media-last" style="padding-bottom: 25px;">
         <img src="/Images/BMO_GrassOfGreatness_AppliedArts_Experiential-09.jpg" style="width: 100%; display: block;" alt="BMO Grass of Greatness Press Board">
+      </div>
+      
+      <svg class="project-detail-arrow" viewBox="0 0 40 20">
+        <line x1="20" y1="20" x2="10" y2="10"/>
+        <line x1="20" y1="20" x2="30" y2="10"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Project Detail: Sobeys -->
+  <div id="project-detail-sobeys" class="project-detail">
+    <!-- Fixed back button (mobile only) -->
+    <a href="#work" class="project-back project-back-mobile" onclick="closeProjectDetailSobeys()">
+      <svg class="project-back-arrow" viewBox="0 0 40 20">
+        <polyline points="5,5 20,15 35,5"/>
+      </svg>
+      BACK TO WORK
+    </a>
+    
+    <!-- Fixed down arrow (mobile only) -->
+    <svg class="project-down-arrow project-down-arrow-mobile" viewBox="0 0 20 10">
+      <line x1="0" y1="0" x2="10" y2="10"/>
+      <line x1="10" y1="10" x2="20" y2="0"/>
+    </svg>
+    
+    <div class="project-detail-left">
+      <!-- Back button for desktop (inside left panel) -->
+      <a href="#work" class="project-back project-back-desktop" onclick="closeProjectDetailSobeys()">
+        <svg class="project-back-arrow" viewBox="0 0 40 20">
+          <polyline points="5,5 20,15 35,5"/>
+        </svg>
+        BACK TO WORK
+      </a>
+      
+      <div class="project-detail-header-mobile">
+        <h1 class="project-title">Sobeys</h1>
+        <h2 class="project-subtitle">TEAM CANADA OLYMPICS</h2>
+      </div>
+      
+      <div class="project-detail-content-mobile">
+        <p class="project-description">Sobeys, Canada's Family Grocery Store wanted to launch their new #FeedTheDream Olympic platform in a big way.<br><br>Since fans and families weren't allowed at the Tokyo 2020 Olympic Games, we brought their cheers and support to the athletes in Japan with Team Canada's Tablecloth — made by crowdsourcing messages of support across the internet, then embroidering people's encouragement onto a 260 ft² tablecloth that housed thousands of messages.</p>
+        
+        <div class="project-credits">
+          <div class="project-credit-column">
+            <span class="project-credit-label">Recognition:</span>
+            <span class="project-credit-list"><span>Media Innovation</span><span>AToMiC Awards</span><span>CMAs</span></span>
+          </div>
+          <div class="project-credit-column">
+            <span class="project-credit-label">Press:</span>
+            <span class="project-credit-list"><span>The Drum</span><span>Little Black Book</span><span>Trend Hunter</span><span>Strategy Magazine</span><span>Shots</span><span>The Message</span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="project-detail-right">
+      <div class="project-work-item">
+        <h3 class="project-work-title">CASE STUDY</h3>
+      </div>
+      <div class="project-media project-media-last" style="padding-bottom: 25px;">
+        <iframe src="https://player.vimeo.com/video/742661112?h=d00af951bc&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" title="Sobeys - Team Canada's Tablecloth"></iframe>
       </div>
       
       <svg class="project-detail-arrow" viewBox="0 0 40 20">
@@ -2179,6 +2241,95 @@
       }
     });
     
+    // Sobeys Project Detail Page Functionality
+    const projectSobeys = document.getElementById('project-sobeys');
+    const projectDetailSobeys = document.getElementById('project-detail-sobeys');
+    
+    projectSobeys.addEventListener('click', function() {
+      scrollPosition = window.pageYOffset;
+      projectDetailSobeys.classList.add('open');
+      updateHash('#work/teamcanadaolympics');
+      const rightPanel = projectDetailSobeys.querySelector('.project-detail-right');
+      if (rightPanel) rightPanel.scrollTop = 0;
+    });
+    
+    // Prevent main page scroll when Sobeys project is open
+    window.addEventListener('wheel', function(e) {
+      if (projectDetailSobeys.classList.contains('open')) {
+        const rightPanel = projectDetailSobeys.querySelector('.project-detail-right');
+        const leftPanel = projectDetailSobeys.querySelector('.project-detail-left');
+        if (leftPanel && leftPanel.contains(e.target)) {
+          e.preventDefault();
+          rightPanel.scrollTop += e.deltaY;
+        } else if (!rightPanel.contains(e.target)) {
+          e.preventDefault();
+        }
+      }
+    }, { passive: false });
+    
+    window.addEventListener('scroll', function() {
+      if (projectDetailSobeys.classList.contains('open')) {
+        window.scrollTo(0, scrollPosition);
+      }
+    });
+    
+    function closeProjectDetailSobeys() {
+      projectDetailSobeys.classList.remove('open');
+      updateHash('#work');
+      const workSection = document.getElementById('work');
+      smoothScrollTo(workSection, SCROLL_DURATION);
+    }
+    
+    // Sobeys desktop arrow visibility
+    const projectArrowSobeys = projectDetailSobeys.querySelector('.project-detail-arrow');
+    const projectRightPanelSobeys = projectDetailSobeys.querySelector('.project-detail-right');
+    
+    function updateProjectArrowSobeys() {
+      if (!projectRightPanelSobeys || !projectArrowSobeys) return;
+      const hasScrollableContent = projectRightPanelSobeys.scrollHeight > projectRightPanelSobeys.clientHeight;
+      const isAtBottom = projectRightPanelSobeys.scrollTop + projectRightPanelSobeys.clientHeight >= projectRightPanelSobeys.scrollHeight - 10;
+      if (hasScrollableContent && !isAtBottom) {
+        projectArrowSobeys.classList.add('visible');
+      } else {
+        projectArrowSobeys.classList.remove('visible');
+      }
+    }
+    
+    projectRightPanelSobeys.addEventListener('scroll', updateProjectArrowSobeys);
+    
+    // Sobeys mobile down arrow fade
+    const mobileDownArrowSobeys = projectDetailSobeys.querySelector('.project-down-arrow-mobile');
+    
+    function updateMobileDownArrowSobeys() {
+      if (window.innerWidth > 768) return;
+      if (!mobileDownArrowSobeys) return;
+      const scrollTop = projectDetailSobeys.scrollTop;
+      const scrollHeight = projectDetailSobeys.scrollHeight;
+      const clientHeight = projectDetailSobeys.clientHeight;
+      const isAtBottom = scrollTop + clientHeight >= scrollHeight - 20;
+      if (isAtBottom) {
+        mobileDownArrowSobeys.style.opacity = '0';
+      } else {
+        mobileDownArrowSobeys.style.opacity = '1';
+      }
+    }
+    
+    projectDetailSobeys.addEventListener('scroll', function() {
+      updateMobileDownArrowSobeys();
+    });
+    
+    projectSobeys.addEventListener('click', function() {
+      setTimeout(updateProjectArrowSobeys, 100);
+      setTimeout(updateMobileDownArrowSobeys, 100);
+    });
+    
+    // Close Sobeys on escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && projectDetailSobeys.classList.contains('open')) {
+        closeProjectDetailSobeys();
+      }
+    });
+    
     // Project detail arrow visibility (desktop)
     const projectArrow = projectDetailHeartStroke.querySelector('.project-detail-arrow');
     const projectRightPanel = projectDetailHeartStroke.querySelector('.project-detail-right');
@@ -2265,6 +2416,14 @@
     
     if (window.location.hash === '#work/grassofgreatness') {
       projectDetailBMO.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.top = '0';
+      document.body.style.width = '100%';
+    }
+    
+    if (window.location.hash === '#work/teamcanadaolympics') {
+      projectDetailSobeys.classList.add('open');
       document.body.style.overflow = 'hidden';
       document.body.style.position = 'fixed';
       document.body.style.top = '0';
