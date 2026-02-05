@@ -1601,7 +1601,9 @@
       <div class="work-container">
         <h1 class="work-title">Work</h1>
         <div class="work-grid">
-          <div class="work-item" style="background: #d9d9d9;"></div>
+          <div class="work-item" id="project-proline" style="cursor: pointer; position: relative; overflow: hidden;">
+            <img src="/Images/ProlineThumbnail.webp" style="width: 100%; height: 100%; object-fit: cover;" alt="Proline+ The Plus Side">
+          </div>
           <div class="work-item" id="project-sobeys" style="cursor: pointer; position: relative; overflow: hidden;">
             <img src="/Images/SobyesThumbnail.png" style="width: 100%; height: 100%; object-fit: cover;" alt="Sobeys Team Canada Olympics">
           </div>
@@ -1623,6 +1625,87 @@
         </div>
       </div>
     </section>
+  </div>
+
+  <!-- Project Detail: Proline+ -->
+  <div id="project-detail-proline" class="project-detail">
+    <!-- Fixed back button (mobile only) -->
+    <a href="#work" class="project-back project-back-mobile" onclick="closeProjectDetailProline()">
+      <svg class="project-back-arrow" viewBox="0 0 40 20">
+        <polyline points="5,5 20,15 35,5"/>
+      </svg>
+      BACK TO WORK
+    </a>
+    
+    <!-- Fixed down arrow (mobile only) -->
+    <svg class="project-down-arrow project-down-arrow-mobile" viewBox="0 0 20 10">
+      <line x1="0" y1="0" x2="10" y2="10"/>
+      <line x1="10" y1="10" x2="20" y2="0"/>
+    </svg>
+    
+    <div class="project-detail-left">
+      <!-- Back button for desktop (inside left panel) -->
+      <a href="#work" class="project-back project-back-desktop" onclick="closeProjectDetailProline()">
+        <svg class="project-back-arrow" viewBox="0 0 40 20">
+          <polyline points="5,5 20,15 35,5"/>
+        </svg>
+        BACK TO WORK
+      </a>
+      
+      <div class="project-detail-header-mobile">
+        <h1 class="project-title">Proline +</h1>
+        <h2 class="project-subtitle">THE PLUS SIDE</h2>
+      </div>
+      
+      <div class="project-detail-content-mobile">
+        <p class="project-description">OLG was gearing up to launch Proline+ (the digital version of OLG sports betting), we came up with the idea to introduce it to the world as THE PLUS SIDE.</p>
+        
+        <div class="project-credits">
+          <div class="project-credit-column">
+            <span class="project-credit-label">Press:</span>
+            <span class="project-credit-list"><span>Strategy Magazine</span><span>Campaign Canada</span><span>Little Black Book</span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="project-detail-right">
+      <div class="project-work-item">
+        <h3 class="project-work-title">HERO VIDEO</h3>
+      </div>
+      <div class="project-media">
+        <div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/599597535?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="Proline+ Launch - The Plus Side"></iframe></div>
+      </div>
+      
+      <div class="project-work-item">
+        <h3 class="project-work-title">LAUNCH SITE</h3>
+      </div>
+      <div class="project-media">
+        <img src="/Images/PR-7.webp" style="width: 100%; display: block;" alt="Proline+ Launch Site">
+      </div>
+      
+      <div class="project-work-item">
+        <h3 class="project-work-title">TACTICAL OLV</h3>
+      </div>
+      <div class="project-media">
+        <div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1162333131?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="Proline+ The Plus Side tactical"></iframe></div>
+      </div>
+      
+      <div class="project-work-item">
+        <h3 class="project-work-title">ASSETS</h3>
+      </div>
+      <div class="project-media" style="margin-bottom: 5px;">
+        <img src="/Images/Plus_mesh_004_b.webp" style="width: 100%; display: block;" alt="Proline+ Plus Mesh Asset">
+      </div>
+      <div class="project-media project-media-last" style="display: grid; grid-template-columns: 1fr 1fr; gap: 5px; padding-bottom: 45px;">
+        <img src="/Images/Plus_mesh_003_b.webp" style="width: 100%; display: block;" alt="Proline+ Plus Mesh Asset">
+        <img src="/Images/Plus_mesh_002_b.webp" style="width: 100%; display: block;" alt="Proline+ Plus Mesh Asset">
+      </div>
+      
+      <svg class="project-detail-arrow" viewBox="0 0 40 20">
+        <line x1="20" y1="20" x2="10" y2="10"/>
+        <line x1="20" y1="20" x2="30" y2="10"/>
+      </svg>
+    </div>
   </div>
 
   <!-- Project Detail: Heart & Stroke -->
@@ -2202,6 +2285,95 @@
       smoothScrollTo(workSection, SCROLL_DURATION);
     }
     
+    // Proline+ Project Detail Page Functionality
+    const projectProline = document.getElementById('project-proline');
+    const projectDetailProline = document.getElementById('project-detail-proline');
+    
+    projectProline.addEventListener('click', function() {
+      scrollPosition = window.pageYOffset;
+      projectDetailProline.classList.add('open');
+      updateHash('#work/theplusside');
+      const rightPanel = projectDetailProline.querySelector('.project-detail-right');
+      if (rightPanel) rightPanel.scrollTop = 0;
+    });
+    
+    // Prevent main page scroll when Proline+ project is open
+    window.addEventListener('wheel', function(e) {
+      if (projectDetailProline.classList.contains('open')) {
+        const rightPanel = projectDetailProline.querySelector('.project-detail-right');
+        const leftPanel = projectDetailProline.querySelector('.project-detail-left');
+        if (leftPanel && leftPanel.contains(e.target)) {
+          e.preventDefault();
+          rightPanel.scrollTop += e.deltaY;
+        } else if (!rightPanel.contains(e.target)) {
+          e.preventDefault();
+        }
+      }
+    }, { passive: false });
+    
+    window.addEventListener('scroll', function() {
+      if (projectDetailProline.classList.contains('open')) {
+        window.scrollTo(0, scrollPosition);
+      }
+    });
+    
+    function closeProjectDetailProline() {
+      projectDetailProline.classList.remove('open');
+      updateHash('#work');
+      const workSection = document.getElementById('work');
+      smoothScrollTo(workSection, SCROLL_DURATION);
+    }
+    
+    // Proline+ desktop arrow visibility
+    const projectArrowProline = projectDetailProline.querySelector('.project-detail-arrow');
+    const projectRightPanelProline = projectDetailProline.querySelector('.project-detail-right');
+    
+    function updateProjectArrowProline() {
+      if (!projectRightPanelProline || !projectArrowProline) return;
+      const hasScrollableContent = projectRightPanelProline.scrollHeight > projectRightPanelProline.clientHeight;
+      const isAtBottom = projectRightPanelProline.scrollTop + projectRightPanelProline.clientHeight >= projectRightPanelProline.scrollHeight - 10;
+      if (hasScrollableContent && !isAtBottom) {
+        projectArrowProline.classList.add('visible');
+      } else {
+        projectArrowProline.classList.remove('visible');
+      }
+    }
+    
+    projectRightPanelProline.addEventListener('scroll', updateProjectArrowProline);
+    
+    // Proline+ mobile down arrow fade
+    const mobileDownArrowProline = projectDetailProline.querySelector('.project-down-arrow-mobile');
+    
+    function updateMobileDownArrowProline() {
+      if (window.innerWidth > 768) return;
+      if (!mobileDownArrowProline) return;
+      const scrollTop = projectDetailProline.scrollTop;
+      const scrollHeight = projectDetailProline.scrollHeight;
+      const clientHeight = projectDetailProline.clientHeight;
+      const isAtBottom = scrollTop + clientHeight >= scrollHeight - 20;
+      if (isAtBottom) {
+        mobileDownArrowProline.style.opacity = '0';
+      } else {
+        mobileDownArrowProline.style.opacity = '1';
+      }
+    }
+    
+    projectDetailProline.addEventListener('scroll', function() {
+      updateMobileDownArrowProline();
+    });
+    
+    projectProline.addEventListener('click', function() {
+      setTimeout(updateProjectArrowProline, 100);
+      setTimeout(updateMobileDownArrowProline, 100);
+    });
+    
+    // Close Proline+ on escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && projectDetailProline.classList.contains('open')) {
+        closeProjectDetailProline();
+      }
+    });
+    
     // BMO Project Detail Page Functionality
     const projectBMO = document.getElementById('project-bmo');
     const projectDetailBMO = document.getElementById('project-detail-bmo');
@@ -2490,6 +2662,14 @@
     
     if (window.location.hash === '#work/teamcanadaolympics') {
       projectDetailSobeys.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.top = '0';
+      document.body.style.width = '100%';
+    }
+    
+    if (window.location.hash === '#work/theplusside') {
+      projectDetailProline.classList.add('open');
       document.body.style.overflow = 'hidden';
       document.body.style.position = 'fixed';
       document.body.style.top = '0';
