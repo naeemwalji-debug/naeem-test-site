@@ -511,6 +511,36 @@
       overscroll-behavior: contain;
     }
     
+    /* Work item titles and descriptions in black area */
+    .project-work-item {
+      margin-top: 50px; /* Default spacing above */
+      margin-bottom: 30px; /* Space to video below */
+    }
+    
+    .project-work-item:first-child {
+      margin-top: 0; /* No top padding for first item */
+    }
+    
+    .project-work-title {
+      color: #fff;
+      font-family: "Zalando Sans Expanded", sans-serif;
+      font-weight: 700;
+      font-size: 13.33px;
+      line-height: 16px;
+      letter-spacing: 0.53px;
+      margin: 0 0 5px 0;
+    }
+    
+    .project-work-description {
+      color: #fff;
+      font-family: "Zalando Sans Expanded", sans-serif;
+      font-weight: 400;
+      font-size: 13.33px;
+      line-height: 16px;
+      letter-spacing: 0.53px;
+      margin: 0;
+    }
+    
     .project-detail-right::-webkit-scrollbar {
       width: 12px;
     }
@@ -675,7 +705,7 @@
       letter-spacing: 0.53px;
       text-transform: capitalize;
       display: block;
-      margin-bottom: 0;
+      margin-bottom: 5px;
     }
     
     .project-credit-list {
@@ -762,6 +792,22 @@
         padding: 0 30px 100px 30px;
         flex-shrink: 0;
         overflow: visible;
+      }
+      
+      /* Mobile work item spacing */
+      .project-work-item {
+        margin-top: 40px;
+        margin-bottom: 20px;
+      }
+      
+      .project-work-item:first-child {
+        margin-top: 0;
+      }
+      
+      .project-work-title,
+      .project-work-description {
+        font-size: 11px;
+        line-height: 14px;
       }
       
       .project-title {
@@ -1589,16 +1635,35 @@
       </div>
     </div>
     <div class="project-detail-right">
+      <div class="project-work-item">
+        <h3 class="project-work-title">Hero Film</h3>
+        <p class="project-work-description">The main campaign spot that brought the championship pitch story to life.</p>
+      </div>
       <div class="project-media">
         <iframe src="https://player.vimeo.com/video/97123199?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" title="Heart &amp; Stroke Foundation - The Undeading"></iframe>
       </div>
-      <div class="project-media" style="margin-top: 30px;">
+      
+      <div class="project-work-item">
+        <h3 class="project-work-title">Behind the Scenes</h3>
+        <p class="project-work-description">A look at how we moved 10,000 square feet of championship turf across the city.</p>
+      </div>
+      <div class="project-media">
         <iframe src="https://player.vimeo.com/video/97123199?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" title="Heart &amp; Stroke Foundation - The Undeading 2"></iframe>
       </div>
-      <div class="project-media" style="margin-top: 30px;">
+      
+      <div class="project-work-item">
+        <h3 class="project-work-title">Social Content</h3>
+        <p class="project-work-description">Extended content created for social media channels.</p>
+      </div>
+      <div class="project-media">
         <iframe src="https://player.vimeo.com/video/97123199?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" title="Heart &amp; Stroke Foundation - The Undeading 3"></iframe>
       </div>
-      <div class="project-media" style="margin-top: 30px;">
+      
+      <div class="project-work-item">
+        <h3 class="project-work-title">Player Reactions</h3>
+        <p class="project-work-description">Toronto FC players visit the new pitch and meet the young athletes.</p>
+      </div>
+      <div class="project-media">
         <iframe src="https://player.vimeo.com/video/97123199?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" title="Heart &amp; Stroke Foundation - The Undeading 4"></iframe>
       </div>
       <svg class="project-detail-arrow" viewBox="0 0 40 20">
