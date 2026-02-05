@@ -563,6 +563,19 @@
       border: none;
     }
     
+    /* Position mobile-only elements absolutely so they don't affect flex layout */
+    .project-back-mobile,
+    .project-down-arrow-mobile {
+      position: absolute;
+      visibility: hidden;
+      pointer-events: none;
+    }
+    
+    /* Show desktop back button */
+    .project-back-desktop {
+      display: inline-flex;
+    }
+    
     .project-back {
       color: #000;
       text-decoration: none;
@@ -631,7 +644,6 @@
       font-size: 18.67px;
       line-height: 20.67px;
       letter-spacing: 0.75px;
-      text-transform: uppercase;
       margin: 0;
       width: 100%;
       padding-right: 50px;
@@ -661,7 +673,7 @@
       font-size: 13.33px;
       line-height: 16px;
       letter-spacing: 0.53px;
-      text-transform: uppercase;
+      text-transform: capitalize;
       display: block;
       margin-bottom: 0;
     }
@@ -673,7 +685,7 @@
       font-size: 13.33px;
       line-height: 16px;
       letter-spacing: 0.53px;
-      text-transform: uppercase;
+      text-transform: capitalize;
     }
     
     .project-credit-list span {
@@ -755,7 +767,7 @@
       .project-title {
         font-size: 60px;
         margin-left: -12px;
-        margin-top: 54px; /* Back button is at 30px, ~14px tall, plus 40px gap = need ~54px from container top (which has 30px padding, so 54px margin puts title at 84px from viewport, back button bottom is at ~44px, gap = 40px) */
+        margin-top: 40px; /* Same as description to credits gap */
         margin-bottom: 0;
       }
       
@@ -775,8 +787,13 @@
         margin-bottom: 0;
       }
       
+      /* Hide desktop back button on mobile */
+      .project-back-desktop {
+        display: none;
+      }
+      
       /* Fixed back button - only visible in project detail */
-      .project-detail > .project-back {
+      .project-back-mobile {
         position: fixed;
         top: 30px;
         left: 30px;
@@ -785,40 +802,43 @@
         font-size: 11px;
         line-height: 14px;
         color: #000;
-        display: none; /* Hidden by default */
+        visibility: hidden; /* Hidden by default */
+        pointer-events: none;
         transition: color 0.3s ease;
       }
       
-      .project-detail.open > .project-back {
-        display: flex; /* Show when project is open */
+      .project-detail.open .project-back-mobile {
+        visibility: visible; /* Show when project is open */
+        pointer-events: auto;
       }
       
-      .project-detail > .project-back .project-back-arrow polyline {
+      .project-back-mobile .project-back-arrow polyline {
         stroke: #000;
         transition: stroke 0.3s ease;
       }
       
       /* White/inverted state when over black background */
-      .project-detail > .project-back.inverted {
+      .project-back-mobile.inverted {
         color: #fff;
       }
       
-      .project-detail > .project-back.inverted .project-back-arrow polyline {
+      .project-back-mobile.inverted .project-back-arrow polyline {
         stroke: #fff;
       }
       
       /* Fixed down arrow - white, at bottom */
-      .project-detail > .project-down-arrow {
-        display: block;
+      .project-down-arrow-mobile {
         position: fixed;
         bottom: 30px;
         left: 50%;
         transform: translateX(-50%);
         z-index: 100;
         transition: opacity 0.3s ease;
+        visibility: visible;
+        pointer-events: auto;
       }
       
-      .project-detail > .project-down-arrow line {
+      .project-down-arrow-mobile line {
         stroke: #fff;
       }
       
@@ -1519,21 +1539,29 @@
 
   <!-- Project Detail: Heart & Stroke -->
   <div id="project-detail-heart-stroke" class="project-detail">
-    <!-- Fixed back button -->
-    <a href="#work" class="project-back" onclick="closeProjectDetail()">
+    <!-- Fixed back button (mobile only) -->
+    <a href="#work" class="project-back project-back-mobile" onclick="closeProjectDetail()">
       <svg class="project-back-arrow" viewBox="0 0 40 20">
         <polyline points="5,5 20,15 35,5"/>
       </svg>
       BACK TO WORK
     </a>
     
-    <!-- Fixed down arrow -->
-    <svg class="project-down-arrow" viewBox="0 0 20 10">
+    <!-- Fixed down arrow (mobile only) -->
+    <svg class="project-down-arrow project-down-arrow-mobile" viewBox="0 0 20 10">
       <line x1="0" y1="0" x2="10" y2="10"/>
       <line x1="10" y1="10" x2="20" y2="0"/>
     </svg>
     
     <div class="project-detail-left">
+      <!-- Back button for desktop (inside left panel) -->
+      <a href="#work" class="project-back project-back-desktop" onclick="closeProjectDetail()">
+        <svg class="project-back-arrow" viewBox="0 0 40 20">
+          <polyline points="5,5 20,15 35,5"/>
+        </svg>
+        BACK TO WORK
+      </a>
+      
       <div class="project-detail-header-mobile">
         <h1 class="project-title">Heart & Stroke</h1>
         <h2 class="project-subtitle">THE UNDEADING</h2>
@@ -1885,8 +1913,8 @@
     projectRightPanel.addEventListener('scroll', updateProjectArrow);
     
     // Mobile down arrow fade at bottom
-    const mobileDownArrow = projectDetailHeartStroke.querySelector('.project-detail > .project-down-arrow');
-    const mobileBackButton = projectDetailHeartStroke.querySelector('.project-detail > .project-back');
+    const mobileDownArrow = projectDetailHeartStroke.querySelector('.project-down-arrow-mobile');
+    const mobileBackButton = projectDetailHeartStroke.querySelector('.project-back-mobile');
     const projectDetailRight = projectDetailHeartStroke.querySelector('.project-detail-right');
     
     function updateMobileDownArrow() {
