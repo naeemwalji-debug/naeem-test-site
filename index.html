@@ -819,8 +819,9 @@
       
       .project-subtitle {
         font-size: 24px;
-        margin-bottom: 12px; /* Visually match the 20px credits gap (accounts for line-height differences) */
-        margin-top: -21px;
+        line-height: 1.03;
+        margin-bottom: 12px;
+        margin-top: -15px;
       }
       
       .project-credits {
@@ -847,7 +848,8 @@
         margin-bottom: 0;
         font-size: 11px;
         line-height: 14px;
-        color: #000;
+        color: #fff;
+        mix-blend-mode: difference;
         visibility: hidden; /* Hidden by default */
         pointer-events: none;
         transition: color 0.3s ease;
@@ -859,11 +861,11 @@
       }
       
       .project-back-mobile .project-back-arrow polyline {
-        stroke: #000;
+        stroke: #fff;
         transition: stroke 0.3s ease;
       }
       
-      /* White/inverted state when over black background */
+      /* Remove the inverted class styles since blend mode handles it now */
       .project-back-mobile.inverted {
         color: #fff;
       }
@@ -883,6 +885,7 @@
         transition: opacity 0.3s ease;
         visibility: hidden;
         pointer-events: none;
+        mix-blend-mode: difference;
       }
       
       .project-detail.open .project-down-arrow-mobile {
@@ -1574,7 +1577,7 @@
           <div class="work-item" style="background: #d9d9d9;"></div>
           <div class="work-item" style="background: #c9c9c9;"></div>
           <div class="work-item" style="background: #b9b9b9;"></div>
-          <div class="work-item" style="background: #a9a9a9;"></div>
+          <div class="work-item" id="project-bmo" style="cursor: pointer; background: #a9a9a9;"></div>
           <div class="work-item" style="background: #999999;"></div>
           <div class="work-item" id="project-heart-stroke" style="cursor: pointer; position: relative; overflow: hidden;">
             <video autoplay muted loop playsinline style="width: 100%; height: 100%; object-fit: cover; transform: scale(1.35);">
@@ -1666,6 +1669,71 @@
       <div class="project-media">
         <iframe src="https://player.vimeo.com/video/97123199?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" title="Heart &amp; Stroke Foundation - The Undeading 4"></iframe>
       </div>
+      <svg class="project-detail-arrow" viewBox="0 0 40 20">
+        <line x1="20" y1="20" x2="10" y2="10"/>
+        <line x1="20" y1="20" x2="30" y2="10"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Project Detail: BMO -->
+  <div id="project-detail-bmo" class="project-detail">
+    <!-- Fixed back button (mobile only) -->
+    <a href="#work" class="project-back project-back-mobile" onclick="closeProjectDetailBMO()">
+      <svg class="project-back-arrow" viewBox="0 0 40 20">
+        <polyline points="5,5 20,15 35,5"/>
+      </svg>
+      BACK TO WORK
+    </a>
+    
+    <!-- Fixed down arrow (mobile only) -->
+    <svg class="project-down-arrow project-down-arrow-mobile" viewBox="0 0 20 10">
+      <line x1="0" y1="0" x2="10" y2="10"/>
+      <line x1="10" y1="10" x2="20" y2="0"/>
+    </svg>
+    
+    <div class="project-detail-left">
+      <!-- Back button for desktop (inside left panel) -->
+      <a href="#work" class="project-back project-back-desktop" onclick="closeProjectDetailBMO()">
+        <svg class="project-back-arrow" viewBox="0 0 40 20">
+          <polyline points="5,5 20,15 35,5"/>
+        </svg>
+        BACK TO WORK
+      </a>
+      
+      <div class="project-detail-header-mobile">
+        <h1 class="project-title" style="letter-spacing: -0.05em;">B.M.O</h1>
+        <h2 class="project-subtitle">GRASS OF GREATNESS</h2>
+      </div>
+      
+      <div class="project-detail-content-mobile">
+        <p class="project-description">Every young soccer player dreams of playing on the same field as their heroes.<br><br>Following Toronto FC winning the 2017 MLS Cup, we moved the championship pitch from BMO Field to a youth recreation centre and replanted it, inspiring future generations to play like champions.</p>
+        
+        <div class="project-credits">
+          <div class="project-credit-column">
+            <span class="project-credit-label">Press:</span>
+            <span class="project-credit-list"><span>The Drum</span><span>Little Black Book</span><span>Trend Hunter</span><span>Strategy Magazine</span><span>Shots</span><span>The Message</span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="project-detail-right">
+      <div class="project-work-item">
+        <h3 class="project-work-title">Hero Film</h3>
+        <p class="project-work-description">The main campaign spot that brought the championship pitch story to life.</p>
+      </div>
+      <div class="project-media">
+        <iframe src="https://player.vimeo.com/video/97123199?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" title="BMO - Grass of Greatness"></iframe>
+      </div>
+      
+      <div class="project-work-item">
+        <h3 class="project-work-title">Behind the Scenes</h3>
+        <p class="project-work-description">A look at how we moved 10,000 square feet of championship turf across the city.</p>
+      </div>
+      <div class="project-media">
+        <iframe src="https://player.vimeo.com/video/97123199?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" title="BMO - Behind the Scenes"></iframe>
+      </div>
+      
       <svg class="project-detail-arrow" viewBox="0 0 40 20">
         <line x1="20" y1="20" x2="10" y2="10"/>
         <line x1="20" y1="20" x2="30" y2="10"/>
@@ -1964,6 +2032,111 @@
       smoothScrollTo(workSection, SCROLL_DURATION);
     }
     
+    // BMO Project Detail Page Functionality
+    const projectBMO = document.getElementById('project-bmo');
+    const projectDetailBMO = document.getElementById('project-detail-bmo');
+    
+    projectBMO.addEventListener('click', function() {
+      // Save current scroll position
+      scrollPosition = window.pageYOffset;
+      
+      projectDetailBMO.classList.add('open');
+      // Update URL hash
+      updateHash('#work/grassofgreatness');
+      
+      // Also reset the right panel scroll
+      const rightPanel = projectDetailBMO.querySelector('.project-detail-right');
+      if (rightPanel) rightPanel.scrollTop = 0;
+    });
+    
+    // Prevent main page scroll when BMO project is open
+    window.addEventListener('wheel', function(e) {
+      if (projectDetailBMO.classList.contains('open')) {
+        const rightPanel = projectDetailBMO.querySelector('.project-detail-right');
+        const leftPanel = projectDetailBMO.querySelector('.project-detail-left');
+        
+        if (leftPanel && leftPanel.contains(e.target)) {
+          e.preventDefault();
+          rightPanel.scrollTop += e.deltaY;
+        } else if (!rightPanel.contains(e.target)) {
+          e.preventDefault();
+        }
+      }
+    }, { passive: false });
+    
+    window.addEventListener('scroll', function() {
+      if (projectDetailBMO.classList.contains('open')) {
+        window.scrollTo(0, scrollPosition);
+      }
+    });
+    
+    function closeProjectDetailBMO() {
+      projectDetailBMO.classList.remove('open');
+      // Update URL hash back to work
+      updateHash('#work');
+      
+      // Scroll to work section with same duration as nav
+      const workSection = document.getElementById('work');
+      smoothScrollTo(workSection, SCROLL_DURATION);
+    }
+    
+    // BMO Project detail arrow visibility (desktop)
+    const projectArrowBMO = projectDetailBMO.querySelector('.project-detail-arrow');
+    const projectRightPanelBMO = projectDetailBMO.querySelector('.project-detail-right');
+    
+    function updateProjectArrowBMO() {
+      if (!projectRightPanelBMO || !projectArrowBMO) return;
+      
+      const hasScrollableContent = projectRightPanelBMO.scrollHeight > projectRightPanelBMO.clientHeight;
+      const isAtBottom = projectRightPanelBMO.scrollTop + projectRightPanelBMO.clientHeight >= projectRightPanelBMO.scrollHeight - 10;
+      
+      if (hasScrollableContent && !isAtBottom) {
+        projectArrowBMO.classList.add('visible');
+      } else {
+        projectArrowBMO.classList.remove('visible');
+      }
+    }
+    
+    projectRightPanelBMO.addEventListener('scroll', updateProjectArrowBMO);
+    
+    // BMO Mobile down arrow fade at bottom
+    const mobileDownArrowBMO = projectDetailBMO.querySelector('.project-down-arrow-mobile');
+    const mobileBackButtonBMO = projectDetailBMO.querySelector('.project-back-mobile');
+    const projectDetailRightBMO = projectDetailBMO.querySelector('.project-detail-right');
+    
+    function updateMobileDownArrowBMO() {
+      if (window.innerWidth > 768) return;
+      if (!mobileDownArrowBMO) return;
+      
+      const scrollTop = projectDetailBMO.scrollTop;
+      const scrollHeight = projectDetailBMO.scrollHeight;
+      const clientHeight = projectDetailBMO.clientHeight;
+      const isAtBottom = scrollTop + clientHeight >= scrollHeight - 20;
+      
+      if (isAtBottom) {
+        mobileDownArrowBMO.style.opacity = '0';
+      } else {
+        mobileDownArrowBMO.style.opacity = '1';
+      }
+    }
+    
+    projectDetailBMO.addEventListener('scroll', function() {
+      updateMobileDownArrowBMO();
+    });
+    
+    // Update BMO arrow when project opens
+    projectBMO.addEventListener('click', function() {
+      setTimeout(updateProjectArrowBMO, 100);
+      setTimeout(updateMobileDownArrowBMO, 100);
+    });
+    
+    // Close BMO on escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && projectDetailBMO.classList.contains('open')) {
+        closeProjectDetailBMO();
+      }
+    });
+    
     // Project detail arrow visibility (desktop)
     const projectArrow = projectDetailHeartStroke.querySelector('.project-detail-arrow');
     const projectRightPanel = projectDetailHeartStroke.querySelector('.project-detail-right');
@@ -2042,6 +2215,14 @@
     // Open project page if URL hash matches on page load
     if (window.location.hash === '#work/theundeading') {
       projectDetailHeartStroke.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.top = '0';
+      document.body.style.width = '100%';
+    }
+    
+    if (window.location.hash === '#work/grassofgreatness') {
+      projectDetailBMO.classList.add('open');
       document.body.style.overflow = 'hidden';
       document.body.style.position = 'fixed';
       document.body.style.top = '0';
