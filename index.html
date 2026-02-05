@@ -723,25 +723,24 @@
         width: 100%;
         min-width: unset;
         height: auto;
-        padding: 0;
+        padding: 30px;
+        padding-bottom: 30px;
         flex-shrink: 0;
         overflow: visible;
         position: relative;
       }
       
       .project-detail-header-mobile {
-        position: sticky;
-        top: 0;
-        background: #fff;
-        z-index: 10;
-        padding: 30px;
-        padding-bottom: 0;
+        position: relative;
+        top: auto;
+        background: transparent;
+        z-index: 1;
+        padding: 0;
       }
       
       .project-detail-content-mobile {
-        padding: 0 30px 30px 30px;
+        padding: 0;
         position: relative;
-        background: #fff;
       }
       
       .project-detail-right {
@@ -755,12 +754,12 @@
       .project-title {
         font-size: 60px;
         margin-left: -12px;
-        margin-top: 0;
+        margin-top: 40px; /* Space for fixed back button */
       }
       
       .project-subtitle {
         font-size: 24px;
-        margin-bottom: 10px;
+        margin-bottom: 20px;
         margin-top: -21px;
       }
       
@@ -771,16 +770,28 @@
         bottom: auto;
         left: auto;
         margin-top: 40px;
-        margin-bottom: 0;
+        margin-bottom: 30px;
       }
       
+      /* Fixed back button */
+      .project-detail > .project-back {
+        position: fixed;
+        top: 30px;
+        left: 30px;
+        z-index: 100;
+        margin-bottom: 0;
+        font-size: 11px;
+        line-height: 14px;
+      }
+      
+      /* Fixed down arrow - white, at bottom */
       .project-down-arrow {
         display: block;
         position: fixed;
-        bottom: 30px; /* Align with copyright bottom margin */
+        bottom: 30px;
         left: 50%;
         transform: translateX(-50%);
-        z-index: 5;
+        z-index: 100;
       }
       
       .project-down-arrow line {
@@ -796,7 +807,7 @@
         font-size: 14.67px;
         line-height: 16px;
         letter-spacing: 2px;
-        margin: 0;
+        margin-bottom: 0;
       }
       
       .project-back {
@@ -1490,20 +1501,27 @@
 
   <!-- Project Detail: Heart & Stroke -->
   <div id="project-detail-heart-stroke" class="project-detail">
+    <!-- Fixed back button -->
+    <a href="#work" class="project-back" onclick="closeProjectDetail()">
+      <svg class="project-back-arrow" viewBox="0 0 40 20">
+        <polyline points="5,5 20,15 35,5"/>
+      </svg>
+      BACK TO WORK
+    </a>
+    
+    <!-- Fixed down arrow -->
+    <svg class="project-down-arrow" viewBox="0 0 20 10">
+      <line x1="0" y1="0" x2="10" y2="10"/>
+      <line x1="10" y1="10" x2="20" y2="0"/>
+    </svg>
+    
     <div class="project-detail-left">
       <div class="project-detail-header-mobile">
-        <a href="#work" class="project-back" onclick="closeProjectDetail()">
-          <svg class="project-back-arrow" viewBox="0 0 40 20">
-            <polyline points="5,5 20,15 35,5"/>
-          </svg>
-          BACK TO WORK
-        </a>
-        
         <h1 class="project-title">Heart & Stroke</h1>
         <h2 class="project-subtitle">THE UNDEADING</h2>
       </div>
       
-      <div class="project-detail-content-mobile" id="project-content-mobile">
+      <div class="project-detail-content-mobile">
         <p class="project-description">Every young soccer player dreams of playing on the same field as their heroes.<br><br>Following Toronto FC winning the 2017 MLS Cup, we moved the championship pitch from BMO Field to a youth recreation centre and replanted it, inspiring future generations to play like champions.</p>
         
         <div class="project-credits">
@@ -1516,11 +1534,6 @@
             <span class="project-credit-list"><span>MASHABLE</span><span>GIZMODO</span><span>CBS NEWS</span><span>FAST COMPANY</span><span>DAILY MAIL UNCRATE</span><span>HUFF POST</span><span>ADWEEK</span><span>ADAGE</span><span>CTV NEWS</span><span>GLOBAL NEWS</span></span>
           </div>
         </div>
-        
-        <svg class="project-down-arrow" viewBox="0 0 20 10">
-          <line x1="0" y1="0" x2="10" y2="10"/>
-          <line x1="10" y1="10" x2="20" y2="0"/>
-        </svg>
       </div>
     </div>
     <div class="project-detail-right">
@@ -1829,21 +1842,6 @@
       // Update URL hash back to work
       updateHash('#work');
       
-      // Reset lock state
-      isLocked = false;
-      lockScrollTop = null;
-      const rightPanel = projectDetailHeartStroke.querySelector('.project-detail-right');
-      if (rightPanel) {
-        rightPanel.style.position = '';
-        rightPanel.style.top = '';
-        rightPanel.style.left = '';
-        rightPanel.style.right = '';
-        rightPanel.style.bottom = '';
-        rightPanel.style.overflowY = '';
-        rightPanel.style.zIndex = '';
-        rightPanel.scrollTop = 0;
-      }
-      
       // Scroll to work section with same duration as nav
       const workSection = document.getElementById('work');
       smoothScrollTo(workSection, SCROLL_DURATION);
@@ -1879,177 +1877,6 @@
       if (e.key === 'Escape' && projectDetailHeartStroke.classList.contains('open')) {
         closeProjectDetail();
       }
-    });
-    
-    // Open project page if URL hash matches on page load
-    // Mobile content fade on scroll
-    let isLocked = false;
-    let lockScrollTop = null;
-    
-    function updateMobileContentFade() {
-      if (window.innerWidth > 768) return;
-      if (!projectDetailHeartStroke.classList.contains('open')) return;
-      
-      const headerMobile = projectDetailHeartStroke.querySelector('.project-detail-header-mobile');
-      const contentMobile = projectDetailHeartStroke.querySelector('.project-detail-content-mobile');
-      const rightPanel = projectDetailHeartStroke.querySelector('.project-detail-right');
-      if (!headerMobile || !contentMobile || !rightPanel) return;
-      
-      const headerRect = headerMobile.getBoundingClientRect();
-      const subtitleEl = headerMobile.querySelector('.project-subtitle');
-      const subtitleRect = subtitleEl ? subtitleEl.getBoundingClientRect() : headerRect;
-      
-      // The fade line is at the bottom of the header
-      const fadeStart = headerRect.bottom;
-      
-      // The lock point is 30px below the subtitle 
-      // (same as top padding, same as credits to black gap)
-      const lockPoint = subtitleRect.bottom + 30;
-      
-      // Different fade distances for description vs credits
-      const descFadeDistance = 140;
-      const creditFadeDistance = 50;
-      
-      // Get description
-      const description = contentMobile.querySelector('.project-description');
-      if (description) {
-        const rect = description.getBoundingClientRect();
-        const elementTop = rect.top;
-        
-        if (elementTop < fadeStart) {
-          const distanceAbove = fadeStart - elementTop;
-          const opacity = Math.max(0, 1 - (distanceAbove / descFadeDistance));
-          description.style.opacity = opacity;
-        } else {
-          description.style.opacity = 1;
-        }
-      }
-      
-      // Get credit columns
-      const creditColumns = contentMobile.querySelectorAll('.project-credit-column');
-      creditColumns.forEach(el => {
-        const rect = el.getBoundingClientRect();
-        const elementTop = rect.top;
-        
-        if (elementTop < fadeStart) {
-          const distanceAbove = fadeStart - elementTop;
-          const opacity = Math.max(0, 1 - (distanceAbove / creditFadeDistance));
-          el.style.opacity = opacity;
-        } else {
-          el.style.opacity = 1;
-        }
-      });
-      
-      // Check if black area has reached lock point
-      const rightPanelTop = rightPanel.getBoundingClientRect().top;
-      const currentScroll = projectDetailHeartStroke.scrollTop;
-      
-      if (rightPanelTop <= lockPoint && !isLocked) {
-        // Lock the main scroll and switch to scrolling within black area
-        isLocked = true;
-        lockScrollTop = currentScroll - (lockPoint - rightPanelTop);
-        
-        // Make black area scrollable
-        rightPanel.style.position = 'fixed';
-        rightPanel.style.top = lockPoint + 'px';
-        rightPanel.style.left = '0';
-        rightPanel.style.right = '0';
-        rightPanel.style.bottom = '0';
-        rightPanel.style.overflowY = 'auto';
-        rightPanel.style.zIndex = '5';
-      }
-      
-      // Keep main scroll locked when in locked state
-      if (isLocked && currentScroll !== lockScrollTop) {
-        projectDetailHeartStroke.scrollTop = lockScrollTop;
-      }
-    }
-    
-    // Handle unlocking when scrolling up at top of black area
-    function unlockHeader() {
-      const rightPanel = projectDetailHeartStroke.querySelector('.project-detail-right');
-      if (!rightPanel) return;
-      
-      isLocked = false;
-      lockScrollTop = null;
-      
-      rightPanel.style.position = '';
-      rightPanel.style.top = '';
-      rightPanel.style.left = '';
-      rightPanel.style.right = '';
-      rightPanel.style.bottom = '';
-      rightPanel.style.overflowY = '';
-      rightPanel.style.zIndex = '';
-    }
-    
-    // Use wheel event to detect scroll direction and handle smooth transition
-    projectDetailHeartStroke.addEventListener('wheel', function(e) {
-      if (!isLocked) return;
-      if (window.innerWidth > 768) return;
-      
-      const rightPanel = projectDetailHeartStroke.querySelector('.project-detail-right');
-      if (!rightPanel) return;
-      
-      // If scrolling up (negative deltaY) and at top of black area content
-      if (e.deltaY < 0 && rightPanel.scrollTop <= 0) {
-        e.preventDefault();
-        
-        // Unlock and apply the scroll delta to main container
-        unlockHeader();
-        
-        // Apply the scroll movement to expand header smoothly
-        projectDetailHeartStroke.scrollTop = lockScrollTop + e.deltaY;
-      }
-    }, { passive: false });
-    
-    // Handle touch for mobile - smooth continuous scroll
-    let touchStartY = 0;
-    let lastTouchY = 0;
-    
-    projectDetailHeartStroke.addEventListener('touchstart', function(e) {
-      touchStartY = e.touches[0].clientY;
-      lastTouchY = e.touches[0].clientY;
-    }, { passive: true });
-    
-    projectDetailHeartStroke.addEventListener('touchmove', function(e) {
-      if (!isLocked) return;
-      if (window.innerWidth > 768) return;
-      
-      const rightPanel = projectDetailHeartStroke.querySelector('.project-detail-right');
-      if (!rightPanel) return;
-      
-      const touchCurrentY = e.touches[0].clientY;
-      const deltaY = lastTouchY - touchCurrentY; // positive = finger moving up (scroll content up)
-      lastTouchY = touchCurrentY;
-      
-      // If swiping down (finger moving down, deltaY negative) and at top of black area
-      if (deltaY < 0 && rightPanel.scrollTop <= 0) {
-        e.preventDefault();
-        
-        // Unlock and apply the scroll delta to main container
-        unlockHeader();
-        
-        // Apply the touch movement to expand header smoothly (deltaY is negative, so subtract to scroll down)
-        projectDetailHeartStroke.scrollTop = lockScrollTop + deltaY;
-      }
-    }, { passive: false });
-    
-    projectDetailHeartStroke.addEventListener('scroll', updateMobileContentFade);
-    window.addEventListener('resize', function() {
-      // Reset lock state on resize
-      isLocked = false;
-      lockScrollTop = null;
-      const rightPanel = projectDetailHeartStroke.querySelector('.project-detail-right');
-      if (rightPanel) {
-        rightPanel.style.position = '';
-        rightPanel.style.top = '';
-        rightPanel.style.left = '';
-        rightPanel.style.right = '';
-        rightPanel.style.bottom = '';
-        rightPanel.style.overflowY = '';
-        rightPanel.style.zIndex = '';
-      }
-      updateMobileContentFade();
     });
     
     // Open project page if URL hash matches on page load
