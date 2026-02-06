@@ -1526,37 +1526,36 @@
             requestAnimationFrame(animation);
           }
         } else if (href === '#contact') {
-          // Special handling for Contact - scroll to workPlaceholder bottom position
+          // Special handling for Contact - scroll to contact section
+          // Calculate based on header + about + work heights (3 viewport heights)
           const headerSpacer = document.getElementById('headerSpacer');
-          const aboutPlaceholder = document.getElementById('aboutPlaceholder');
-          const workPlaceholder = document.getElementById('workPlaceholder');
-          if (headerSpacer && aboutPlaceholder && workPlaceholder) {
-            const targetY = headerSpacer.offsetTop + headerSpacer.offsetHeight + aboutPlaceholder.offsetHeight + workPlaceholder.offsetHeight;
-            const startPosition = window.pageYOffset;
-            const distance = targetY - startPosition;
-            let startTime = null;
-            
-            function easeInOutCubic(t) {
-              return t < 0.5 
-                ? 4 * t * t * t 
-                : 1 - Math.pow(-2 * t + 2, 3) / 2;
-            }
-            
-            function animation(currentTime) {
-              if (startTime === null) startTime = currentTime;
-              const timeElapsed = currentTime - startTime;
-              const progress = Math.min(timeElapsed / SCROLL_DURATION, 1);
-              const easedProgress = easeInOutCubic(progress);
-              
-              window.scrollTo(0, startPosition + distance * easedProgress);
-              
-              if (timeElapsed < SCROLL_DURATION) {
-                requestAnimationFrame(animation);
-              }
-            }
-            
-            requestAnimationFrame(animation);
+          const windowHeight = window.innerHeight;
+          // Target is 3 viewport heights (header spacer + about + work)
+          const targetY = headerSpacer.offsetTop + (windowHeight * 3);
+          const startPosition = window.pageYOffset;
+          const distance = targetY - startPosition;
+          let startTime = null;
+          
+          function easeInOutCubic(t) {
+            return t < 0.5 
+              ? 4 * t * t * t 
+              : 1 - Math.pow(-2 * t + 2, 3) / 2;
           }
+          
+          function animation(currentTime) {
+            if (startTime === null) startTime = currentTime;
+            const timeElapsed = currentTime - startTime;
+            const progress = Math.min(timeElapsed / SCROLL_DURATION, 1);
+            const easedProgress = easeInOutCubic(progress);
+            
+            window.scrollTo(0, startPosition + distance * easedProgress);
+            
+            if (timeElapsed < SCROLL_DURATION) {
+              requestAnimationFrame(animation);
+            }
+          }
+          
+          requestAnimationFrame(animation);
         } else {
           target = document.querySelector(href);
           console.log('Target element:', target);
