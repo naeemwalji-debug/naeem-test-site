@@ -188,7 +188,9 @@
       box-sizing: border-box;
     }
     .contact-container {
-      text-align: left;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
     }
     .contact-item {
       display: block;
@@ -219,6 +221,11 @@
       margin-top: -25px;
       letter-spacing: 0;
       transition: opacity 0.2s ease;
+    }
+    .contact-arrow {
+      display: inline-block;
+      margin-left: 8px;
+      font-weight: 700;
     }
     
     @media (max-width: 768px) {
@@ -1812,7 +1819,7 @@
         </div>
         <a href="https://www.linkedin.com/in/naeem-walji-89201521/" target="_blank" class="contact-item contact-link" style="margin-top: 100px;">
           <h1 class="contact-title">Message</h1>
-          <h2 class="contact-subtitle">LINKEDIN</h2>
+          <h2 class="contact-subtitle">LINKEDIN <span class="contact-arrow">→</span></h2>
         </a>
       </div>
     </section>
