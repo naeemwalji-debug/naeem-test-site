@@ -1625,7 +1625,11 @@
               <source src="/Images/TheUndeading.mp4" type="video/mp4">
             </video>
           </div>
-          <div class="work-item" style="background: #797979;"></div>
+          <div class="work-item" id="project-pixel" style="cursor: pointer; position: relative; overflow: hidden;">
+            <video autoplay muted loop playsinline style="width: 100%; height: 100%; object-fit: cover;">
+              <source src="/Images/GooglePixelThumbnail.mp4" type="video/mp4">
+            </video>
+          </div>
           <div class="work-item" style="background: #696969;"></div>
           <div class="work-item" style="background: #595959;"></div>
         </div>
@@ -1794,6 +1798,62 @@
       </div>
       <div class="project-media project-media-last" style="padding-bottom: 45px;">
         <img src="/Images/EQWebsite.webp" style="width: 100%; display: block;" alt="EQ Bank Website">
+      </div>
+      
+      <svg class="project-detail-arrow" viewBox="0 0 40 20">
+        <line x1="20" y1="20" x2="10" y2="10"/>
+        <line x1="20" y1="20" x2="30" y2="10"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Project Detail: Google Pixel 8 -->
+  <div id="project-detail-pixel" class="project-detail">
+    <!-- Fixed back button (mobile only) -->
+    <a href="#work" class="project-back project-back-mobile" onclick="closeProjectDetailPixel()">
+      <svg class="project-back-arrow" viewBox="0 0 40 20">
+        <polyline points="5,5 20,15 35,5"/>
+      </svg>
+      BACK TO WORK
+    </a>
+    
+    <!-- Fixed down arrow (mobile only) -->
+    <svg class="project-down-arrow project-down-arrow-mobile" viewBox="0 0 20 10">
+      <line x1="0" y1="0" x2="10" y2="10"/>
+      <line x1="10" y1="10" x2="20" y2="0"/>
+    </svg>
+    
+    <div class="project-detail-left">
+      <!-- Back button for desktop (inside left panel) -->
+      <a href="#work" class="project-back project-back-desktop" onclick="closeProjectDetailPixel()">
+        <svg class="project-back-arrow" viewBox="0 0 40 20">
+          <polyline points="5,5 20,15 35,5"/>
+        </svg>
+        BACK TO WORK
+      </a>
+      
+      <div class="project-detail-header-mobile">
+        <h1 class="project-title">Google Pixel 8</h1>
+        <h2 class="project-subtitle">PIXEL IN THE CLUTCH</h2>
+      </div>
+      
+      <div class="project-detail-content-mobile">
+        <p class="project-description">Google came to us to help them launch the Pixel 8 through their Toronto Raptors sponsorship. We set out to show Raptors fans that with all the new features and tech, the Pixel 8 comes through "In The Clutch". And if you're going to show clutch plays, you need a couple of clutch commentators.</p>
+        
+        <div class="project-credits">
+        </div>
+      </div>
+    </div>
+    <div class="project-detail-right">
+      <div class="project-media" style="margin-bottom: 10px;">
+        <div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/879909594?h=c41ef5ddda&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="Google Pixel 8 x Raptors - Bongo's Birthday :30"></iframe></div>
+      </div>
+      <div class="project-media" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
+        <div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/879912290?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="Google Pixel 8 x Raptors - Getaway :15"></iframe></div>
+        <div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/879911590?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="Google Pixel 8 x Raptors - Pub"></iframe></div>
+      </div>
+      <div class="project-media project-media-last" style="padding-bottom: 45px;">
+        <div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/879908262?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="Google Pixel 8 x Raptors - Baby :30"></iframe></div>
       </div>
       
       <svg class="project-detail-arrow" viewBox="0 0 40 20">
@@ -2558,6 +2618,95 @@
       }
     });
     
+    // Google Pixel 8 Project Detail Page Functionality
+    const projectPixel = document.getElementById('project-pixel');
+    const projectDetailPixel = document.getElementById('project-detail-pixel');
+    
+    projectPixel.addEventListener('click', function() {
+      scrollPosition = window.pageYOffset;
+      projectDetailPixel.classList.add('open');
+      updateHash('#work/pixelintheclutch');
+      const rightPanel = projectDetailPixel.querySelector('.project-detail-right');
+      if (rightPanel) rightPanel.scrollTop = 0;
+    });
+    
+    // Prevent main page scroll when Google Pixel project is open
+    window.addEventListener('wheel', function(e) {
+      if (projectDetailPixel.classList.contains('open')) {
+        const rightPanel = projectDetailPixel.querySelector('.project-detail-right');
+        const leftPanel = projectDetailPixel.querySelector('.project-detail-left');
+        if (leftPanel && leftPanel.contains(e.target)) {
+          e.preventDefault();
+          rightPanel.scrollTop += e.deltaY;
+        } else if (!rightPanel.contains(e.target)) {
+          e.preventDefault();
+        }
+      }
+    }, { passive: false });
+    
+    window.addEventListener('scroll', function() {
+      if (projectDetailPixel.classList.contains('open')) {
+        window.scrollTo(0, scrollPosition);
+      }
+    });
+    
+    function closeProjectDetailPixel() {
+      projectDetailPixel.classList.remove('open');
+      updateHash('#work');
+      const workSection = document.getElementById('work');
+      smoothScrollTo(workSection, SCROLL_DURATION);
+    }
+    
+    // Google Pixel desktop arrow visibility
+    const projectArrowPixel = projectDetailPixel.querySelector('.project-detail-arrow');
+    const projectRightPanelPixel = projectDetailPixel.querySelector('.project-detail-right');
+    
+    function updateProjectArrowPixel() {
+      if (!projectRightPanelPixel || !projectArrowPixel) return;
+      const hasScrollableContent = projectRightPanelPixel.scrollHeight > projectRightPanelPixel.clientHeight;
+      const isAtBottom = projectRightPanelPixel.scrollTop + projectRightPanelPixel.clientHeight >= projectRightPanelPixel.scrollHeight - 10;
+      if (hasScrollableContent && !isAtBottom) {
+        projectArrowPixel.classList.add('visible');
+      } else {
+        projectArrowPixel.classList.remove('visible');
+      }
+    }
+    
+    projectRightPanelPixel.addEventListener('scroll', updateProjectArrowPixel);
+    
+    // Google Pixel mobile down arrow fade
+    const mobileDownArrowPixel = projectDetailPixel.querySelector('.project-down-arrow-mobile');
+    
+    function updateMobileDownArrowPixel() {
+      if (window.innerWidth > 768) return;
+      if (!mobileDownArrowPixel) return;
+      const scrollTop = projectDetailPixel.scrollTop;
+      const scrollHeight = projectDetailPixel.scrollHeight;
+      const clientHeight = projectDetailPixel.clientHeight;
+      const isAtBottom = scrollTop + clientHeight >= scrollHeight - 20;
+      if (isAtBottom) {
+        mobileDownArrowPixel.style.opacity = '0';
+      } else {
+        mobileDownArrowPixel.style.opacity = '1';
+      }
+    }
+    
+    projectDetailPixel.addEventListener('scroll', function() {
+      updateMobileDownArrowPixel();
+    });
+    
+    projectPixel.addEventListener('click', function() {
+      setTimeout(updateProjectArrowPixel, 100);
+      setTimeout(updateMobileDownArrowPixel, 100);
+    });
+    
+    // Close Google Pixel on escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && projectDetailPixel.classList.contains('open')) {
+        closeProjectDetailPixel();
+      }
+    });
+    
     // BMO Project Detail Page Functionality
     const projectBMO = document.getElementById('project-bmo');
     const projectDetailBMO = document.getElementById('project-detail-bmo');
@@ -2862,6 +3011,14 @@
     
     if (window.location.hash === '#work/makebank') {
       projectDetailEQBank.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.top = '0';
+      document.body.style.width = '100%';
+    }
+    
+    if (window.location.hash === '#work/pixelintheclutch') {
+      projectDetailPixel.classList.add('open');
       document.body.style.overflow = 'hidden';
       document.body.style.position = 'fixed';
       document.body.style.top = '0';
