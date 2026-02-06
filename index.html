@@ -190,6 +190,16 @@
     .contact-container {
       text-align: left;
     }
+    .contact-item {
+      display: block;
+    }
+    .contact-link {
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .contact-link:hover .contact-subtitle {
+      opacity: 0.7;
+    }
     .contact-title {
       color: #a6a6a6;
       font-family: "selfie-neue-round", "Brush Script MT", cursive;
@@ -208,6 +218,7 @@
       line-height: 37px;
       margin-top: -25px;
       letter-spacing: 0;
+      transition: opacity 0.2s ease;
     }
     
     @media (max-width: 768px) {
@@ -219,6 +230,10 @@
         font-size: 24px;
         line-height: 26px;
         margin-top: -15px;
+      }
+      .contact-item + .contact-item,
+      .contact-item + .contact-link {
+        margin-top: 60px !important;
       }
     }
     
@@ -1791,8 +1806,14 @@
 
     <section id="contact">
       <div class="contact-container">
-        <h1 class="contact-title">Email</h1>
-        <h2 class="contact-subtitle">NAEEM.WALJI@GMAIL.COM</h2>
+        <div class="contact-item">
+          <h1 class="contact-title">Email</h1>
+          <h2 class="contact-subtitle">NAEEM.WALJI@GMAIL.COM</h2>
+        </div>
+        <a href="https://www.linkedin.com/in/naeem-walji-89201521/" target="_blank" class="contact-item contact-link" style="margin-top: 100px;">
+          <h1 class="contact-title">Message</h1>
+          <h2 class="contact-subtitle">LINKEDIN</h2>
+        </a>
       </div>
     </section>
   </div>
