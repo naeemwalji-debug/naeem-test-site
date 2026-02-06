@@ -1619,7 +1619,9 @@
               <source src="/Images/BMOGrassOfGreatness.mp4" type="video/mp4">
             </video>
           </div>
-          <div class="work-item" style="background: #999999;"></div>
+          <div class="work-item" id="project-misc" style="cursor: pointer; position: relative; overflow: hidden;">
+            <img src="/Images/MiscThumbnail.png" style="width: 100%; height: 100%; object-fit: cover;" alt="Miscellaneous Design & Art Direction">
+          </div>
           <div class="work-item" id="project-heart-stroke" style="cursor: pointer; position: relative; overflow: hidden;">
             <video autoplay muted loop playsinline style="width: 100%; height: 100%; object-fit: cover; transform: scale(1.35);">
               <source src="/Images/TheUndeading.mp4" type="video/mp4">
@@ -1977,6 +1979,91 @@
       <div class="project-media project-media-last" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding-bottom: 45px;">
         <div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/335537398?h=3704965ae3&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="bmo_selfie_hawks_15e_WEB_unslated"></iframe></div>
         <div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/335537297?h=03390dbf9c&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="bmo_chewtoy_bulls_15e_TV_unslated"></iframe></div>
+      </div>
+      
+      <svg class="project-detail-arrow" viewBox="0 0 40 20">
+        <line x1="20" y1="20" x2="10" y2="10"/>
+        <line x1="20" y1="20" x2="30" y2="10"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Project Detail: Miscellaneous -->
+  <div id="project-detail-misc" class="project-detail">
+    <!-- Fixed back button (mobile only) -->
+    <a href="#work" class="project-back project-back-mobile" onclick="closeProjectDetailMisc()">
+      <svg class="project-back-arrow" viewBox="0 0 40 20">
+        <polyline points="5,5 20,15 35,5"/>
+      </svg>
+      BACK TO WORK
+    </a>
+    
+    <!-- Fixed down arrow (mobile only) -->
+    <svg class="project-down-arrow project-down-arrow-mobile" viewBox="0 0 20 10">
+      <line x1="0" y1="0" x2="10" y2="10"/>
+      <line x1="10" y1="10" x2="20" y2="0"/>
+    </svg>
+    
+    <div class="project-detail-left">
+      <!-- Back button for desktop (inside left panel) -->
+      <a href="#work" class="project-back project-back-desktop" onclick="closeProjectDetailMisc()">
+        <svg class="project-back-arrow" viewBox="0 0 40 20">
+          <polyline points="5,5 20,15 35,5"/>
+        </svg>
+        BACK TO WORK
+      </a>
+      
+      <div class="project-detail-header-mobile">
+        <h1 class="project-title">Miscellaneous</h1>
+        <h2 class="project-subtitle">DESIGN & ART DIRECTION & SOME AI</h2>
+      </div>
+      
+      <div class="project-detail-content-mobile">
+        <p class="project-description">A collection of work I've enjoyed crafting over the years, spanning design, art direction, and applied AI.</p>
+        
+        <div class="project-credits">
+        </div>
+      </div>
+    </div>
+    <div class="project-detail-right">
+      <div class="project-work-item">
+        <h3 class="project-work-title">KOOL-AID GHOUL-AID</h3>
+        <p class="project-work-description">Kool-Aid set out to launch a Halloween-inspired limited edition pack, and we created the brand's first glow-in-the-dark drinking pouch, dubbed Ghoul-Aid. I developed the hero key visual used across social, online, and in-store, brought to life through a blend of practical photography and AI-generated visuals.</p>
+      </div>
+      <div class="project-media">
+        <img src="/Images/GhoulAidHero.png" style="width: 100%; display: block;" alt="Kool-Aid Ghoul-Aid Hero Visual">
+      </div>
+      
+      <div class="project-work-item">
+        <h3 class="project-work-title">SUPER PACTS TRADING GROUP</h3>
+        <p class="project-work-description">I had the opportunity to work with a crypto trading group specializing in Bitcoin assets. They wanted customizable social media templates with an edgy, underground feel—something that speaks to the anonymity and mystique of the crypto world. This work blends AI-generated visuals with design.</p>
+      </div>
+      <div class="project-media" style="margin-bottom: 10px;">
+        <img src="/Images/SuperPactsBanner.png" style="width: 100%; display: block;" alt="Super Pacts Banner">
+      </div>
+      <div class="project-media" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+        <img src="/Images/SuperPactsManifesto.png" style="width: 100%; display: block;" alt="Super Pacts Manifesto">
+        <img src="/Images/SuperPactsGotBounce.png" style="width: 100%; display: block;" alt="Super Pacts Got Bounce">
+      </div>
+      <div class="project-media" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+        <img src="/Images/SuperPactsPuppet.png" style="width: 100%; display: block;" alt="Super Pacts Puppet">
+        <img src="/Images/SuperPactsCollab.png" style="width: 100%; display: block;" alt="Super Pacts Collab">
+      </div>
+      
+      <div class="project-work-item">
+        <h3 class="project-work-title">SIMPLY SO</h3>
+        <p class="project-work-description">Taking over the Simply So social account for the month, I created a collection of organic content using a mix of AI-generated images and photography.</p>
+      </div>
+      <div class="project-media">
+        <img src="/Images/Social_Grid_Transparent.png" style="width: 100%; display: block;" alt="Simply So Social Grid">
+      </div>
+      
+      <div class="project-work-item">
+        <h3 class="project-work-title">GLORY HOLE DOUGHNUTS</h3>
+        <p class="project-work-description">Working with Glory Hole Doughnuts, we whipped up something as bold as their name, a larger-than-life menu! When unraveled, this oversized masterpiece didn't just showcase their mouthwatering treats, it also featured an actual glory hole (because, of course, it did).</p>
+      </div>
+      <div class="project-media project-media-last" style="padding-bottom: 45px;">
+        <img src="/Images/GHDGridTransparent.png" style="width: 100%; display: block;" alt="Glory Hole Doughnuts Menu">
       </div>
       
       <svg class="project-detail-arrow" viewBox="0 0 40 20">
@@ -3008,6 +3095,95 @@
       }
     });
     
+    // Miscellaneous Project Detail Page Functionality
+    const projectMisc = document.getElementById('project-misc');
+    const projectDetailMisc = document.getElementById('project-detail-misc');
+    
+    projectMisc.addEventListener('click', function() {
+      scrollPosition = window.pageYOffset;
+      projectDetailMisc.classList.add('open');
+      updateHash('#work/miscellaneous');
+      const rightPanel = projectDetailMisc.querySelector('.project-detail-right');
+      if (rightPanel) rightPanel.scrollTop = 0;
+    });
+    
+    // Prevent main page scroll when Miscellaneous project is open
+    window.addEventListener('wheel', function(e) {
+      if (projectDetailMisc.classList.contains('open')) {
+        const rightPanel = projectDetailMisc.querySelector('.project-detail-right');
+        const leftPanel = projectDetailMisc.querySelector('.project-detail-left');
+        if (leftPanel && leftPanel.contains(e.target)) {
+          e.preventDefault();
+          rightPanel.scrollTop += e.deltaY;
+        } else if (!rightPanel.contains(e.target)) {
+          e.preventDefault();
+        }
+      }
+    }, { passive: false });
+    
+    window.addEventListener('scroll', function() {
+      if (projectDetailMisc.classList.contains('open')) {
+        window.scrollTo(0, scrollPosition);
+      }
+    });
+    
+    function closeProjectDetailMisc() {
+      projectDetailMisc.classList.remove('open');
+      updateHash('#work');
+      const workSection = document.getElementById('work');
+      smoothScrollTo(workSection, SCROLL_DURATION);
+    }
+    
+    // Miscellaneous desktop arrow visibility
+    const projectArrowMisc = projectDetailMisc.querySelector('.project-detail-arrow');
+    const projectRightPanelMisc = projectDetailMisc.querySelector('.project-detail-right');
+    
+    function updateProjectArrowMisc() {
+      if (!projectRightPanelMisc || !projectArrowMisc) return;
+      const hasScrollableContent = projectRightPanelMisc.scrollHeight > projectRightPanelMisc.clientHeight;
+      const isAtBottom = projectRightPanelMisc.scrollTop + projectRightPanelMisc.clientHeight >= projectRightPanelMisc.scrollHeight - 10;
+      if (hasScrollableContent && !isAtBottom) {
+        projectArrowMisc.classList.add('visible');
+      } else {
+        projectArrowMisc.classList.remove('visible');
+      }
+    }
+    
+    projectRightPanelMisc.addEventListener('scroll', updateProjectArrowMisc);
+    
+    // Miscellaneous mobile down arrow fade
+    const mobileDownArrowMisc = projectDetailMisc.querySelector('.project-down-arrow-mobile');
+    
+    function updateMobileDownArrowMisc() {
+      if (window.innerWidth > 768) return;
+      if (!mobileDownArrowMisc) return;
+      const scrollTop = projectDetailMisc.scrollTop;
+      const scrollHeight = projectDetailMisc.scrollHeight;
+      const clientHeight = projectDetailMisc.clientHeight;
+      const isAtBottom = scrollTop + clientHeight >= scrollHeight - 20;
+      if (isAtBottom) {
+        mobileDownArrowMisc.style.opacity = '0';
+      } else {
+        mobileDownArrowMisc.style.opacity = '1';
+      }
+    }
+    
+    projectDetailMisc.addEventListener('scroll', function() {
+      updateMobileDownArrowMisc();
+    });
+    
+    projectMisc.addEventListener('click', function() {
+      setTimeout(updateProjectArrowMisc, 100);
+      setTimeout(updateMobileDownArrowMisc, 100);
+    });
+    
+    // Close Miscellaneous on escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && projectDetailMisc.classList.contains('open')) {
+        closeProjectDetailMisc();
+      }
+    });
+    
     // BMO Project Detail Page Functionality
     const projectBMO = document.getElementById('project-bmo');
     const projectDetailBMO = document.getElementById('project-detail-bmo');
@@ -3336,6 +3512,14 @@
     
     if (window.location.hash === '#work/fancards') {
       projectDetailBMOFanCards.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.top = '0';
+      document.body.style.width = '100%';
+    }
+    
+    if (window.location.hash === '#work/miscellaneous') {
+      projectDetailMisc.classList.add('open');
       document.body.style.overflow = 'hidden';
       document.body.style.position = 'fixed';
       document.body.style.top = '0';
