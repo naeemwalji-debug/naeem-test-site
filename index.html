@@ -120,8 +120,8 @@
       color: #000;
       font-family: "Zalando Sans Expanded", sans-serif;
       font-weight: 700;
-      font-size: clamp(20px, 3vw, 36px); /* Responsive font size */
-      line-height: 1.03;
+      font-size: clamp(16px, 2.5vw, 30px); /* Responsive font size */
+      line-height: 1.117;
       text-transform: uppercase;
       word-wrap: break-word;
       z-index: 2;
@@ -260,7 +260,7 @@
     /* Responsive Work grid */
     @media (max-width: 768px) {
       .work-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(3, 1fr);
       }
       #unicorn-desktop {
         visibility: hidden;
@@ -753,10 +753,10 @@
       color: #000;
       font-family: "Zalando Sans Expanded", sans-serif;
       font-weight: 700;
-      font-size: 36px;
+      font-size: 30px;
       text-transform: uppercase;
-      line-height: 37px;
-      margin-top: -25px; /* Overlap bottom of title */
+      line-height: 1.117;
+      margin-top: -26px; /* Overlap bottom of title */
       margin-bottom: 50px; /* 50px gap before description */
     }
     
@@ -1058,9 +1058,18 @@
         bottom: calc(100% - 20px); /* Move down 1px */
       }
       
+      .about-container {
+        padding-bottom: 80px; /* Push content up to visually center with title */
+      }
+      
       /* Work section - smaller padding */
       #work {
         padding: 0 25px;
+      }
+      
+      .work-container {
+        padding: 0;
+        max-width: 100%;
       }
       
       .work-title {
@@ -1508,36 +1517,36 @@
             requestAnimationFrame(animation);
           }
         } else if (href === '#work') {
-          // Special handling for Work - scroll to aboutPlaceholder bottom position
+          // Special handling for Work - scroll to work section
+          // Calculate based on header + about heights (2 viewport heights)
           const headerSpacer = document.getElementById('headerSpacer');
-          const aboutPlaceholder = document.getElementById('aboutPlaceholder');
-          if (headerSpacer && aboutPlaceholder) {
-            const targetY = headerSpacer.offsetTop + headerSpacer.offsetHeight + aboutPlaceholder.offsetHeight;
-            const startPosition = window.pageYOffset;
-            const distance = targetY - startPosition;
-            let startTime = null;
-            
-            function easeInOutCubic(t) {
-              return t < 0.5 
-                ? 4 * t * t * t 
-                : 1 - Math.pow(-2 * t + 2, 3) / 2;
-            }
-            
-            function animation(currentTime) {
-              if (startTime === null) startTime = currentTime;
-              const timeElapsed = currentTime - startTime;
-              const progress = Math.min(timeElapsed / SCROLL_DURATION, 1);
-              const easedProgress = easeInOutCubic(progress);
-              
-              window.scrollTo(0, startPosition + distance * easedProgress);
-              
-              if (timeElapsed < SCROLL_DURATION) {
-                requestAnimationFrame(animation);
-              }
-            }
-            
-            requestAnimationFrame(animation);
+          const windowHeight = window.innerHeight;
+          // Target is 2 viewport heights (header spacer + about)
+          const targetY = headerSpacer.offsetTop + (windowHeight * 2);
+          const startPosition = window.pageYOffset;
+          const distance = targetY - startPosition;
+          let startTime = null;
+          
+          function easeInOutCubic(t) {
+            return t < 0.5 
+              ? 4 * t * t * t 
+              : 1 - Math.pow(-2 * t + 2, 3) / 2;
           }
+          
+          function animation(currentTime) {
+            if (startTime === null) startTime = currentTime;
+            const timeElapsed = currentTime - startTime;
+            const progress = Math.min(timeElapsed / SCROLL_DURATION, 1);
+            const easedProgress = easeInOutCubic(progress);
+            
+            window.scrollTo(0, startPosition + distance * easedProgress);
+            
+            if (timeElapsed < SCROLL_DURATION) {
+              requestAnimationFrame(animation);
+            }
+          }
+          
+          requestAnimationFrame(animation);
         } else if (href === '#contact') {
           // Special handling for Contact - scroll to contact section
           // Calculate based on header + about + work heights (3 viewport heights)
@@ -1782,7 +1791,7 @@
         <div class="work-grid">
           <div class="work-item" id="project-proline" style="cursor: pointer; position: relative; overflow: hidden;">
             <video autoplay muted loop playsinline style="width: 100%; height: 100%; object-fit: cover;">
-              <source src="/Images/Proline_Thumbnail.mp4" type="video/mp4">
+              <source src="/Images/Proline_Thumbnail640.mp4" type="video/mp4">
             </video>
           </div>
           <div class="work-item" id="project-sobeys" style="cursor: pointer; position: relative; overflow: hidden;">
