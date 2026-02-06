@@ -188,33 +188,37 @@
       box-sizing: border-box;
     }
     .contact-container {
-      text-align: center;
+      text-align: left;
     }
     .contact-title {
       color: #a6a6a6;
       font-family: "selfie-neue-round", "Brush Script MT", cursive;
       font-weight: 700;
       font-size: 115px;
-      line-height: 0.9;
-      margin-bottom: 10px;
+      line-height: 0.7;
+      margin-left: -27px;
+      margin-bottom: 0;
     }
     .contact-subtitle {
-      font-family: "Zalando Sans Expanded", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      font-weight: 700;
-      font-size: 14.67px;
-      letter-spacing: 2px;
-      line-height: 16px;
-      text-transform: uppercase;
       color: #000;
+      font-family: "Zalando Sans Expanded", sans-serif;
+      font-weight: 700;
+      font-size: 36px;
+      text-transform: uppercase;
+      line-height: 37px;
+      margin-top: -25px;
+      letter-spacing: 0;
     }
     
     @media (max-width: 768px) {
       .contact-title {
         font-size: 70px;
+        margin-left: -16px;
       }
       .contact-subtitle {
-        font-size: 12px;
-        letter-spacing: 1.5px;
+        font-size: 24px;
+        line-height: 26px;
+        margin-top: -15px;
       }
     }
     
@@ -1468,6 +1472,69 @@
             
             requestAnimationFrame(animation);
           }
+        } else if (href === '#work') {
+          // Special handling for Work - scroll to aboutPlaceholder bottom position
+          const headerSpacer = document.getElementById('headerSpacer');
+          const aboutPlaceholder = document.getElementById('aboutPlaceholder');
+          if (headerSpacer && aboutPlaceholder) {
+            const targetY = headerSpacer.offsetTop + headerSpacer.offsetHeight + aboutPlaceholder.offsetHeight;
+            const startPosition = window.pageYOffset;
+            const distance = targetY - startPosition;
+            let startTime = null;
+            
+            function easeInOutCubic(t) {
+              return t < 0.5 
+                ? 4 * t * t * t 
+                : 1 - Math.pow(-2 * t + 2, 3) / 2;
+            }
+            
+            function animation(currentTime) {
+              if (startTime === null) startTime = currentTime;
+              const timeElapsed = currentTime - startTime;
+              const progress = Math.min(timeElapsed / SCROLL_DURATION, 1);
+              const easedProgress = easeInOutCubic(progress);
+              
+              window.scrollTo(0, startPosition + distance * easedProgress);
+              
+              if (timeElapsed < SCROLL_DURATION) {
+                requestAnimationFrame(animation);
+              }
+            }
+            
+            requestAnimationFrame(animation);
+          }
+        } else if (href === '#contact') {
+          // Special handling for Contact - scroll to workPlaceholder bottom position
+          const headerSpacer = document.getElementById('headerSpacer');
+          const aboutPlaceholder = document.getElementById('aboutPlaceholder');
+          const workPlaceholder = document.getElementById('workPlaceholder');
+          if (headerSpacer && aboutPlaceholder && workPlaceholder) {
+            const targetY = headerSpacer.offsetTop + headerSpacer.offsetHeight + aboutPlaceholder.offsetHeight + workPlaceholder.offsetHeight;
+            const startPosition = window.pageYOffset;
+            const distance = targetY - startPosition;
+            let startTime = null;
+            
+            function easeInOutCubic(t) {
+              return t < 0.5 
+                ? 4 * t * t * t 
+                : 1 - Math.pow(-2 * t + 2, 3) / 2;
+            }
+            
+            function animation(currentTime) {
+              if (startTime === null) startTime = currentTime;
+              const timeElapsed = currentTime - startTime;
+              const progress = Math.min(timeElapsed / SCROLL_DURATION, 1);
+              const easedProgress = easeInOutCubic(progress);
+              
+              window.scrollTo(0, startPosition + distance * easedProgress);
+              
+              if (timeElapsed < SCROLL_DURATION) {
+                requestAnimationFrame(animation);
+              }
+            }
+            
+            requestAnimationFrame(animation);
+          }
         } else {
           target = document.querySelector(href);
           console.log('Target element:', target);
@@ -1720,6 +1787,7 @@
         </div>
       </div>
     </section>
+    <div id="workPlaceholder" style="display:none; height:100vh;"></div>
 
     <section id="contact">
       <div class="contact-container">
@@ -2642,7 +2710,7 @@
     window.addEventListener("scroll", updateAboutFade, { passive: true });
     updateAboutFade();
     
-    // Work section fade-in
+    // Work section fade-in with sticky behavior
     function updateWorkFade() {
       if (!workTitle || !workGrid || !workSection) return;
       
@@ -2650,6 +2718,44 @@
       const workRect = workSection.getBoundingClientRect();
       const titleRect = workTitle.getBoundingClientRect();
       const gridRect = workGrid.getBoundingClientRect();
+      const workPlaceholder = document.getElementById('workPlaceholder');
+      const aboutPlaceholder = document.getElementById('aboutPlaceholder');
+      
+      // Work becomes fixed when About placeholder bottom reaches top of viewport
+      // (meaning About is fully scrolled and Work should stick)
+      const aboutPlaceholderBottom = aboutPlaceholder.getBoundingClientRect().bottom;
+      const shouldBeFixed = aboutPlaceholderBottom <= 1 && workRect.top <= 0;
+      
+      if (shouldBeFixed) {
+        if (workSection.style.position !== 'fixed') {
+          workSection.style.position = 'fixed';
+          workSection.style.top = '0';
+          workSection.style.left = '0';
+          workSection.style.right = '0';
+          workSection.style.bottom = '0';
+          workSection.style.width = '100%';
+          workSection.style.height = '100vh';
+          workPlaceholder.style.display = 'block';
+        }
+        
+        // Fully visible
+        workTitle.style.webkitMaskImage = 'linear-gradient(to right, #000 0%, #000 100%)';
+        workTitle.style.maskImage = 'linear-gradient(to right, #000 0%, #000 100%)';
+        workTitle.style.transform = 'translateX(0)';
+        workGrid.style.opacity = '1';
+        return;
+      } else {
+        if (workSection.style.position !== 'relative') {
+          workSection.style.position = 'relative';
+          workSection.style.top = '';
+          workSection.style.left = '';
+          workSection.style.right = '';
+          workSection.style.bottom = '';
+          workSection.style.width = '';
+          workSection.style.height = '';
+          workPlaceholder.style.display = 'none';
+        }
+      }
       
       // Check if Work section is fully visible (top at or above viewport top)
       const workFullyOpen = workRect.top <= 0;
