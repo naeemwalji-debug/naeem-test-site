@@ -173,6 +173,51 @@
       aspect-ratio: 16 / 9;
     }
     
+    /* Contact Section */
+    #contact {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      background: #fff;
+      z-index: 30;
+      box-shadow: 0 -20px 60px rgba(0,0,0,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      box-sizing: border-box;
+    }
+    .contact-container {
+      text-align: center;
+    }
+    .contact-title {
+      color: #a6a6a6;
+      font-family: "selfie-neue-round", "Brush Script MT", cursive;
+      font-weight: 700;
+      font-size: 115px;
+      line-height: 0.9;
+      margin-bottom: 10px;
+    }
+    .contact-subtitle {
+      font-family: "Zalando Sans Expanded", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      font-weight: 700;
+      font-size: 14.67px;
+      letter-spacing: 2px;
+      line-height: 16px;
+      text-transform: uppercase;
+      color: #000;
+    }
+    
+    @media (max-width: 768px) {
+      .contact-title {
+        font-size: 70px;
+      }
+      .contact-subtitle {
+        font-size: 12px;
+        letter-spacing: 1.5px;
+      }
+    }
+    
     /* Responsive Work grid */
     @media (max-width: 768px) {
       .work-grid {
@@ -1444,34 +1489,40 @@
     const navHome = document.getElementById("navHome");
     const navAbout = document.getElementById("navAbout");
     const navWork = document.getElementById("navWork");
+    const navContact = document.getElementById("navContact");
     const homeIndicator = navHome.querySelector(".nav-indicator");
     const aboutIndicator = navAbout.querySelector(".nav-indicator");
     const workIndicator = navWork.querySelector(".nav-indicator");
+    const contactIndicator = navContact.querySelector(".nav-indicator");
     const homeText = navHome.querySelector(".nav-text");
     const aboutText = navAbout.querySelector(".nav-text");
     const workText = navWork.querySelector(".nav-text");
+    const contactText = navContact.querySelector(".nav-text");
     
-    let homeFullWidth, aboutFullWidth, workFullWidth;
+    let homeFullWidth, aboutFullWidth, workFullWidth, contactFullWidth;
     
     function measureAndSetIndicators() {
       // Get each text's actual width + 2px (1px each side)
       homeFullWidth = homeText.getBoundingClientRect().width + 2;
       aboutFullWidth = aboutText.getBoundingClientRect().width + 2;
       workFullWidth = workText.getBoundingClientRect().width + 2;
+      contactFullWidth = contactText.getBoundingClientRect().width + 2;
       
       // Set initial state based on current scroll position
       updateNavIndicators();
     }
     
     function updateNavIndicators() {
-      if (!homeFullWidth || !aboutFullWidth || !workFullWidth) return;
+      if (!homeFullWidth || !aboutFullWidth || !workFullWidth || !contactFullWidth) return;
       
       const aboutSectionEl = document.getElementById("about");
       const workSectionEl = document.getElementById("work");
-      if (!aboutSectionEl || !workSectionEl) return;
+      const contactSectionEl = document.getElementById("contact");
+      if (!aboutSectionEl || !workSectionEl || !contactSectionEl) return;
       
       const aboutRect = aboutSectionEl.getBoundingClientRect();
       const workRect = workSectionEl.getBoundingClientRect();
+      const contactRect = contactSectionEl.getBoundingClientRect();
       const windowHeight = window.innerHeight;
       
       // Calculate About progress (0 to 1)
@@ -1492,6 +1543,15 @@
       }
       workProgress = Math.max(0, Math.min(1, workProgress));
       
+      // Calculate Contact progress (0 to 1)
+      let contactProgress = 0;
+      if (contactRect.top <= windowHeight && contactRect.top >= 0) {
+        contactProgress = (windowHeight - contactRect.top) / windowHeight;
+      } else if (contactRect.top < 0) {
+        contactProgress = 1;
+      }
+      contactProgress = Math.max(0, Math.min(1, contactProgress));
+      
       // Home indicator: full when on home, shrinks as About comes up
       homeIndicator.style.width = (homeFullWidth * (1 - aboutProgress)) + "px";
       
@@ -1502,14 +1562,31 @@
         aboutIndicator.style.width = (aboutFullWidth * aboutProgress) + "px";
       }
       
-      // Work indicator: grows as Work comes up
-      workIndicator.style.width = (workFullWidth * workProgress) + "px";
+      // Work indicator: grows as Work comes up, shrinks as Contact comes up
+      if (contactProgress > 0) {
+        workIndicator.style.width = (workFullWidth * (1 - contactProgress)) + "px";
+      } else {
+        workIndicator.style.width = (workFullWidth * workProgress) + "px";
+      }
+      
+      // Contact indicator: grows as Contact comes up
+      contactIndicator.style.width = (contactFullWidth * contactProgress) + "px";
+      
+      // Fade arrow when on contact page
+      const arrow = document.getElementById("downArrow");
+      if (contactProgress > 0.5) {
+        arrow.style.opacity = 1 - contactProgress;
+      } else {
+        arrow.style.opacity = 1;
+      }
       
       // Update URL hash based on current section (but not when project is open)
       const projectOpen = document.querySelector('.project-detail.open');
       if (!projectOpen) {
         let currentHash = '#header';
-        if (workProgress > 0.5) {
+        if (contactProgress > 0.5) {
+          currentHash = '#contact';
+        } else if (workProgress > 0.5) {
           currentHash = '#work';
         } else if (aboutProgress > 0.5) {
           currentHash = '#about';
@@ -1629,7 +1706,7 @@
           </div>
           <div class="work-item" id="project-pixel" style="cursor: pointer; position: relative; overflow: hidden;">
             <video autoplay muted loop playsinline style="width: 100%; height: 100%; object-fit: cover;">
-              <source src="/Images/GooglePixelThumbnail.mp4" type="video/mp4">
+              <source src="/Images/GooglePixelThumbnail2.mp4" type="video/mp4">
             </video>
           </div>
           <div class="work-item" id="project-michelob" style="cursor: pointer; position: relative; overflow: hidden;">
@@ -1641,6 +1718,13 @@
             </video>
           </div>
         </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="contact-container">
+        <h1 class="contact-title">Email</h1>
+        <h2 class="contact-subtitle">NAEEM.WALJI@GMAIL.COM</h2>
       </div>
     </section>
   </div>
@@ -2015,7 +2099,7 @@
       
       <div class="project-detail-header-mobile">
         <h1 class="project-title">Miscellaneous</h1>
-        <h2 class="project-subtitle">DESIGN & ART DIRECTION & SOME AI</h2>
+        <h2 class="project-subtitle">DESIGN<br>ART DIRECTION<br>AI</h2>
       </div>
       
       <div class="project-detail-content-mobile">
